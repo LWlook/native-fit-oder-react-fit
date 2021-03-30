@@ -1,20 +1,25 @@
 import React from "react";
 import {CardStyleInterpolators, createStackNavigator} from "@react-navigation/stack";
-import {Calendar} from "../screens/Calendar";
+import {Exercises} from "../screens/Exercises";
 import {stackNavOptions} from "../utils/stackNavOptions";
+import {ModifyExercise} from "../screens/ModifyExercise";
 
-export type RootStackParamList = {
-    Calendar: { };
+export type HomeStackParamList = {
+    Exercises: undefined
+    ModifyExercise: {
+        exerciseId: number
+    }
 }
 
-const Stack = createStackNavigator<RootStackParamList>();
+const Stack = createStackNavigator<HomeStackParamList>();
 
 export const HomeNavigator: React.FC = () => {
     return <Stack.Navigator screenOptions={{
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         ...stackNavOptions,
     }}>
-        <Stack.Screen name="Calendar" component={Calendar} options={{title: "Servus!"}}/>
+        <Stack.Screen name="Exercises" component={Exercises}/>
+        <Stack.Screen name="ModifyExercise" component={ModifyExercise}/>
     </Stack.Navigator>
 }
 
