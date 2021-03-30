@@ -1,25 +1,73 @@
-import React from "react";
-import {StyleSheet} from "react-native";
-import {SafeAreaView} from "react-native-safe-area-context"
-import ActionButton from "react-native-action-button";
-import {colors} from "../constants/style";
+import React, {useState} from "react";
+import {FlatList, ListRenderItem, SafeAreaView, StatusBar, StyleSheet} from 'react-native';
+import {ExcerciseDataItem, ExcerciseItem} from "../components/ExcerciseItem";
+import {FloatingAction} from "react-native-floating-action";
+import {Ionicons} from "@expo/vector-icons";
 
 export const Calendar: React.FC = () => {
-    return <SafeAreaView style={styles.container}>
+    const [selectedId, setSelectedId] = useState<number>(0);
 
-        <ActionButton buttonColor={colors.primary}
-                      onPress={() => {
-                          console.log("hi")
-                      }}>
-        </ActionButton>
+    const renderItem: ListRenderItem<ExcerciseDataItem> = ({item}) => {
+        return <ExcerciseItem item={item} onPress={() => setSelectedId(item.id)}/>;
+    }
+
+    return <SafeAreaView style={styles.container}>
+        <FlatList<ExcerciseDataItem>
+            data={DATA}
+            renderItem={renderItem}
+            keyExtractor={item => item.id + ''}
+            extraData={selectedId}
+        />
+        <FloatingAction
+            actions={[{
+                name: "bt_fab_add",
+                icon: <Ionicons name="md-add" color={'white'} size={32}/>
+            }]}
+            onPressItem={name => {
+                console.log(`selected button: ${name}`);
+            }}
+            overrideWithAction={true}
+        />
     </SafeAreaView>
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        marginTop: StatusBar.currentHeight || 0,
+        backgroundColor: '#eee',
         alignItems: 'center',
         justifyContent: 'center',
-    },
+    }
 });
+
+
+const DATA: ExcerciseDataItem[] = [
+    {
+        id: 0,
+        title: 'Flat Barbell Bench Press',
+        exerciseSet: [
+            {weight: 80, reps: 5},
+            {weight: 100, reps: 5},
+            {weight: 120, reps: 5}
+        ]
+    },
+    {
+        id: 1,
+        title: 'Close Grip Barbell Bench Press',
+        exerciseSet: [
+            {weight: 80, reps: 5},
+            {weight: 100, reps: 5},
+            {weight: 120, reps: 5}
+        ]
+    },
+    {
+        id: 2,
+        title: 'Incline Dumbbell Fly',
+        exerciseSet: [
+            {weight: 80, reps: 5},
+            {weight: 100, reps: 5},
+            {weight: 120, reps: 5}
+        ]
+    },
+];
