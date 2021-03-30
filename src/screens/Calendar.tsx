@@ -2,11 +2,12 @@ import React from "react";
 import {StyleSheet} from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context"
 import ActionButton from "react-native-action-button";
+import {colors} from "../constants/style";
 
 export const Calendar: React.FC = () => {
     return <SafeAreaView style={styles.container}>
 
-        <ActionButton buttonColor="rgba(231,76,60,1)"
+        <ActionButton buttonColor={colors.primary}
                       onPress={() => {
                           console.log("hi")
                       }}>
