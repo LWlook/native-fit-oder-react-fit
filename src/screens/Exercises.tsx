@@ -1,11 +1,12 @@
 import React, {useState} from "react";
-import {FlatList, ListRenderItem, SafeAreaView, StatusBar, StyleSheet} from 'react-native';
+import {FlatList, ListRenderItem, SafeAreaView, StatusBar, StyleSheet, View, Text} from 'react-native';
 import {ExcerciseDataItem, ExcerciseItem} from "../components/ExcerciseItem";
 import {FloatingAction} from "react-native-floating-action";
 import {Ionicons} from "@expo/vector-icons";
 import {colors} from "../constants/style";
 import {HomeStackParamList} from "../navigators/HomeNavigator";
 import {StackNavigationProp} from "@react-navigation/stack";
+import {LiftedWeightCard} from "../components/LiftedWeightCard";
 
 type ExercisesNavigationProp = StackNavigationProp<HomeStackParamList, 'Exercises'>
 
@@ -21,11 +22,13 @@ export const Exercises: React.FC<ExercisesProps> = ({ navigation }) => {
     }
 
     return <SafeAreaView style={styles.container}>
+        <LiftedWeightCard />
         <FlatList<ExcerciseDataItem>
             data={DATA}
             renderItem={renderItem}
             keyExtractor={item => item.id + ''}
             extraData={selectedId}
+            contentContainerStyle={styles.flatlistContainer}
         />
         <FloatingAction
             actions={[{
@@ -44,8 +47,11 @@ export const Exercises: React.FC<ExercisesProps> = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: StatusBar.currentHeight || 0,
+        // marginTop: StatusBar.currentHeight || 0,
         backgroundColor: '#eee',
+    },
+    flatlistContainer: {
+        paddingBottom: 8
     }
 });
 

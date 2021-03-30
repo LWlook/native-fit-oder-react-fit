@@ -24,16 +24,16 @@ export type ExcerciseDataItemSet = {
 
 export const ExcerciseItem: React.FC<ExcerciseItemProps> = ({item, onPress}) => {
 
-    return <TouchableOpacity onPress={onPress} style={styles.container}>
+    return <TouchableOpacity onPress={onPress} style={styles.container} activeOpacity={0.5}>
         <Grid>
             <Row style={styles.headContainer}>
-                <Col><Text style={styles.header}>{item.title}</Text></Col>
+                <Col style={{flex: 3}}><Text style={styles.header}>{item.title}</Text></Col>
                 <Col style={styles.exerciseCategory}>{ getBadgeForExerciseCategory(item.category)}</Col>
             </Row>
             {item.exerciseSet.map((exerciseSet, index) => (
                 <Row style={styles.bodyContainer} key={index}>
-                    <Col><Text>{exerciseSet.reps} reps</Text></Col>
-                    <Col><Text>{exerciseSet.weight} kg</Text></Col>
+                    <Col style={styles.exerciseCols}><Text>{exerciseSet.reps} reps</Text></Col>
+                    <Col style={styles.exerciseCols}><Text>{exerciseSet.weight} kg</Text></Col>
                 </Row>
             ))}
         </Grid>
@@ -42,25 +42,29 @@ export const ExcerciseItem: React.FC<ExcerciseItemProps> = ({item, onPress}) => 
 
 const styles = StyleSheet.create({
     exerciseCategory: {
-      alignItems: "flex-end"
+      alignItems: "flex-end",
+        flex: 1
+    },
+    exerciseCols: {
+      alignItems: "center"
     },
     container: {
         margin: 8,
         backgroundColor: '#fff',
-        shadowOffset: {
-            width: 2,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3,
-    }, headContainer: {
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 2 },
+        shadowRadius: 8,
+        shadowOpacity: 0.26,
+        elevation: 8,
+        borderRadius: 8
+    },
+    headContainer: {
         padding: 8,
         borderBottomWidth: 2,
         borderBottomColor: colors.primary,
     },
     bodyContainer: {
         margin: 8,
-        textAlign: "center"
     },
     header: {
         fontWeight: "bold"
