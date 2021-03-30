@@ -1,11 +1,14 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import {colors} from "../constants/style";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export const LiftedWeightCard: React.FC = () => {
     return (
         <View style={styles.card}>
+            <MaterialCommunityIcons name="dumbbell" size={24} color="white" />
             <Text style={styles.text}>7.500 kg lifted</Text>
+            <MaterialCommunityIcons name="dumbbell" size={24} color="white" />
         </View>
     );
 }
@@ -18,10 +21,10 @@ const styles = StyleSheet.create({
     },
     card: {
         flexDirection: "row",
-        justifyContent: "center",
+        justifyContent: "space-around",
         alignItems: "center",
         margin: 8,
-        height: "8%",
+        height: "6.5%",
         shadowColor: 'black',
         shadowOffset: { width: 0, height: 2 },
         shadowRadius: 8,
