@@ -2,8 +2,8 @@ import React from "react";
 import {BottomTabNavigationOptions, createBottomTabNavigator} from "@react-navigation/bottom-tabs";;
 import {Ionicons} from "@expo/vector-icons";
 import {colors} from "../constants/style";
-import {Records} from "../screens/Records";
 import {HomeNavigator} from "./HomeNavigator";
+import {RecordsNavigator} from "./RecordsNavigator";
 
 const Tab = createBottomTabNavigator();
 
@@ -14,7 +14,7 @@ export const BottomNavigator: React.FC = () => {
     }}>
 
         <Tab.Screen name="Home" component={HomeNavigator} options={HomeNavigatorOptions}/>
-        <Tab.Screen name="Records" component={Records} options={RecordsScreenOptions}/>
+        <Tab.Screen name="Records" component={RecordsNavigator} options={RecordsScreenOptions}/>
     </Tab.Navigator>
 }
 
