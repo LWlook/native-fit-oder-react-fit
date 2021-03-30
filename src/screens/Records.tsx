@@ -1,10 +1,12 @@
 import React from "react";
-import {StyleSheet, Text} from "react-native";
+import {StyleSheet, Text, View} from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context"
+import {Badge} from "../components/Badge";
+import {colors} from "../constants/style";
 
 export const Records: React.FC = () => {
     return <SafeAreaView style={styles.container}>
-        <Text>Records Screen!</Text>
+        <Badge text="Mein Badge" color={colors.black}/>
     </SafeAreaView>
 }
 
@@ -13,6 +15,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'center'
     },
 });
