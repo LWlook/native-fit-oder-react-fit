@@ -25,10 +25,10 @@ export const ExcerciseItem: React.FC<ExcerciseItemProps> = ({item, onPress}) => 
     return <TouchableOpacity onPress={onPress} style={styles.container}>
         <Grid>
             <Row style={styles.headContainer}>
-                <Col><Text>{item.title}</Text></Col>
+                <Text>{item.title}</Text>
             </Row>
-            {item.exerciseSet.map((excerciseSet) => (
-                <Row style={styles.bodyContainer}>
+            {item.exerciseSet.map((excerciseSet, index) => (
+                <Row style={styles.bodyContainer} key={index}>
                     <Col><Text>{excerciseSet.reps} reps</Text></Col>
                     <Col><Text>{excerciseSet.weight} kg</Text></Col>
                 </Row>
@@ -51,8 +51,7 @@ const styles = StyleSheet.create({
         padding: 8,
         borderBottomWidth: 2,
         borderBottomColor: colors.primary,
-        textAlign: "center"
-
+        alignItems: "center"
     },
     bodyContainer: {
         margin: 8,

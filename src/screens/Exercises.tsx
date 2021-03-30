@@ -34,7 +34,7 @@ export const Exercises: React.FC<ExercisesProps> = ({ navigation }) => {
                 icon: <Ionicons name="md-add" color={'white'} size={32}/>
             }]}
             onPressItem={name => {
-                navigation.navigate('ModifyExercise', {exerciseId: 25})
+                navigation.navigate('ChoseExercise', {exerciseId: 25})
             }}
             overrideWithAction={true}
         />
@@ -46,8 +46,6 @@ const styles = StyleSheet.create({
         flex: 1,
         marginTop: StatusBar.currentHeight || 0,
         backgroundColor: '#eee',
-        alignItems: 'center',
-        justifyContent: 'center',
     }
 });
 
