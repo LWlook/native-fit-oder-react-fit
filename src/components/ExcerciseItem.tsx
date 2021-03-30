@@ -1,7 +1,8 @@
 import React from "react";
-import {StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Col, Grid, Row} from "react-native-easy-grid";
 import {colors} from "../constants/style";
+import {ExerciseCategory, getBadgeForExerciseCategory} from "../utils/getBadgeForExerciseCategory";
 
 interface ExcerciseItemProps {
     item: ExcerciseDataItem
@@ -12,6 +13,7 @@ interface ExcerciseItemProps {
 export type ExcerciseDataItem = {
     id: number
     title: string
+    category: ExerciseCategory
     exerciseSet: ExcerciseDataItemSet[]
 }
 
@@ -25,12 +27,13 @@ export const ExcerciseItem: React.FC<ExcerciseItemProps> = ({item, onPress}) => 
     return <TouchableOpacity onPress={onPress} style={styles.container}>
         <Grid>
             <Row style={styles.headContainer}>
-                <Text>{item.title}</Text>
+                <Col><Text style={styles.header}>{item.title}</Text></Col>
+                <Col style={styles.exerciseCategory}>{ getBadgeForExerciseCategory(item.category)}</Col>
             </Row>
-            {item.exerciseSet.map((excerciseSet, index) => (
+            {item.exerciseSet.map((exerciseSet, index) => (
                 <Row style={styles.bodyContainer} key={index}>
-                    <Col><Text>{excerciseSet.reps} reps</Text></Col>
-                    <Col><Text>{excerciseSet.weight} kg</Text></Col>
+                    <Col><Text>{exerciseSet.reps} reps</Text></Col>
+                    <Col><Text>{exerciseSet.weight} kg</Text></Col>
                 </Row>
             ))}
         </Grid>
@@ -38,6 +41,9 @@ export const ExcerciseItem: React.FC<ExcerciseItemProps> = ({item, onPress}) => 
 }
 
 const styles = StyleSheet.create({
+    exerciseCategory: {
+      alignItems: "flex-end"
+    },
     container: {
         margin: 8,
         backgroundColor: '#fff',
@@ -51,11 +57,13 @@ const styles = StyleSheet.create({
         padding: 8,
         borderBottomWidth: 2,
         borderBottomColor: colors.primary,
-        alignItems: "center"
     },
     bodyContainer: {
         margin: 8,
         textAlign: "center"
+    },
+    header: {
+        fontWeight: "bold"
     }
 
 });

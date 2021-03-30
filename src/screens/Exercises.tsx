@@ -30,12 +30,12 @@ export const Exercises: React.FC<ExercisesProps> = ({ navigation }) => {
         <FloatingAction
             actions={[{
                 name: "bt_fab_add",
-                color: colors.primary,
                 icon: <Ionicons name="md-add" color={'white'} size={32}/>
             }]}
             onPressItem={name => {
                 navigation.navigate('ChoseExercise', {exerciseId: 25})
             }}
+            color={colors.primary}
             overrideWithAction={true}
         />
     </SafeAreaView>
@@ -54,6 +54,7 @@ const DATA: ExcerciseDataItem[] = [
     {
         id: 0,
         title: 'Flat Barbell Bench Press',
+        category: "chest",
         exerciseSet: [
             {weight: 80, reps: 5},
             {weight: 100, reps: 5},
@@ -62,6 +63,7 @@ const DATA: ExcerciseDataItem[] = [
     },
     {
         id: 1,
+        category: "biceps",
         title: 'Close Grip Barbell Bench Press',
         exerciseSet: [
             {weight: 80, reps: 5},
@@ -71,6 +73,7 @@ const DATA: ExcerciseDataItem[] = [
     },
     {
         id: 2,
+        category: "shoulders",
         title: 'Incline Dumbbell Fly',
         exerciseSet: [
             {weight: 80, reps: 5},
