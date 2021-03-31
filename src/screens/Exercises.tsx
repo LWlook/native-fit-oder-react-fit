@@ -1,6 +1,7 @@
-import React, {useEffect, useState} from "react";
-import {FlatList, ListRenderItem, SafeAreaView, StatusBar, StyleSheet, View, Text} from 'react-native';
+import React, {useEffect, useLayoutEffect, useState} from "react";
+import {FlatList, ListRenderItem, SafeAreaView, StatusBar, StyleSheet, View, Text, Button} from 'react-native';
 import {ExcerciseDataItem, ExcerciseItem} from "../components/ExcerciseItem";
+import {useNavigation} from "@react-navigation/native";
 import {FloatingAction} from "react-native-floating-action";
 import {Ionicons} from "@expo/vector-icons";
 import {colors} from "../constants/style";
@@ -8,25 +9,33 @@ import {HomeStackParamList} from "../navigators/HomeNavigator";
 import {StackNavigationProp} from "@react-navigation/stack";
 import {LiftedWeightCard} from "../components/LiftedWeightCard";
 import {fetchTypeSaveSql} from "../utils/sqliteTypeSave";
+import HeaderButton from "../components/HeaderButton";
+import {HeaderButtons, Item} from "react-navigation-header-buttons";
+import {useSelectedDate} from "../zustand/useSelectedDate";
 
-type ExercisesNavigationProp = StackNavigationProp<HomeStackParamList, 'Exercises'>
+// type ExercisesNavigationProp = StackNavigationProp<HomeStackParamList, 'Exercises'>
 
 interface ExercisesProps {
-    navigation: ExercisesNavigationProp
+    // navigation: ExercisesNavigationProp
 }
 
-export const Exercises: React.FC<ExercisesProps> = ({navigation}) => {
+export const Exercises: React.FC<ExercisesProps> = () => {
+    const navigation = useNavigation()
     const [selectedId, setSelectedId] = useState<number>(0);
+    const selectedDate = useSelectedDate(state => state.selectedDate)
 
+    useLayoutEffect(() => {
+        navigation.setOptions({title: selectedDate})
+    }, [selectedDate])
 
     useEffect(() => {
 
-        const fetchExercisesSync = async () => {
-            const exercises = await fetchTypeSaveSql<ExcerciseDataItem>('select * from items where done = ?;', [0])
-            console.log(exercises)
-        }
-
-        fetchExercisesSync().then()
+        // const fetchExercisesSync = async () => {
+        //     const exercises = await fetchTypeSaveSql<ExcerciseDataItem>('select * from items where done = ?;', [0])
+        //     console.log(exercises)
+        // }
+        //
+        // fetchExercisesSync().then()
     });
 
 
