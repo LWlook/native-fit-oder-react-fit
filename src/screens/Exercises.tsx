@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {FlatList, ListRenderItem, SafeAreaView, StatusBar, StyleSheet, View, Text} from 'react-native';
 import {ExcerciseDataItem, ExcerciseItem} from "../components/ExcerciseItem";
 import {FloatingAction} from "react-native-floating-action";
@@ -7,6 +7,7 @@ import {colors} from "../constants/style";
 import {HomeStackParamList} from "../navigators/HomeNavigator";
 import {StackNavigationProp} from "@react-navigation/stack";
 import {LiftedWeightCard} from "../components/LiftedWeightCard";
+import {fetchTypeSaveSql} from "../utils/sqliteTypeSave";
 
 type ExercisesNavigationProp = StackNavigationProp<HomeStackParamList, 'Exercises'>
 
@@ -14,8 +15,20 @@ interface ExercisesProps {
     navigation: ExercisesNavigationProp
 }
 
-export const Exercises: React.FC<ExercisesProps> = ({ navigation }) => {
+export const Exercises: React.FC<ExercisesProps> = ({navigation}) => {
     const [selectedId, setSelectedId] = useState<number>(0);
+
+
+    useEffect(() => {
+
+        const fetchExercisesSync = async () => {
+            const exercises = await fetchTypeSaveSql<ExcerciseDataItem>('select * from items where done = ?;', [0])
+            console.log(exercises)
+        }
+
+        fetchExercisesSync().then()
+    });
+
 
     const renderItem: ListRenderItem<ExcerciseDataItem> = ({item}) => {
         return <ExcerciseItem item={item} onPress={() => setSelectedId(item.id)}/>;
