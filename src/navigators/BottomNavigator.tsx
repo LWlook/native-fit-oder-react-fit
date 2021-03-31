@@ -1,5 +1,5 @@
 import React from "react";
-import {BottomTabNavigationOptions, createBottomTabNavigator} from "@react-navigation/bottom-tabs";;
+import {BottomTabNavigationOptions, createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {Ionicons} from "@expo/vector-icons";
 import {colors} from "../constants/style";
 import {HomeNavigator} from "./HomeNavigator";

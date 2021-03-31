@@ -1,25 +1,14 @@
 import React, {useEffect, useLayoutEffect, useState} from "react";
 import {FlatList, ListRenderItem, SafeAreaView, StatusBar, StyleSheet, View, Text, Button} from 'react-native';
-import {ExcerciseDataItem, ExcerciseItem} from "../components/ExcerciseItem";
+import {ExerciseDataItem, ExerciseItem} from "../components/ExerciseItem";
 import {useNavigation} from "@react-navigation/native";
 import {FloatingAction} from "react-native-floating-action";
 import {Ionicons} from "@expo/vector-icons";
 import {colors} from "../constants/style";
-import {HomeStackParamList} from "../navigators/HomeNavigator";
-import {StackNavigationProp} from "@react-navigation/stack";
 import {LiftedWeightCard} from "../components/LiftedWeightCard";
-import {fetchTypeSaveSql} from "../utils/sqliteTypeSave";
-import HeaderButton from "../components/HeaderButton";
-import {HeaderButtons, Item} from "react-navigation-header-buttons";
 import {useSelectedDate} from "../zustand/useSelectedDate";
 
-// type ExercisesNavigationProp = StackNavigationProp<HomeStackParamList, 'Exercises'>
-
-interface ExercisesProps {
-    // navigation: ExercisesNavigationProp
-}
-
-export const Exercises: React.FC<ExercisesProps> = () => {
+export const Exercises: React.FC = () => {
     const navigation = useNavigation()
     const [selectedId, setSelectedId] = useState<number>(0);
     const selectedDate = useSelectedDate(state => state.selectedDate)
@@ -30,8 +19,9 @@ export const Exercises: React.FC<ExercisesProps> = () => {
 
     useEffect(() => {
 
+        // TODO: Lukas
         // const fetchExercisesSync = async () => {
-        //     const exercises = await fetchTypeSaveSql<ExcerciseDataItem>('select * from items where done = ?;', [0])
+        //     const exercises = await fetchTypeSaveSql<ExerciseDataItem>('select * from items where done = ?;', [0])
         //     console.log(exercises)
         // }
         //
@@ -39,13 +29,13 @@ export const Exercises: React.FC<ExercisesProps> = () => {
     });
 
 
-    const renderItem: ListRenderItem<ExcerciseDataItem> = ({item}) => {
-        return <ExcerciseItem item={item} onPress={() => setSelectedId(item.id)}/>;
+    const renderItem: ListRenderItem<ExerciseDataItem> = ({item}) => {
+        return <ExerciseItem item={item} onPress={() => setSelectedId(item.id)}/>;
     }
 
     return <SafeAreaView style={styles.container}>
         <LiftedWeightCard />
-        <FlatList<ExcerciseDataItem>
+        <FlatList<ExerciseDataItem>
             data={DATA}
             renderItem={renderItem}
             keyExtractor={item => item.id + ''}
@@ -78,7 +68,7 @@ const styles = StyleSheet.create({
 });
 
 
-const DATA: ExcerciseDataItem[] = [
+const DATA: ExerciseDataItem[] = [
     {
         id: 0,
         title: 'Flat Barbell Bench Press',

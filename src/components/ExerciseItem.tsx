@@ -4,25 +4,25 @@ import {Col, Grid, Row} from "react-native-easy-grid";
 import {colors} from "../constants/style";
 import {ExerciseCategory, getBadgeForExerciseCategory} from "../utils/getBadgeForExerciseCategory";
 
-interface ExcerciseItemProps {
-    item: ExcerciseDataItem
+interface ExerciseItemProps {
+    item: ExerciseDataItem
 
     onPress(): void
 }
 
-export type ExcerciseDataItem = {
+export type ExerciseDataItem = {
     id: number
     title: string
     category: ExerciseCategory
-    exerciseSet: ExcerciseDataItemSet[]
+    exerciseSet: ExerciseDataItemSet[]
 }
 
-export type ExcerciseDataItemSet = {
+export type ExerciseDataItemSet = {
     weight: number
     reps: number
 }
 
-export const ExcerciseItem: React.FC<ExcerciseItemProps> = ({item, onPress}) => {
+export const ExerciseItem: React.FC<ExerciseItemProps> = ({item, onPress}) => {
 
     return <TouchableOpacity onPress={onPress} style={styles.container} activeOpacity={0.5}>
         <Grid>

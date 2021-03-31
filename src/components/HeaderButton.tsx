@@ -1,8 +1,8 @@
 import React from 'react';
-import {Button, Platform} from 'react-native';
 import {HeaderButton as ReactNavigationHeaderButton} from 'react-navigation-header-buttons';
 import {Ionicons} from '@expo/vector-icons';
 import {colors} from "../constants/style";
+import {isAndroid} from "../utils/platform";
 
 const HeaderButton = (props: any) => {
     return (
@@ -10,7 +10,7 @@ const HeaderButton = (props: any) => {
             {...props}
             IconComponent={Ionicons}
             iconSize={23}
-            color={Platform.OS === 'android' ? colors.white : colors.primary}
+            color={isAndroid() ? colors.white : colors.primary}
         />
     );
 };
