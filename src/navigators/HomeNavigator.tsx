@@ -34,7 +34,7 @@ export const HomeNavigator: React.FC = () => {
     }}>
         <Stack.Screen name="Exercises" component={Exercises} options={exercisesScreenOptions}/>
         <Stack.Screen name="ChoseExercise" component={ChoseExercise}/>
-        <Stack.Screen name="Calendar" component={Calendar}/>
+        <Stack.Screen name="Calendar" component={Calendar} options={{title: "Choose date"}}/>
     </Stack.Navigator>
 }
 

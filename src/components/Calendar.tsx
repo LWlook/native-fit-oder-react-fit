@@ -30,6 +30,10 @@ export const Calendar: React.FC = () => {
                     selectedDayBackgroundColor: colors.primary,
                     todayTextColor: colors.primary
                 }}
+                pastScrollRange={12}
+                futureScrollRange={0}
+                scrollEnabled={true}
+                showScrollIndicator={true}
             />
         </SafeAreaView>
     )
