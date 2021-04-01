@@ -17,8 +17,8 @@ export const ModifyExercise: React.FC = () => {
         <ExerciseInput title="Weight" value={weight} onChangeValue={setWeight} stepSize={2.5}/>
         <ExerciseInput title="Reps" value={reps} onChangeValue={setReps} stepSize={1}/>
         <View style={styles.buttonContainer}>
-            <Button title="SAVE"/>
-            <Button title="CLEAR"/>
+            <Button title="SAVE" onPress={() => console.log("save")}/>
+            <Button title="CLEAR" onPress={() => console.log("clear")}/>
         </View>
         </View>
         <View style={styles.sets}>

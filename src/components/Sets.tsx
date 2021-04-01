@@ -16,6 +16,7 @@ export const Sets: React.FC<SetsProps> = ({sets}) => {
         data={sets}
         renderItem={renderDisplaySet}
         contentContainerStyle={styles.flatlistContainer}
+        keyExtractor={() => new Date().getTime().toString()}
         persistentScrollbar={true}
     />
 }
