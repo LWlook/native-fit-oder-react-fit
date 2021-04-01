@@ -28,8 +28,8 @@ export const ExerciseInput: React.FC<ExerciseInputProps> = ({ title, onChangeVal
     }
 
     const changeValue = (value: string) => {
-        const numericValue = parseInt(value.replace(/[^0-9]/g, ''))
-        if (isNaN(numericValue)) return;
+        let numericValue = parseInt(value.replace(/[^0-9]/g, ''))
+        if (isNaN(numericValue)) numericValue = 0;
         onChangeValue(numericValue)
     }
 
@@ -51,8 +51,8 @@ export const ExerciseInput: React.FC<ExerciseInputProps> = ({ title, onChangeVal
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         flexDirection: "column",
+        marginVertical: 10,
     },
     title: {
         fontSize: 16,
@@ -62,16 +62,17 @@ const styles = StyleSheet.create({
     input: {
         borderBottomWidth: 1,
         marginHorizontal: 8,
-        padding: 4
+        padding: 4,
+        flexGrow: 1,
+        borderRadius: 4
     },
     inputContainer: {
-        flex: 1,
-        flexDirection: "row"
+        flexDirection: "row",
     },
     button: {
         borderWidth: 1,
         borderColor: colors.black,
         borderRadius: 4,
-        padding: 8
+        padding: 8,
     }
 });

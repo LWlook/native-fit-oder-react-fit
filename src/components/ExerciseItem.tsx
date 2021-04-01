@@ -33,7 +33,7 @@ export const ExerciseItem: React.FC<ExerciseItemProps> = ({item, onPress}) => {
             {item.exerciseSet.map((exerciseSet, index) => (
                 <Row style={styles.bodyContainer} key={index}>
                     <Col style={styles.exerciseCols}><Text>{exerciseSet.reps} reps</Text></Col>
-                    <Col style={styles.exerciseCols}><Text>{exerciseSet.weight} kg</Text></Col>
+                    <Col style={styles.exerciseCols}><Text>{exerciseSet.weight} kgs</Text></Col>
                 </Row>
             ))}
         </Grid>

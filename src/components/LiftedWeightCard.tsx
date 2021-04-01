@@ -7,7 +7,7 @@ export const LiftedWeightCard: React.FC = () => {
     return (
         <View style={styles.card}>
             <MaterialCommunityIcons name="dumbbell" size={24} color="white" />
-            <Text style={styles.text}>7.500 kg lifted</Text>
+            <Text style={styles.text}>7.500 kgs lifted</Text>
             <MaterialCommunityIcons name="dumbbell" size={24} color="white" />
         </View>
     );
