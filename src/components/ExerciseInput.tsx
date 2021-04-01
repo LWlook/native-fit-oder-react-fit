@@ -5,9 +5,9 @@ import {colors} from "../constants/style";
 
 interface ExerciseInputProps {
     title: string
-    value: number
+    value: number | null
     stepSize: number
-    onChangeValue: React.Dispatch<React.SetStateAction<number>>
+    onChangeValue: React.Dispatch<React.SetStateAction<number | null>>
 
 }
 
@@ -15,7 +15,7 @@ export const ExerciseInput: React.FC<ExerciseInputProps> = ({ title, onChangeVal
 
     const reduceValue = () => {
         onChangeValue((prevValue) => {
-            let newValue = prevValue - stepSize
+            let newValue = (prevValue ?? 0) - stepSize
             if (newValue < 0) newValue = 0
             return newValue
         })
@@ -23,13 +23,13 @@ export const ExerciseInput: React.FC<ExerciseInputProps> = ({ title, onChangeVal
 
     const increaseValue = () => {
         onChangeValue((prevValue) => {
-            return prevValue + stepSize
+            return (prevValue ?? 0) + stepSize
         })
     }
 
     const changeValue = (value: string) => {
-        let numericValue = parseInt(value.replace(/[^0-9]/g, ''))
-        if (isNaN(numericValue)) numericValue = 0;
+        let numericValue: number | null = parseInt(value.replace(/[^0-9]/g, ''))
+        if (isNaN(numericValue)) numericValue = null;
         onChangeValue(numericValue)
     }
 
@@ -40,7 +40,7 @@ export const ExerciseInput: React.FC<ExerciseInputProps> = ({ title, onChangeVal
                 <TouchableOpacity style={styles.button} onPress={reduceValue}>
                     <FontAwesome name="minus" size={24} color="black"/>
                 </TouchableOpacity>
-                <TextInput style={styles.input} value={value.toString()} onChangeText={changeValue} keyboardType="numeric"/>
+                <TextInput style={styles.input} value={value?.toString() ?? ""} onChangeText={changeValue} keyboardType="numeric"/>
                 <TouchableOpacity style={styles.button} onPress={increaseValue}>
                     <FontAwesome name="plus" size={24} color="black"/>
                 </TouchableOpacity>

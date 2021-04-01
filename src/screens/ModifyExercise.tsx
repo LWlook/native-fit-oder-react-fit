@@ -9,8 +9,8 @@ import {Sets} from "../components/Sets";
 export const ModifyExercise: React.FC = () => {
     const route = useRoute<RouteProp<HomeStackParamList, 'ChoseExercise'>>()
     const {exerciseId} = route.params
-    const [weight, setWeight] = useState<number>(0)
-    const [reps, setReps] = useState<number>(0)
+    const [weight, setWeight] = useState<number | null>(null)
+    const [reps, setReps] = useState<number | null>(null)
 
     return <View style={styles.container}>
         <View>
