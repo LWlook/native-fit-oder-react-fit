@@ -70,9 +70,12 @@ const styles = StyleSheet.create({
         flexDirection: "row",
     },
     button: {
+        alignItems: "center",
         borderWidth: 1,
         borderColor: colors.black,
         borderRadius: 4,
         padding: 8,
+        height: 40,
+        width: 40
     }
 });
