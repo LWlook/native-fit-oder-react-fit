@@ -48,7 +48,7 @@ export const Exercises: React.FC = () => {
                 icon: <Ionicons name="md-add" color={'white'} size={32}/>
             }]}
             onPressItem={name => {
-                navigation.navigate('ChoseExercise', {exerciseId: 25})
+                navigation.navigate('ChooseExercise')
             }}
             color={colors.primary}
             overrideWithAction={true}

@@ -7,7 +7,7 @@ import {Button} from "../components/Button";
 import {Sets} from "../components/Sets";
 
 export const ModifyExercise: React.FC = () => {
-    const route = useRoute<RouteProp<HomeStackParamList, 'ChoseExercise'>>()
+    const route = useRoute<RouteProp<HomeStackParamList, 'ModifyExercise'>>()
     const {exerciseId} = route.params
     const [weight, setWeight] = useState<number | null>(null)
     const [reps, setReps] = useState<number | null>(null)
