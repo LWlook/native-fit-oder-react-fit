@@ -6,7 +6,7 @@ import {ExerciseInput} from "../components/ExerciseInput";
 import {Button} from "../components/Button";
 import {Sets} from "../components/Sets";
 
-export const ChoseExercise: React.FC = () => {
+export const ModifyExercise: React.FC = () => {
     const route = useRoute<RouteProp<HomeStackParamList, 'ChoseExercise'>>()
     const {exerciseId} = route.params
     const [weight, setWeight] = useState<number>(0)
