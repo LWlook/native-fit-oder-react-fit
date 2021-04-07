@@ -26,47 +26,33 @@ export const ModifyExercise: React.FC = () => {
                 [
                     {
                         weight: 2,
-                        reps: 2
+                        reps: 2,
+                        id: 1
                     },
                     {
                         weight: 2,
-                        reps: 2
+                        reps: 2,
+                        id: 2
                     },
                     {
                         weight: 2,
-                        reps: 2
+                        reps: 2,
+                        id: 3
                     },
                     {
                         weight: 2,
-                        reps: 2
+                        reps: 2,
+                        id: 4
                     },
                     {
                         weight: 2,
-                        reps: 2
+                        reps: 2,
+                        id: 5
                     },
                     {
                         weight: 2,
-                        reps: 2
-                    },
-                    {
-                        weight: 2,
-                        reps: 2
-                    },
-                    {
-                        weight: 2,
-                        reps: 2
-                    },
-                    {
-                        weight: 2,
-                        reps: 2
-                    },
-                    {
-                        weight: 2,
-                        reps: 2
-                    },
-                    {
-                        weight: 2,
-                        reps: 2
+                        reps: 2,
+                        id: 6
                     }
                 ]
             } />

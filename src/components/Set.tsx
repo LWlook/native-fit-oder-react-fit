@@ -4,6 +4,7 @@ import {View, Text, StyleSheet} from "react-native";
 export interface SetProps {
     weight: number
     reps: number
+    id: number
 }
 
 export interface SetPropsWithCount extends SetProps{
