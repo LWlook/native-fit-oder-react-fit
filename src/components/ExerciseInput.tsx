@@ -40,7 +40,7 @@ export const ExerciseInput: React.FC<ExerciseInputProps> = ({ title, onChangeVal
                 <TouchableOpacity style={styles.button} onPress={reduceValue}>
                     <FontAwesome name="minus" size={24} color="black"/>
                 </TouchableOpacity>
-                <TextInput style={styles.input} value={value?.toString() ?? ""} onChangeText={changeValue} keyboardType="numeric"/>
+                <TextInput style={styles.input} value={value?.toString() ?? ""} onChangeText={changeValue} keyboardType="numeric" textAlign="center"/>
                 <TouchableOpacity style={styles.button} onPress={increaseValue}>
                     <FontAwesome name="plus" size={24} color="black"/>
                 </TouchableOpacity>
@@ -64,7 +64,9 @@ const styles = StyleSheet.create({
         marginHorizontal: 8,
         padding: 4,
         flexGrow: 1,
-        borderRadius: 4
+        borderRadius: 4,
+        fontSize: 20,
+        fontWeight: "bold"
     },
     inputContainer: {
         flexDirection: "row",
