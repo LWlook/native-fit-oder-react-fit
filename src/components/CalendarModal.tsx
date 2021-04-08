@@ -46,6 +46,7 @@ export const CalendarModal: React.FC<CalendarModalProps> = ({modalVisible, setMo
                             width: 0.8 * windowWidth,
                             height: 0.5 * windowHeight
                         }}
+                        firstDay={1}
                     />
                 </View>
             </View>
