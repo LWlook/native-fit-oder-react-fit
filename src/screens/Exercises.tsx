@@ -7,15 +7,30 @@ import {Ionicons} from "@expo/vector-icons";
 import {colors} from "../constants/style";
 import {LiftedWeightCard} from "../components/LiftedWeightCard";
 import {useSelectedDate} from "../zustand/useSelectedDate";
+import {HeaderButtons, Item} from "react-navigation-header-buttons";
+import HeaderButton from "../components/HeaderButton";
+import {CalendarModal} from "../components/CalendarModal";
 
 export const Exercises: React.FC = () => {
     const navigation = useNavigation()
     const [selectedId, setSelectedId] = useState<number>(0);
+    const [calendarModalVisible, setCalendarModalVisible] = useState<boolean>(false)
     const selectedDate = useSelectedDate(state => state.selectedDate)
 
-    useLayoutEffect(() => {
-        navigation.setOptions({title: selectedDate})
-    }, [selectedDate])
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <HeaderButtons HeaderButtonComponent={HeaderButton}>
+                    <Item title="Choose date"
+                          iconName='calendar'
+                          onPress={() => setCalendarModalVisible(true)}
+                    />
+                </HeaderButtons>
+            ),
+            title: selectedDate
+        });
+    }, [navigation, selectedDate]);
+
 
     useEffect(() => {
 
@@ -33,27 +48,30 @@ export const Exercises: React.FC = () => {
         return <ExerciseItem item={item} onPress={() => setSelectedId(item.id)}/>;
     }
 
-    return <SafeAreaView style={styles.container}>
-        <LiftedWeightCard />
-        <FlatList<ExerciseDataItem>
-            data={DATA}
-            renderItem={renderItem}
-            keyExtractor={item => item.id + ''}
-            extraData={selectedId}
-            contentContainerStyle={styles.flatlistContainer}
-        />
-        <FloatingAction
-            actions={[{
-                name: "bt_fab_add",
-                icon: <Ionicons name="md-add" color={'white'} size={32}/>
-            }]}
-            onPressItem={name => {
-                navigation.navigate('ChooseExercise')
-            }}
-            color={colors.primary}
-            overrideWithAction={true}
-        />
-    </SafeAreaView>
+    return <>
+        <CalendarModal modalVisible={calendarModalVisible} setModalVisible={setCalendarModalVisible}/>
+        <SafeAreaView style={styles.container}>
+            <LiftedWeightCard/>
+            <FlatList<ExerciseDataItem>
+                data={DATA}
+                renderItem={renderItem}
+                keyExtractor={item => item.id + ''}
+                extraData={selectedId}
+                contentContainerStyle={styles.flatlistContainer}
+            />
+            <FloatingAction
+                actions={[{
+                    name: "bt_fab_add",
+                    icon: <Ionicons name="md-add" color={'white'} size={32}/>
+                }]}
+                onPressItem={name => {
+                    navigation.navigate('ChooseExercise')
+                }}
+                color={colors.primary}
+                overrideWithAction={true}
+            />
+        </SafeAreaView>
+    </>
 }
 
 const styles = StyleSheet.create({
