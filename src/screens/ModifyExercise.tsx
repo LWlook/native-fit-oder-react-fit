@@ -1,16 +1,24 @@
 import React, {useEffect, useState} from "react";
 import {StyleSheet, View, ToastAndroid} from "react-native";
 import {HomeStackParamList} from "../navigators/HomeNavigator";
-import {RouteProp, useRoute} from "@react-navigation/native";
+import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
 import {ExerciseInput} from "../components/ExerciseInput";
 import {Button} from "../components/Button";
 import {Sets} from "../components/Sets";
 
 export const ModifyExercise: React.FC = () => {
     const route = useRoute<RouteProp<HomeStackParamList, 'ModifyExercise'>>()
-    const {exerciseId, mode} = route.params
+    const navigation = useNavigation()
+    const {exerciseId, mode, exerciseName} = route.params
     const [weight, setWeight] = useState<number | null>(null)
     const [reps, setReps] = useState<number | null>(null)
+
+    React.useLayoutEffect(() => {
+        console.log(exerciseName)
+        navigation.setOptions({
+            title: exerciseName
+        });
+    }, [navigation, exerciseName]);
 
     useEffect(() => {
         ToastAndroid.show("Screen started in mode: " + mode, ToastAndroid.SHORT);

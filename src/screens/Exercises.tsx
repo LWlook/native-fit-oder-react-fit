@@ -44,7 +44,11 @@ export const Exercises: React.FC = () => {
 
 
     const renderItem: ListRenderItem<ExerciseDataItem> = ({item}) => {
-        return <ExerciseItem item={item} onPress={() => navigation.navigate('ModifyExercise', {exerciseId: 25, mode: 'edit'})}/>;
+        return <ExerciseItem item={item} onPress={() => navigation.navigate('ModifyExercise', {
+            exerciseId: 25,
+            mode: 'edit',
+            exerciseName: item.title,
+        })}/>;
     }
 
     return <>

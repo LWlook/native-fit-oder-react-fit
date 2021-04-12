@@ -2,6 +2,7 @@ import React, {useState} from "react";
 import {FlatList, ListRenderItem, SafeAreaView, StyleSheet, TextInput, View, Text, TouchableOpacity} from "react-native";
 import {useNavigation} from "@react-navigation/native";
 import {Ionicons} from "@expo/vector-icons";
+import {HomeStackParamList} from "../navigators/HomeNavigator";
 
 interface Exercise {
     id: number
@@ -19,7 +20,7 @@ export const ChooseExercise = () => {
 
     const renderItem: ListRenderItem<Exercise> = ({item}) => {
         return <View style={styles.exercise}>
-            <TouchableOpacity onPress={() => navigation.navigate('ModifyExercise', {exerciseId: 25, mode: 'create'})}>
+            <TouchableOpacity onPress={() => navigation.navigate('ModifyExercise', {exerciseId: 25, mode: 'create', exerciseName: item.name})}>
                 <Text>{ item.name }</Text>
             </TouchableOpacity>
         </View>

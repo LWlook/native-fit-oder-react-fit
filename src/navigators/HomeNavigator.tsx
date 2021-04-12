@@ -12,6 +12,7 @@ export type HomeStackParamList = {
     Exercises: undefined,
     ModifyExercise: {
         exerciseId: number
+        exerciseName: string
         mode: ModifyExerciseMode
     }
 }
@@ -24,7 +25,7 @@ export const HomeNavigator: React.FC = () => {
         ...stackNavOptions,
     }}>
         <Stack.Screen name="Exercises" component={Exercises}/>
-        <Stack.Screen name="ChooseExercise" component={ChooseExercise}/>
+        <Stack.Screen name="ChooseExercise" component={ChooseExercise} options={{title: "Which exercise?"}}/>
         <Stack.Screen name="ModifyExercise" component={ModifyExercise}/>
     </Stack.Navigator>
 }
