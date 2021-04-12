@@ -1,5 +1,5 @@
-import React, {useEffect, useLayoutEffect, useState} from "react";
-import {FlatList, ListRenderItem, SafeAreaView, StatusBar, StyleSheet, View, Text, Button} from 'react-native';
+import React, {useEffect, useState} from "react";
+import {FlatList, ListRenderItem, SafeAreaView, StyleSheet} from 'react-native';
 import {ExerciseDataItem, ExerciseItem} from "../components/ExerciseItem";
 import {useNavigation} from "@react-navigation/native";
 import {FloatingAction} from "react-native-floating-action";
@@ -10,10 +10,13 @@ import {useSelectedDate} from "../zustand/useSelectedDate";
 import {HeaderButtons, Item} from "react-navigation-header-buttons";
 import HeaderButton from "../components/HeaderButton";
 import {CalendarModal} from "../components/CalendarModal";
+import {sqliteGetAllExerciseData} from "../database/sqliteTypeSave";
 
 export const Exercises: React.FC = () => {
     const navigation = useNavigation()
     const [calendarModalVisible, setCalendarModalVisible] = useState<boolean>(false)
+    const [selectedId, setSelectedId] = useState<number>(0)
+    const [allExerciseData, setAllExerciseData] = useState<ExerciseDataItem[]>([])
     const selectedDate = useSelectedDate(state => state.selectedDate)
 
     React.useLayoutEffect(() => {
@@ -32,7 +35,7 @@ export const Exercises: React.FC = () => {
 
 
     useEffect(() => {
-
+        sqliteGetAllExerciseData().then(data => setAllExerciseData(data));
         // TODO: Lukas
         // const fetchExercisesSync = async () => {
         //     const exercises = await fetchTypeSaveSql<ExerciseDataItem>('select * from items where done = ?;', [0])
@@ -40,7 +43,7 @@ export const Exercises: React.FC = () => {
         // }
         //
         // fetchExercisesSync().then()
-    });
+    }, []);
 
 
     const renderItem: ListRenderItem<ExerciseDataItem> = ({item}) => {
@@ -56,7 +59,7 @@ export const Exercises: React.FC = () => {
         <SafeAreaView style={styles.container}>
             <LiftedWeightCard/>
             <FlatList<ExerciseDataItem>
-                data={DATA}
+                data={allExerciseData}
                 renderItem={renderItem}
                 keyExtractor={item => item.id + ''}
                 contentContainerStyle={styles.flatlistContainer}
@@ -86,37 +89,3 @@ const styles = StyleSheet.create({
         paddingBottom: 8
     }
 });
-
-
-const DATA: ExerciseDataItem[] = [
-    {
-        id: 0,
-        title: 'Flat Barbell Bench Press',
-        category: "chest",
-        exerciseSet: [
-            {weight: 80, reps: 5},
-            {weight: 100, reps: 5},
-            {weight: 120, reps: 5}
-        ]
-    },
-    {
-        id: 1,
-        category: "biceps",
-        title: 'Close Grip Barbell Bench Press',
-        exerciseSet: [
-            {weight: 80, reps: 5},
-            {weight: 100, reps: 5},
-            {weight: 120, reps: 5}
-        ]
-    },
-    {
-        id: 2,
-        category: "shoulders",
-        title: 'Incline Dumbbell Fly',
-        exerciseSet: [
-            {weight: 80, reps: 5},
-            {weight: 100, reps: 5},
-            {weight: 120, reps: 5}
-        ]
-    },
-];
