@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {FlatList, ListRenderItem, SafeAreaView, StyleSheet, TextInput, View, Text} from "react-native";
+import {FlatList, ListRenderItem, SafeAreaView, StyleSheet, TextInput, View, Text, TouchableOpacity} from "react-native";
 import {useNavigation} from "@react-navigation/native";
 import {Ionicons} from "@expo/vector-icons";
 
@@ -18,7 +18,11 @@ export const ChooseExercise = () => {
     const navigation = useNavigation()
 
     const renderItem: ListRenderItem<Exercise> = ({item}) => {
-        return <View style={styles.exercise}><Text>{ item.name }</Text></View>
+        return <View style={styles.exercise}>
+            <TouchableOpacity onPress={() => navigation.navigate('ModifyExercise', {exerciseId: 25, mode: 'create'})}>
+                <Text>{ item.name }</Text>
+            </TouchableOpacity>
+        </View>
     }
 
     const filterExercises = (filter: string) => {
@@ -38,8 +42,6 @@ export const ChooseExercise = () => {
             keyExtractor={item => item.id + ''}
             contentContainerStyle={styles.flatlistContainer}
         />
-
-        {/*<Button title={"Take me to the next screen!"} onPress={() => navigation.navigate('ModifyExercise', {exerciseId: 25})}/>*/}
     </SafeAreaView>
 }
 

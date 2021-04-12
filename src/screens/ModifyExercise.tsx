@@ -1,5 +1,5 @@
-import React, {useState} from "react";
-import {StyleSheet, View} from "react-native";
+import React, {useEffect, useState} from "react";
+import {StyleSheet, View, ToastAndroid} from "react-native";
 import {HomeStackParamList} from "../navigators/HomeNavigator";
 import {RouteProp, useRoute} from "@react-navigation/native";
 import {ExerciseInput} from "../components/ExerciseInput";
@@ -8,9 +8,13 @@ import {Sets} from "../components/Sets";
 
 export const ModifyExercise: React.FC = () => {
     const route = useRoute<RouteProp<HomeStackParamList, 'ModifyExercise'>>()
-    const {exerciseId} = route.params
+    const {exerciseId, mode} = route.params
     const [weight, setWeight] = useState<number | null>(null)
     const [reps, setReps] = useState<number | null>(null)
+
+    useEffect(() => {
+        ToastAndroid.show("Screen started in mode: " + mode, ToastAndroid.SHORT);
+    }, [])
 
     return <View style={styles.container}>
         <View>

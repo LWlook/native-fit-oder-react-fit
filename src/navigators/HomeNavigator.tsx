@@ -5,11 +5,14 @@ import {stackNavOptions} from "../utils/stackNavOptions";
 import {ModifyExercise} from "../screens/ModifyExercise";
 import {ChooseExercise} from "../screens/ChooseExercise";
 
+export type ModifyExerciseMode = "create" | "edit"
+
 export type HomeStackParamList = {
     ChooseExercise: undefined,
     Exercises: undefined,
     ModifyExercise: {
         exerciseId: number
+        mode: ModifyExerciseMode
     }
 }
 

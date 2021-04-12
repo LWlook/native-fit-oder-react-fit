@@ -13,7 +13,6 @@ import {CalendarModal} from "../components/CalendarModal";
 
 export const Exercises: React.FC = () => {
     const navigation = useNavigation()
-    const [selectedId, setSelectedId] = useState<number>(0);
     const [calendarModalVisible, setCalendarModalVisible] = useState<boolean>(false)
     const selectedDate = useSelectedDate(state => state.selectedDate)
 
@@ -45,7 +44,7 @@ export const Exercises: React.FC = () => {
 
 
     const renderItem: ListRenderItem<ExerciseDataItem> = ({item}) => {
-        return <ExerciseItem item={item} onPress={() => setSelectedId(item.id)}/>;
+        return <ExerciseItem item={item} onPress={() => navigation.navigate('ModifyExercise', {exerciseId: 25, mode: 'edit'})}/>;
     }
 
     return <>
@@ -56,7 +55,6 @@ export const Exercises: React.FC = () => {
                 data={DATA}
                 renderItem={renderItem}
                 keyExtractor={item => item.id + ''}
-                extraData={selectedId}
                 contentContainerStyle={styles.flatlistContainer}
             />
             <FloatingAction
