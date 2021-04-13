@@ -107,6 +107,7 @@ const DATA: ExerciseDataItem[] = [
         id: 0,
         title: 'Flat Barbell Bench Press',
         category: "chest",
+        increaseInExerciseSet: false,
         exerciseSet: [
             {weight: 80, reps: 5},
             {weight: 100, reps: 5},
@@ -117,6 +118,7 @@ const DATA: ExerciseDataItem[] = [
         id: 1,
         category: "biceps",
         title: 'Close Grip Barbell Bench Press',
+        increaseInExerciseSet: true,
         exerciseSet: [
             {weight: 80, reps: 5},
             {weight: 100, reps: 5},
@@ -127,6 +129,7 @@ const DATA: ExerciseDataItem[] = [
         id: 2,
         category: "shoulders",
         title: 'Incline Dumbbell Fly',
+        increaseInExerciseSet: false,
         exerciseSet: [
             {weight: 80, reps: 5},
             {weight: 100, reps: 5},
