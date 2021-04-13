@@ -11,7 +11,7 @@ import {HeaderButtons, Item} from "react-navigation-header-buttons";
 import HeaderButton from "../components/HeaderButton";
 import {CalendarModal} from "../components/CalendarModal";
 import {sqliteGetAllExerciseData} from "../database/sqliteTypeSave";
-import {Transition, Transitioning} from "react-native-reanimated";
+import {Transition, Transitioning, TransitioningView} from "react-native-reanimated";
 
 export const Exercises: React.FC = () => {
     const navigation = useNavigation()
@@ -20,7 +20,7 @@ export const Exercises: React.FC = () => {
     const [allExerciseData, setAllExerciseData] = useState<ExerciseDataItem[]>([])
     const selectedDate = useSelectedDate(state => state.selectedDate)
 
-    const transitionRef = useRef<any>()
+    const transitionRef = useRef<TransitioningView | null>(null)
     const transition = <Transition.Change interpolation="easeInOut"/>
 
     React.useLayoutEffect(() => {
@@ -50,7 +50,7 @@ export const Exercises: React.FC = () => {
     }, []);
 
     const renderItem: ListRenderItem<ExerciseDataItem> = ({item}) => {
-        return <ExerciseItem onToggleExpanded={() => transitionRef.current.animateNextTransition()} item={item}
+        return <ExerciseItem onToggleExpanded={() => transitionRef.current?.animateNextTransition()} item={item}
                              onPress={() => navigation.navigate('ModifyExercise', {
                                  exerciseId: 25,
                                  mode: 'edit',
