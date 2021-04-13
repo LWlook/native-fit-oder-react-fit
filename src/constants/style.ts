@@ -6,7 +6,9 @@ export const colors = {
     black: "#000",
     grey: '#bdc3c7',
     increase: '#3fb984',
-    decrease: '#e74c3c'
+    decrease: '#e74c3c',
+    delete: '#e74c3c',
+    update: '#f1c40f'
 };
 
 export const exerciseCategoryColors = {

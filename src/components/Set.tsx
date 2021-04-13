@@ -1,5 +1,5 @@
 import React from "react"
-import {View, Text, StyleSheet} from "react-native";
+import {View, Text, StyleSheet, TouchableOpacity} from "react-native";
 
 export interface SetProps {
     weight: number
@@ -9,14 +9,15 @@ export interface SetProps {
 
 export interface SetPropsWithCount extends SetProps{
     count: number
+    onPress(): void
 }
 
-export const Set: React.FC<SetPropsWithCount> = ({count, reps, weight}) => {
-    return <View style={styles.container}>
+export const Set: React.FC<SetPropsWithCount> = ({count, reps, weight, onPress}) => {
+    return <TouchableOpacity style={styles.container} onPress={onPress}>
         <Text><Text style={styles.boldText}>{count}</Text></Text>
         <Text><Text style={styles.boldText}>{reps}</Text><Text> reps</Text></Text>
         <Text><Text style={styles.boldText}>{weight}</Text><Text> kgs</Text></Text>
-    </View>
+    </TouchableOpacity>
 }
 
 const styles = StyleSheet.create({

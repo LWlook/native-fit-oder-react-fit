@@ -4,12 +4,13 @@ import {FlatList, ListRenderItem, StyleSheet} from "react-native";
 
 interface SetsProps {
     sets: SetProps[]
+    onPress(id: number): void
 }
 
-export const Sets: React.FC<SetsProps> = ({sets}) => {
+export const Sets: React.FC<SetsProps> = ({sets, onPress}) => {
 
     const renderDisplaySet: ListRenderItem<SetProps> = ({item, index}) => (
-        <Set count={index + 1} reps={item.reps} weight={item.weight} id={item.id} />
+        <Set count={index + 1} reps={item.reps} weight={item.weight} id={item.id} onPress={() => onPress(item.id)}/>
     )
 
     return <FlatList<SetProps>
