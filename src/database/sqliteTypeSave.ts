@@ -1,4 +1,4 @@
-import {db} from "../App";
+import {db} from "../utils/db";
 import {Query, SQLError, SQLResultSet} from "expo-sqlite";
 import {ExerciseDataItem} from "../components/ExerciseItem";
 

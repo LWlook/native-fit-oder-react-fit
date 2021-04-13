@@ -49,32 +49,27 @@ export const Exercises: React.FC = () => {
         // fetchExercisesSync().then()
     }, []);
 
-const renderItem: ListRenderItem<ExerciseDataItem> = ({item}) => {
-    return <ExerciseItem onToggleExpanded={() => transitionRef.current.animateNextTransition()} item={item} onPress={() => navigation.navigate('ModifyExercise', {
-        exerciseId: 25,
-        mode: 'edit',
-        exerciseName: item.title,
-    })}/>;
-}
+    const renderItem: ListRenderItem<ExerciseDataItem> = ({item}) => {
+        return <ExerciseItem onToggleExpanded={() => transitionRef.current.animateNextTransition()} item={item}
+                             onPress={() => navigation.navigate('ModifyExercise', {
+                                 exerciseId: 25,
+                                 mode: 'edit',
+                                 exerciseName: item.title,
+                             })}/>;
+    }
 
     return <>
         <CalendarModal modalVisible={calendarModalVisible} setModalVisible={setCalendarModalVisible}/>
         <SafeAreaView style={styles.container}>
             <LiftedWeightCard/>
-            <FlatList<ExerciseDataItem>
-                data={allExerciseData}
-                renderItem={renderItem}
-                keyExtractor={item => item.id + ''}
-                contentContainerStyle={styles.flatlistContainer}
-            />
-        <Transitioning.View ref={transitionRef} transition={transition} style={{flex: 1}}>
-        <FlatList<ExerciseDataItem>
-            data={DATA}
-            renderItem={renderItem}
-            keyExtractor={item => item.id + ''}
-            contentContainerStyle={styles.flatlistContainer}
-        />
-        </Transitioning.View>
+            <Transitioning.View ref={transitionRef} transition={transition} style={{flex: 1}}>
+                <FlatList<ExerciseDataItem>
+                    data={DATA}
+                    renderItem={renderItem}
+                    keyExtractor={item => item.id + ''}
+                    contentContainerStyle={styles.flatlistContainer}
+                />
+            </Transitioning.View>
             <FloatingAction
                 actions={[{
                     name: "bt_fab_add",
