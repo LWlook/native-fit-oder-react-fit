@@ -3,23 +3,13 @@ import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Col, Grid, Row} from "react-native-easy-grid";
 import {Ionicons} from '@expo/vector-icons';
 import {colors, exerciseCategoryColors, exerciseCategoryImages} from "../constants/style";
-import {SearchExerciseDataItem} from "./SearchExercisteItem";
+import {ExerciseDataItem} from "../database/databaseTypes";
 
 interface ExerciseItemProps {
     item: ExerciseDataItem
 
     onPress(): void
     onToggleExpanded(): void
-}
-
-export interface ExerciseDataItem extends SearchExerciseDataItem {
-    exerciseSet: ExerciseDataItemSet[]
-    increaseInExerciseSet: boolean
-}
-
-export type ExerciseDataItemSet = {
-    weight: number
-    reps: number
 }
 
 export const ExpandExerciseItem: React.FC<ExerciseItemProps> = ({item, onPress, onToggleExpanded}) => {

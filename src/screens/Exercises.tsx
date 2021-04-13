@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import {FlatList, ListRenderItem, SafeAreaView, StyleSheet} from 'react-native';
-import {ExerciseDataItem, ExpandExerciseItem} from "../components/ExpandExerciseItem";
+import {ExpandExerciseItem} from "../components/ExpandExerciseItem";
 import {useNavigation} from "@react-navigation/native";
 import {FloatingAction} from "react-native-floating-action";
 import {Ionicons} from "@expo/vector-icons";
@@ -12,6 +12,7 @@ import HeaderButton from "../components/HeaderButton";
 import {CalendarModal} from "../components/CalendarModal";
 import {sqliteGetAllExerciseData} from "../database/sqliteTypeSave";
 import {Transition, Transitioning, TransitioningView} from "react-native-reanimated";
+import {ExerciseDataItem} from "../database/databaseTypes";
 
 export const Exercises: React.FC = () => {
     const navigation = useNavigation()

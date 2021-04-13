@@ -1,6 +1,6 @@
-import {db} from "../utils/db";
+import {db} from "./db";
 import {Query, SQLError, SQLResultSet} from "expo-sqlite";
-import {ExerciseDataItem} from "../components/ExpandExerciseItem";
+import {ExerciseDataItem} from "./databaseTypes";
 
 export interface SQLiteCallback {
     errors: SQLError[],

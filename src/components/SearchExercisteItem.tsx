@@ -2,18 +2,12 @@ import React from "react";
 import {Image, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {Col, Grid, Row} from "react-native-easy-grid";
 import {exerciseCategoryColors, exerciseCategoryImages} from "../constants/style";
-import {ExerciseCategory} from "../utils/getBadgeForExerciseCategory";
+import {SearchExerciseDataItem} from "../database/databaseTypes";
 
 interface ExerciseItemProps {
     item: SearchExerciseDataItem
 
     onPress(): void
-}
-
-export type SearchExerciseDataItem = {
-    id: number
-    title: string
-    category: ExerciseCategory
 }
 
 export const SearchExerciseItem: React.FC<ExerciseItemProps> = ({item, onPress}) => {

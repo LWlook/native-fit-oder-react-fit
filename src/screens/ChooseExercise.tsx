@@ -2,8 +2,9 @@ import React, {useRef, useState} from "react";
 import {FlatList, ListRenderItem, SafeAreaView, StyleSheet, TextInput, View} from "react-native";
 import {useNavigation} from "@react-navigation/native";
 import {Ionicons} from "@expo/vector-icons";
-import {SearchExerciseDataItem, SearchExerciseItem} from "../components/SearchExercisteItem";
+import {SearchExerciseItem} from "../components/SearchExercisteItem";
 import {Transition, Transitioning, TransitioningView} from "react-native-reanimated";
+import {SearchExerciseDataItem} from "../database/databaseTypes";
 
 const transition = <Transition.Change interpolation="easeInOut"/>
 
