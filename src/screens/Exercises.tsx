@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import {FlatList, ListRenderItem, SafeAreaView, StyleSheet} from 'react-native';
-import {ExerciseDataItem, ExerciseItem} from "../components/ExerciseItem";
+import {ExerciseDataItem, ExpandExerciseItem} from "../components/ExpandExerciseItem";
 import {useNavigation} from "@react-navigation/native";
 import {FloatingAction} from "react-native-floating-action";
 import {Ionicons} from "@expo/vector-icons";
@@ -50,8 +50,8 @@ export const Exercises: React.FC = () => {
     }, []);
 
     const renderItem: ListRenderItem<ExerciseDataItem> = ({item}) => {
-        return <ExerciseItem onToggleExpanded={() => transitionRef.current?.animateNextTransition()} item={item}
-                             onPress={() => navigation.navigate('ModifyExercise', {
+        return <ExpandExerciseItem onToggleExpanded={() => transitionRef.current?.animateNextTransition()} item={item}
+                                   onPress={() => navigation.navigate('ModifyExercise', {
                                  exerciseId: 25,
                                  mode: 'edit',
                                  exerciseName: item.title,

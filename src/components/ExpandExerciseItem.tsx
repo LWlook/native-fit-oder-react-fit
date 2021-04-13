@@ -3,7 +3,7 @@ import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Col, Grid, Row} from "react-native-easy-grid";
 import {Ionicons} from '@expo/vector-icons';
 import {colors, exerciseCategoryColors, exerciseCategoryImages} from "../constants/style";
-import {ExerciseCategory} from "../utils/getBadgeForExerciseCategory";
+import {SearchExerciseDataItem} from "./SearchExercisteItem";
 
 interface ExerciseItemProps {
     item: ExerciseDataItem
@@ -12,10 +12,7 @@ interface ExerciseItemProps {
     onToggleExpanded(): void
 }
 
-export type ExerciseDataItem = {
-    id: number
-    title: string
-    category: ExerciseCategory
+export interface ExerciseDataItem extends SearchExerciseDataItem {
     exerciseSet: ExerciseDataItemSet[]
     increaseInExerciseSet: boolean
 }
@@ -25,7 +22,7 @@ export type ExerciseDataItemSet = {
     reps: number
 }
 
-export const ExerciseItem: React.FC<ExerciseItemProps> = ({item, onPress, onToggleExpanded}) => {
+export const ExpandExerciseItem: React.FC<ExerciseItemProps> = ({item, onPress, onToggleExpanded}) => {
 
     const [expanded, setExpanded] = useState<boolean>(false)
     const expandIconName = expanded ? "md-close" : "chevron-down"

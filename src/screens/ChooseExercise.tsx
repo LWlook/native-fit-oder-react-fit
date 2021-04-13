@@ -3,31 +3,24 @@ import {FlatList, ListRenderItem, SafeAreaView, StyleSheet, TextInput, View, Tex
 import {useNavigation} from "@react-navigation/native";
 import {Ionicons} from "@expo/vector-icons";
 import {HomeStackParamList} from "../navigators/HomeNavigator";
+import {SearchExerciseDataItem, SearchExerciseItem} from "../components/SearchExercisteItem";
 
-interface Exercise {
-    id: number
-    name: string
-}
-
-const EXERCISES: Exercise[] = [
-    { id: 1, name: "Bankdrücken"},
-    { id: 2, name: "Bizeps Curls"},
+const EXERCISES: SearchExerciseDataItem[] = [
+    { id: 1, category: "biceps", title: "Bizeps Curls <3"},
+    { id: 2, category: "abs", title: "Bauch"},
+    { id: 3, category: "shoulders", title: "Schulter"},
 ]
 
 export const ChooseExercise = () => {
-    const [exercises, setExercises] = useState<Exercise[]>(EXERCISES)
+    const [exercises, setExercises] = useState<SearchExerciseDataItem[]>(EXERCISES)
     const navigation = useNavigation()
 
-    const renderItem: ListRenderItem<Exercise> = ({item}) => {
-        return <View style={styles.exercise}>
-            <TouchableOpacity onPress={() => navigation.navigate('ModifyExercise', {exerciseId: 25, mode: 'create', exerciseName: item.name})}>
-                <Text>{ item.name }</Text>
-            </TouchableOpacity>
-        </View>
+    const renderItem: ListRenderItem<SearchExerciseDataItem> = ({item}) => {
+        return <SearchExerciseItem item={item} onPress={() => navigation.navigate('ModifyExercise', {exerciseId: 25, mode: 'create', exerciseName: item.title})} />
     }
 
     const filterExercises = (filter: string) => {
-        setExercises(EXERCISES.filter((ex) => ex.name.toLowerCase().startsWith(filter.toLowerCase())))
+        setExercises(EXERCISES.filter((ex) => ex.title.toLowerCase().startsWith(filter.toLowerCase())))
     }
 
     return <SafeAreaView style={styles.container}>
@@ -37,7 +30,7 @@ export const ChooseExercise = () => {
             <Ionicons name="md-search" color='black' size={22}/>
         </View>
 
-        <FlatList<Exercise>
+        <FlatList<SearchExerciseDataItem>
             data={exercises}
             renderItem={renderItem}
             keyExtractor={item => item.id + ''}
@@ -64,9 +57,5 @@ const styles = StyleSheet.create({
     },
     flatlistContainer: {
         paddingBottom: 8
-    },
-    exercise: {
-        borderBottomWidth: 1,
-        padding: 4
     }
 });
