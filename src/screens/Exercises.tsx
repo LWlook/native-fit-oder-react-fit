@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useRef} from "react";
 import {FlatList, ListRenderItem, SafeAreaView, StyleSheet} from 'react-native';
 import {ExerciseDataItem, ExerciseItem} from "../components/ExerciseItem";
 import {useNavigation} from "@react-navigation/native";
@@ -11,6 +11,7 @@ import {HeaderButtons, Item} from "react-navigation-header-buttons";
 import HeaderButton from "../components/HeaderButton";
 import {CalendarModal} from "../components/CalendarModal";
 import {sqliteGetAllExerciseData} from "../database/sqliteTypeSave";
+import {Transition, Transitioning} from "react-native-reanimated";
 
 export const Exercises: React.FC = () => {
     const navigation = useNavigation()
@@ -18,6 +19,9 @@ export const Exercises: React.FC = () => {
     const [selectedId, setSelectedId] = useState<number>(0)
     const [allExerciseData, setAllExerciseData] = useState<ExerciseDataItem[]>([])
     const selectedDate = useSelectedDate(state => state.selectedDate)
+
+    const transitionRef = useRef<any>()
+    const transition = <Transition.Change interpolation="easeInOut"/>
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -45,14 +49,13 @@ export const Exercises: React.FC = () => {
         // fetchExercisesSync().then()
     }, []);
 
-
-    const renderItem: ListRenderItem<ExerciseDataItem> = ({item}) => {
-        return <ExerciseItem item={item} onPress={() => navigation.navigate('ModifyExercise', {
-            exerciseId: 25,
-            mode: 'edit',
-            exerciseName: item.title,
-        })}/>;
-    }
+const renderItem: ListRenderItem<ExerciseDataItem> = ({item}) => {
+    return <ExerciseItem onToggleExpanded={() => transitionRef.current.animateNextTransition()} item={item} onPress={() => navigation.navigate('ModifyExercise', {
+        exerciseId: 25,
+        mode: 'edit',
+        exerciseName: item.title,
+    })}/>;
+}
 
     return <>
         <CalendarModal modalVisible={calendarModalVisible} setModalVisible={setCalendarModalVisible}/>
@@ -64,6 +67,14 @@ export const Exercises: React.FC = () => {
                 keyExtractor={item => item.id + ''}
                 contentContainerStyle={styles.flatlistContainer}
             />
+        <Transitioning.View ref={transitionRef} transition={transition} style={{flex: 1}}>
+        <FlatList<ExerciseDataItem>
+            data={DATA}
+            renderItem={renderItem}
+            keyExtractor={item => item.id + ''}
+            contentContainerStyle={styles.flatlistContainer}
+        />
+        </Transitioning.View>
             <FloatingAction
                 actions={[{
                     name: "bt_fab_add",
@@ -89,3 +100,37 @@ const styles = StyleSheet.create({
         paddingBottom: 8
     }
 });
+
+
+const DATA: ExerciseDataItem[] = [
+    {
+        id: 0,
+        title: 'Flat Barbell Bench Press',
+        category: "chest",
+        exerciseSet: [
+            {weight: 80, reps: 5},
+            {weight: 100, reps: 5},
+            {weight: 120, reps: 5}
+        ]
+    },
+    {
+        id: 1,
+        category: "biceps",
+        title: 'Close Grip Barbell Bench Press',
+        exerciseSet: [
+            {weight: 80, reps: 5},
+            {weight: 100, reps: 5},
+            {weight: 120, reps: 5}
+        ]
+    },
+    {
+        id: 2,
+        category: "shoulders",
+        title: 'Incline Dumbbell Fly',
+        exerciseSet: [
+            {weight: 80, reps: 5},
+            {weight: 100, reps: 5},
+            {weight: 120, reps: 5}
+        ]
+    },
+];

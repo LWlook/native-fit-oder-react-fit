@@ -1,13 +1,15 @@
-import React from "react";
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, {useState} from "react";
+import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Col, Grid, Row} from "react-native-easy-grid";
-import {colors} from "../constants/style";
-import {ExerciseCategory, getBadgeForExerciseCategory} from "../utils/getBadgeForExerciseCategory";
+import {Ionicons} from '@expo/vector-icons';
+import {colors, exerciseCategoryColors, exerciseCategoryImages} from "../constants/style";
+import {ExerciseCategory} from "../utils/getBadgeForExerciseCategory";
 
 interface ExerciseItemProps {
     item: ExerciseDataItem
 
     onPress(): void
+    onToggleExpanded(): void
 }
 
 export type ExerciseDataItem = {
@@ -15,6 +17,7 @@ export type ExerciseDataItem = {
     title: string
     category: ExerciseCategory
     exerciseSet: ExerciseDataItemSet[]
+    increaseInExerciseSet: boolean
 }
 
 export type ExerciseDataItemSet = {
@@ -22,16 +25,46 @@ export type ExerciseDataItemSet = {
     reps: number
 }
 
-export const ExerciseItem: React.FC<ExerciseItemProps> = ({item, onPress}) => {
+export const ExerciseItem: React.FC<ExerciseItemProps> = ({item, onPress, onToggleExpanded}) => {
 
-    return <TouchableOpacity onPress={onPress} style={styles.container} activeOpacity={0.5}>
-        <Grid>
+    const [expanded, setExpanded] = useState<boolean>(false)
+    const expandIconName = expanded ? "md-close" : "chevron-down"
+
+    const exerciseBackgroundColor = exerciseCategoryColors[item.category]
+    const exerciseCategoryImage = exerciseCategoryImages[item.category]
+    const lastExerciseSet = item.exerciseSet[item.exerciseSet.length - 1]
+
+    const toggleExpanded = () => {
+        onToggleExpanded()
+        setExpanded(prev => !prev)
+    }
+
+    return <TouchableOpacity onPress={toggleExpanded} style={styles.container} activeOpacity={0.6}>
+        <Grid style={{overflow: "hidden"}}>
             <Row style={styles.headContainer}>
-                <Col style={{flex: 3}}><Text style={styles.header}>{item.title}</Text></Col>
-                <Col style={styles.exerciseCategory}>{ getBadgeForExerciseCategory(item.category)}</Col>
+                <Col style={[styles.exerciseCategoryImageContainer, {backgroundColor: exerciseBackgroundColor}]}>
+                    <TouchableOpacity onPress={onPress}>
+                    <Image source={exerciseCategoryImage} style={styles.exerciseCategoryImage}/>
+                    </TouchableOpacity>
+                </Col>
+                <Col style={styles.exerciseTextContainer}>
+                    <Text style={styles.exerciseHeading}>{item.title}</Text>
+                    <View style={{flexDirection: "row", alignItems: "center"}}>
+                        {item.increaseInExerciseSet &&
+                        <Ionicons name="md-trending-up-outline" size={16} color={colors.increase}/>}
+                        {!item.increaseInExerciseSet &&
+                        <Ionicons name="md-trending-down-outline" size={16} color={colors.decrease}/>}
+                        { lastExerciseSet && <Text style={styles.exerciseInfo}>{lastExerciseSet.reps}x {lastExerciseSet.weight} kg</Text> }
+                    </View>
+                </Col>
+                <Col style={styles.closeIcon}>
+                    <Ionicons name={expandIconName} size={32} color={colors.grey}/>
+                </Col>
             </Row>
-            {item.exerciseSet.map((exerciseSet, index) => (
+
+            { expanded && item.exerciseSet.map((exerciseSet, index) => (
                 <Row style={styles.bodyContainer} key={index}>
+                    <Col style={styles.exerciseCols}><Text>{ index + 1}</Text></Col>
                     <Col style={styles.exerciseCols}><Text>{exerciseSet.reps} reps</Text></Col>
                     <Col style={styles.exerciseCols}><Text>{exerciseSet.weight} kgs</Text></Col>
                 </Row>
@@ -41,33 +74,52 @@ export const ExerciseItem: React.FC<ExerciseItemProps> = ({item, onPress}) => {
 }
 
 const styles = StyleSheet.create({
-    exerciseCategory: {
-      alignItems: "flex-end",
-        flex: 1
+    exerciseTextContainer: {
+        flexGrow: 8,
+        marginLeft: 15,
+        justifyContent: "center",
+        alignItems: "flex-start"
+    },
+    exerciseCategoryImage: {
+        width: 35,
+        height: 35
+    },
+    exerciseCategoryImageContainer: {
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+        overflow: "hidden",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    closeIcon: {
+        flexGrow: 1,
+        justifyContent: "center",
     },
     exerciseCols: {
-      alignItems: "center"
+        alignItems: "center"
     },
     container: {
-        margin: 8,
+        margin: 4,
         backgroundColor: '#fff',
         shadowColor: 'black',
-        shadowOffset: { width: 0, height: 2 },
-        shadowRadius: 8,
+        shadowOffset: {width: 0, height: 2},
+        shadowRadius: 4,
         shadowOpacity: 0.26,
-        elevation: 8,
-        borderRadius: 8
+        elevation: 4,
+        borderRadius: 4
     },
     headContainer: {
-        padding: 8,
-        borderBottomWidth: 1,
-        borderBottomColor: colors.primary,
+        padding: 8
     },
     bodyContainer: {
-        margin: 8,
+        paddingBottom: 10
     },
-    header: {
-        fontWeight: "bold"
+    exerciseHeading: {
+        fontSize: 16
+    },
+    exerciseInfo: {
+        marginLeft: 5,
+        fontSize: 12
     }
-
 });
