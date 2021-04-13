@@ -25,9 +25,7 @@ export const SearchExerciseItem: React.FC<ExerciseItemProps> = ({item, onPress})
         <Grid style={{overflow: "hidden"}}>
             <Row style={styles.headContainer}>
                 <Col style={[styles.exerciseCategoryImageContainer, {backgroundColor: exerciseBackgroundColor}]}>
-                    <TouchableOpacity onPress={onPress}>
-                        <Image source={exerciseCategoryImage} style={styles.exerciseCategoryImage}/>
-                    </TouchableOpacity>
+                    <Image source={exerciseCategoryImage} style={styles.exerciseCategoryImage}/>
                 </Col>
                 <Col style={styles.exerciseTextContainer}>
                     <Text style={styles.exerciseHeading} numberOfLines={1}>{item.title}</Text>

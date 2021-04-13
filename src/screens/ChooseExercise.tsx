@@ -1,9 +1,11 @@
-import React, {useState} from "react";
-import {FlatList, ListRenderItem, SafeAreaView, StyleSheet, TextInput, View, Text, TouchableOpacity} from "react-native";
+import React, {useRef, useState} from "react";
+import {FlatList, ListRenderItem, SafeAreaView, StyleSheet, TextInput, View} from "react-native";
 import {useNavigation} from "@react-navigation/native";
 import {Ionicons} from "@expo/vector-icons";
-import {HomeStackParamList} from "../navigators/HomeNavigator";
 import {SearchExerciseDataItem, SearchExerciseItem} from "../components/SearchExercisteItem";
+import {Transition, Transitioning, TransitioningView} from "react-native-reanimated";
+
+const transition = <Transition.Change interpolation="easeInOut"/>
 
 const EXERCISES: SearchExerciseDataItem[] = [
     { id: 1, category: "biceps", title: "Bizeps Curls <3"},
@@ -15,12 +17,19 @@ export const ChooseExercise = () => {
     const [exercises, setExercises] = useState<SearchExerciseDataItem[]>(EXERCISES)
     const navigation = useNavigation()
 
+    const transitionRef = useRef<TransitioningView | null>(null)
+
     const renderItem: ListRenderItem<SearchExerciseDataItem> = ({item}) => {
-        return <SearchExerciseItem item={item} onPress={() => navigation.navigate('ModifyExercise', {exerciseId: 25, mode: 'create', exerciseName: item.title})} />
+        return <SearchExerciseItem item={item} onPress={() => navigation.navigate('ModifyExercise', {
+            exerciseId: 25,
+            mode: 'create',
+            exerciseName: item.title
+        })}/>
     }
 
     const filterExercises = (filter: string) => {
         setExercises(EXERCISES.filter((ex) => ex.title.toLowerCase().startsWith(filter.toLowerCase())))
+        transitionRef.current?.animateNextTransition()
     }
 
     return <SafeAreaView style={styles.container}>
@@ -30,12 +39,14 @@ export const ChooseExercise = () => {
             <Ionicons name="md-search" color='black' size={22}/>
         </View>
 
-        <FlatList<SearchExerciseDataItem>
-            data={exercises}
-            renderItem={renderItem}
-            keyExtractor={item => item.id + ''}
-            contentContainerStyle={styles.flatlistContainer}
-        />
+        <Transitioning.View ref={transitionRef} transition={transition}>
+            <FlatList<SearchExerciseDataItem>
+                data={exercises}
+                renderItem={renderItem}
+                keyExtractor={item => item.id + ''}
+                contentContainerStyle={styles.flatlistContainer}
+            />
+        </Transitioning.View>
     </SafeAreaView>
 }
 
