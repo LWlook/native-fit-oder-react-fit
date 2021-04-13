@@ -27,6 +27,9 @@ export const Records: React.FC = () => {
         <ScrollView>
             <Grid>
                 <Row>
+                    <Col><StatItem title="Last workout" value="2021-04-13"/></Col>
+                </Row>
+                <Row>
                     <Col><StatItem title="Total workouts" value="1"/></Col>
                     <Col><StatItem title="Total sets" value="2"/></Col>
                 </Row>
