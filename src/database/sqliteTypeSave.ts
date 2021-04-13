@@ -44,6 +44,7 @@ export const sqliteGetAllExerciseData = async (): Promise<ExerciseDataItem[]> =>
         {
             id: 0,
             title: 'Flat Barbell Bench Press',
+            increaseInExerciseSet: true,
             category: "chest",
             exerciseSet: [
                 {weight: 80, reps: 5},
@@ -55,6 +56,7 @@ export const sqliteGetAllExerciseData = async (): Promise<ExerciseDataItem[]> =>
             id: 1,
             category: "biceps",
             title: 'Close Grip Barbell Bench Press',
+            increaseInExerciseSet: true,
             exerciseSet: [
                 {weight: 80, reps: 5},
                 {weight: 100, reps: 5},
@@ -65,6 +67,7 @@ export const sqliteGetAllExerciseData = async (): Promise<ExerciseDataItem[]> =>
             id: 2,
             category: "shoulders",
             title: 'Incline Dumbbell Fly',
+            increaseInExerciseSet: true,
             exerciseSet: [
                 {weight: 80, reps: 5},
                 {weight: 100, reps: 5},

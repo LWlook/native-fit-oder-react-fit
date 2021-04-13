@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {FlatList, ListRenderItem, SafeAreaView, StyleSheet} from 'react-native';
 import {ExerciseDataItem, ExerciseItem} from "../components/ExerciseItem";
 import {useNavigation} from "@react-navigation/native";
@@ -64,7 +64,7 @@ export const Exercises: React.FC = () => {
             <LiftedWeightCard/>
             <Transitioning.View ref={transitionRef} transition={transition} style={{flex: 1}}>
                 <FlatList<ExerciseDataItem>
-                    data={DATA}
+                    data={allExerciseData}
                     renderItem={renderItem}
                     keyExtractor={item => item.id + ''}
                     contentContainerStyle={styles.flatlistContainer}
@@ -95,40 +95,3 @@ const styles = StyleSheet.create({
         paddingBottom: 8
     }
 });
-
-
-const DATA: ExerciseDataItem[] = [
-    {
-        id: 0,
-        title: 'Flat Barbell Bench Press',
-        category: "chest",
-        increaseInExerciseSet: false,
-        exerciseSet: [
-            {weight: 80, reps: 5},
-            {weight: 100, reps: 5},
-            {weight: 120, reps: 5}
-        ]
-    },
-    {
-        id: 1,
-        category: "biceps",
-        title: 'Close Grip Barbell Bench Press',
-        increaseInExerciseSet: true,
-        exerciseSet: [
-            {weight: 80, reps: 5},
-            {weight: 100, reps: 5},
-            {weight: 120, reps: 5}
-        ]
-    },
-    {
-        id: 2,
-        category: "shoulders",
-        title: 'Incline Dumbbell Fly',
-        increaseInExerciseSet: false,
-        exerciseSet: [
-            {weight: 80, reps: 5},
-            {weight: 100, reps: 5},
-            {weight: 120, reps: 5}
-        ]
-    },
-];
