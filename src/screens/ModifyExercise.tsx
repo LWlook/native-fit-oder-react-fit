@@ -7,6 +7,40 @@ import {Button} from "../components/Button";
 import {Sets} from "../components/Sets";
 import {colors} from "../constants/style";
 
+const sets = [
+    {
+        weight: 2,
+        reps: 2,
+        id: 1
+    },
+    {
+        weight: 2,
+        reps: 2,
+        id: 2
+    },
+    {
+        weight: 2,
+        reps: 2,
+        id: 3
+    },
+    {
+        weight: 2,
+        reps: 2,
+        id: 4
+    },
+    {
+        weight: 2,
+        reps: 2,
+        id: 5
+    },
+    {
+        weight: 2,
+        reps: 2,
+        id: 6
+    }
+]
+
+
 export const ModifyExercise: React.FC = () => {
     const route = useRoute<RouteProp<HomeStackParamList, 'ModifyExercise'>>()
     const navigation = useNavigation()
@@ -18,21 +52,33 @@ export const ModifyExercise: React.FC = () => {
     const isSetSelected = modifySetId != null
 
     const pressedSet = (id: number) => {
+        const selectedSet = sets.find(s => s.id === id)
+        if (!selectedSet) return
+        setWeight(selectedSet.weight)
+        setReps(selectedSet.reps)
         setModifySetId(id)
-
     }
 
     const saveSet = () => {
+        console.log("Save a new set:")
+        console.log(weight)
+        console.log(reps)
         // TODO
     }
 
     const updateSet = () => {
+        console.log("Update a set:")
+        console.log(modifySetId)
+        console.log(weight)
+        console.log(reps)
         // TODO
         setModifySetId(null)
     }
 
     const deleteSet = () => {
         // TODO
+        console.log("Delete a set:")
+        console.log(modifySetId)
         setModifySetId(null)
     }
 
@@ -41,9 +87,7 @@ export const ModifyExercise: React.FC = () => {
         setReps(null)
     }
 
-
     React.useLayoutEffect(() => {
-        console.log(exerciseName)
         navigation.setOptions({
             title: exerciseName
         });
@@ -65,40 +109,7 @@ export const ModifyExercise: React.FC = () => {
                     </View>
                 </View>
                 <View style={styles.sets}>
-                    <Sets onPress={pressedSet} sets={
-                        [
-                            {
-                                weight: 2,
-                                reps: 2,
-                                id: 1
-                            },
-                            {
-                                weight: 2,
-                                reps: 2,
-                                id: 2
-                            },
-                            {
-                                weight: 2,
-                                reps: 2,
-                                id: 3
-                            },
-                            {
-                                weight: 2,
-                                reps: 2,
-                                id: 4
-                            },
-                            {
-                                weight: 2,
-                                reps: 2,
-                                id: 5
-                            },
-                            {
-                                weight: 2,
-                                reps: 2,
-                                id: 6
-                            }
-                        ]
-                    }/>
+                    <Sets onPress={pressedSet} sets={sets}/>
                 </View>
             </View>
 }
