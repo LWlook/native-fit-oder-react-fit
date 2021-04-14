@@ -25,6 +25,8 @@ export const ExpandExerciseItem: React.FC<ExerciseItemProps> = ({item, onPress, 
         setExpanded(prev => !prev)
     }
 
+    const increasedInExerciseSet = !!item.increaseInExerciseSet
+
     return <TouchableOpacity onPress={toggleExpanded} style={styles.container} activeOpacity={0.6}>
         <Grid style={{overflow: "hidden"}}>
             <Row style={styles.headContainer}>
@@ -32,10 +34,10 @@ export const ExpandExerciseItem: React.FC<ExerciseItemProps> = ({item, onPress, 
                 <Col style={styles.exerciseTextContainer}>
                     <Text style={styles.exerciseHeading}>{item.title}</Text>
                     <View style={{flexDirection: "row", alignItems: "center"}}>
-                        {item.increaseInExerciseSet &&
-                        <Ionicons name="md-trending-up-outline" size={16} color={colors.increase}/>}
-                        {!item.increaseInExerciseSet &&
-                        <Ionicons name="md-trending-down-outline" size={16} color={colors.decrease}/>}
+                        {increasedInExerciseSet &&
+                        <Ionicons name="md-trending-up-outline" size={16} color={colors.increase}/> }
+                        {!increasedInExerciseSet &&
+                        <Ionicons name="md-trending-down-outline" size={16} color={colors.decrease}/> }
                         { lastExerciseSet && <Text style={styles.exerciseInfo}>{lastExerciseSet.reps}x {lastExerciseSet.weight} kg</Text> }
                     </View>
                 </Col>

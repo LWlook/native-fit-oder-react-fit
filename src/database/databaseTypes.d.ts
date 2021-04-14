@@ -10,7 +10,7 @@ export type SearchExerciseDataItem = {
 
 export interface ExerciseDataItem extends SearchExerciseDataItem {
     exerciseSet: ExerciseDataItemSet[]
-    increaseInExerciseSet: boolean
+    increaseInExerciseSet: number
 }
 
 export type ExerciseDataItemSet = {

@@ -2,8 +2,8 @@ import {Query} from "expo-sqlite";
 
 const exercises = [
     "Flat Barbell Bench Press", "chest",
-    "Close Grip Barbell Bench Press", "bizeps",
-    "Incline Dumbbell Fly", "shoulder"
+    "Close Grip Barbell Bench Press", "biceps",
+    "Incline Dumbbell Fly", "shoulders"
 ]
 
 const exercises_user = [
