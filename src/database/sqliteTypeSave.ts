@@ -97,8 +97,8 @@ export const sqliteGetLastExercisePerType = async (exerciseid: number, date: str
     return userExercise;
 }
 
-export const sqliteCreateExerciseSet = async (dataItem: ExerciseDataItem): Promise<boolean> => {
-    if (dataItem.rowid != 0) return false
+export const sqliteCreateExerciseSet = async (dataItem: ExerciseDataItem): Promise<number> => {
+    if (dataItem.rowid != 0) return -1
 
     const lastExcercise = await sqliteGetLastExercisePerType(dataItem.exerciseid, dataItem.date)
     if (lastExcercise == null) dataItem.increaseInExerciseSet = 1
@@ -106,8 +106,8 @@ export const sqliteCreateExerciseSet = async (dataItem: ExerciseDataItem): Promi
     else dataItem.increaseInExerciseSet = 0
 
     let sqLiteCallback = await fetchTypeSaveSql(sqliteCreateExerciseSetQuery(dataItem))
-    console.log("sqliteCreateExerciseSetQuery", sqLiteCallback)
-    return sqLiteCallback.isSuccessful
+    //console.log("sqliteCreateExerciseSetQuery", sqLiteCallback)
+    return (!sqLiteCallback.isSuccessful) ? -1 : sqLiteCallback.resultSets[0].insertId
 }
 
 export const sqliteUpdateExerciseSet = async (dataItem: ExerciseDataItem): Promise<boolean> => {
