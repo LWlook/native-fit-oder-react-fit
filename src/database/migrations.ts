@@ -1,9 +1,40 @@
 import {Query} from "expo-sqlite";
 
 const exercises = [
-    "Flat Barbell Bench Press", "chest",
-    "Close Grip Barbell Bench Press", "biceps",
-    "Incline Dumbbell Fly", "shoulders"
+    "Incline Dumbbell Fly", "shoulders",
+    "Arnold Dumbbell Press", "shoulders",
+    "Push Press", "shoulders",
+    "Front Dumbbell Raise", "shoulders",
+
+    "Cable Overhead Extension", "triceps",
+    "Close Grip Barbell Bench Press", "triceps",
+    "Ring Dip", "triceps",
+    "Parallel Bar Triceps Dip", "triceps",
+
+    "Barbell Curl", "biceps",
+    "Dumbbell Curl", "biceps",
+    "EZ-Bar Curl", "biceps",
+    "Cable Curl", "biceps",
+
+    "Cable Crossover", "chest",
+    "Flat Dumbbell Fly", "chest",
+    "Decline Hammer Strengeth Chest Press", "chest",
+    "Chest Press", "chest",
+
+    "Barbell Row", "back",
+    "Deaflift", "back",
+    "Lat Pulldown", "back",
+    "Machine Shrug", "back",
+
+    "Leg Press", "legs",
+    "Barbell Front Squat", "legs",
+    "Romanian Deaflift", "legs",
+    "Seated Calf Raise Machine", "legs",
+
+    "Crunch", "abs",
+    "Plank", "abs",
+    "Side Plank", "abs",
+    "Crunch Machine", "abs",
 ]
 
 const exercises_user = [
