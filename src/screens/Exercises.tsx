@@ -26,6 +26,12 @@ export const Exercises: React.FC = () => {
     const transitionRef = useRef<TransitioningView | null>(null)
     const transition = <Transition.Change interpolation="easeInOut"/>
 
+    const liftedWeight = allExerciseData.reduce((accumulatedWeight, nextExercise) => {
+        return accumulatedWeight + nextExercise.exerciseSet.reduce((accumulatedWeightPerSet, nextSet) => {
+            return accumulatedWeightPerSet + nextSet.reps * nextSet.weight
+        }, 0)
+    }, 0)
+
     useEffect(() => {
         sqliteGetUserExercisesByDate(selectedDate).then(data => setAllExerciseData(data));
     }, [updateExercisesVersion, selectedDate])
@@ -56,7 +62,7 @@ export const Exercises: React.FC = () => {
     return <>
         <CalendarModal modalVisible={calendarModalVisible} setModalVisible={setCalendarModalVisible}/>
         <View style={styles.container}>
-            <LiftedWeightCard/>
+            <LiftedWeightCard value={liftedWeight}/>
             <Transitioning.View ref={transitionRef} transition={transition} style={{flex: 1}}>
                 <FlatList<ExerciseDataItem>
                     data={allExerciseData}

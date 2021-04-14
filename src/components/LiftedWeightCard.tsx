@@ -1,13 +1,18 @@
 import React from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {colors} from "../constants/style";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import {MaterialCommunityIcons} from '@expo/vector-icons';
 
-export const LiftedWeightCard: React.FC = () => {
+interface LiftedWeightCardProps {
+    value: number
+}
+
+export const LiftedWeightCard: React.FC<LiftedWeightCardProps> = ({value}) => {
+    if (value == 0) return null
     return (
         <View style={styles.card}>
             <MaterialCommunityIcons name="dumbbell" size={24} color="white" />
-            <Text style={styles.text}>7.500 kgs lifted</Text>
+            <Text style={styles.text}>{value} kgs lifted</Text>
             <MaterialCommunityIcons name="dumbbell" size={24} color="white" />
         </View>
     );
