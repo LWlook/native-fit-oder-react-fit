@@ -1,5 +1,5 @@
 import React, {useRef, useState} from "react";
-import {FlatList, ListRenderItem, SafeAreaView, StyleSheet, TextInput, View} from "react-native";
+import {FlatList, ListRenderItem, StyleSheet, TextInput, View} from "react-native";
 import {useNavigation} from "@react-navigation/native";
 import {Ionicons} from "@expo/vector-icons";
 import {SearchExerciseItem} from "../components/SearchExercisteItem";
@@ -30,29 +30,27 @@ export const ChooseExercise = () => {
         transitionRef.current?.animateNextTransition()
     }
 
-    return <SafeAreaView style={styles.container}>
-
+    return <View style={styles.container}>
         <View style={styles.inputContainer}>
             <TextInput style={styles.input} onChangeText={filterExercises} placeholder="Search exercises" placeholderTextColor={colors.grey} numberOfLines={1} />
             <View style={styles.searchIcon}>
             <Ionicons name="md-search" color={colors.grey} size={22}/>
             </View>
         </View>
-
-        <Transitioning.View ref={transitionRef} transition={transition}>
+        <Transitioning.View ref={transitionRef} transition={transition} style={{flex: 1}}>
             <FlatList<SearchExerciseDataItem>
                 data={exercises}
                 renderItem={renderItem}
                 keyExtractor={item => item.rowid + ''}
-                contentContainerStyle={styles.flatlistContainer}
             />
         </Transitioning.View>
-    </SafeAreaView>
+    </View>
 }
 
 const styles = StyleSheet.create({
     container: {
-        marginTop: 8
+        marginTop: 8,
+        flex: 1
     },
     input: {
         flexGrow: 1,
@@ -74,8 +72,5 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "row",
         marginBottom: 15
-    },
-    flatlistContainer: {
-        paddingBottom: 8
     }
 });

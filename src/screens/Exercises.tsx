@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from "react";
-import {FlatList, ListRenderItem, SafeAreaView, StyleSheet} from 'react-native';
+import {FlatList, ListRenderItem, StyleSheet, View} from 'react-native';
 import {ExpandExerciseItem} from "../components/ExpandExerciseItem";
 import {useNavigation} from "@react-navigation/native";
 import {FloatingAction} from "react-native-floating-action";
@@ -56,7 +56,7 @@ export const Exercises: React.FC = () => {
 
     return <>
         <CalendarModal modalVisible={calendarModalVisible} setModalVisible={setCalendarModalVisible}/>
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <LiftedWeightCard/>
             <Transitioning.View ref={transitionRef} transition={transition} style={{flex: 1}}>
                 <FlatList<ExerciseDataItem>
@@ -77,14 +77,13 @@ export const Exercises: React.FC = () => {
                 color={colors.primary}
                 overrideWithAction={true}
             />
-        </SafeAreaView>
+        </View>
     </>
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // marginTop: StatusBar.currentHeight || 0,
         backgroundColor: '#eee',
     },
     flatlistContainer: {

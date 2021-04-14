@@ -1,5 +1,5 @@
 import React from "react";
-import {SafeAreaView, ScrollView, StyleProp, StyleSheet, ViewStyle} from "react-native";
+import {ScrollView, StyleProp, StyleSheet, View, ViewStyle} from "react-native";
 import {StatItem} from "../components/StatItem";
 import {Col, Grid, Row} from "react-native-easy-grid";
 import DropDownPicker, {ItemType} from 'react-native-dropdown-picker';
@@ -31,7 +31,7 @@ export const Records: React.FC = () => {
         icon: () => <ExerciseIcon category={e.category} size={30} imageSize={23}/>
     }))
 
-    return <SafeAreaView style={styles.container}>
+    return <View style={styles.container}>
         <DropDownPicker
             items={dropdownItems}
             placeholder="Select an exercise"
@@ -65,7 +65,7 @@ export const Records: React.FC = () => {
                 </Row>
             </Grid>
         </ScrollView>
-    </SafeAreaView>
+    </View>
 }
 
 const styles = StyleSheet.create({
