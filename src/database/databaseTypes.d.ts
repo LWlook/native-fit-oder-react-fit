@@ -10,8 +10,9 @@ export type SearchExerciseDataItem = {
 
 export interface ExerciseDataItem extends SearchExerciseDataItem {
     exerciseSet: ExerciseDataItemSet[]
-    increaseInExerciseSet: number,
     exerciseid: number
+    date: string
+    increaseInExerciseSet: number
 }
 
 export type ExerciseDataItemSet = {

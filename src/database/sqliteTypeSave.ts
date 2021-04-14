@@ -5,6 +5,7 @@ import {ExerciseDataItem, SearchExerciseDataItem} from "./databaseTypes";
 import {
     sqliteCheckMigrationsQuery,
     sqliteGetAllExercisesQuery,
+    sqliteGetExerciseByTypeLatestQuery,
     sqliteGetExerciseQuery,
     sqliteGetUserExercisesQuery,
     sqliteUpdateExerciseSetQuery
@@ -49,8 +50,8 @@ const fetchTypeSaveSql = async (queries: Query[]): Promise<SQLiteCallback> => {
 export const sqliteGetUserExercisesByDate = async (date: string): Promise<ExerciseDataItem[]> => {
     await sqliteCheckAndFill()
     let sqLiteCallback = await fetchTypeSaveSql(sqliteGetUserExercisesQuery(date))
+    // console.log("sqliteGetUserExercisesQuery", sqLiteCallback)
     if (!sqLiteCallback.isSuccessful) return [];
-    // console.log("sqliteGetUserExercisesQuery", sqLiteCallback.resultSets[0].rows)
 
     const returnArray: ExerciseDataItem[] = [];
     for (let i = 0; i < sqLiteCallback.resultSets[0].rows.length; i++) {
@@ -82,6 +83,18 @@ export const sqliteGetExercise = async (rowid: number): Promise<ExerciseDataItem
     // console.log("sqliteGetExerciseQuery", sqLiteCallback)
     if (!sqLiteCallback.isSuccessful) return null;
 
+    if (sqLiteCallback.resultSets[0].rows.length <= 0) return null;
+    let userExercise: ExerciseDataItem = sqLiteCallback.resultSets[0].rows.item(0)
+    userExercise.exerciseSet = JSON.parse(sqLiteCallback.resultSets[0].rows.item(0).exerciseSet)
+    return userExercise;
+}
+
+export const sqliteGetLastExercisePerType = async (exerciseid: number, date: string): Promise<ExerciseDataItem | null> => {
+    let sqLiteCallback = await fetchTypeSaveSql(sqliteGetExerciseByTypeLatestQuery(exerciseid, date))
+    //console.log("sqliteGetExerciseQuery", sqLiteCallback)
+    if (!sqLiteCallback.isSuccessful) return null;
+
+    if (sqLiteCallback.resultSets[0].rows.length <= 0) return null;
     let userExercise: ExerciseDataItem = sqLiteCallback.resultSets[0].rows.item(0)
     userExercise.exerciseSet = JSON.parse(sqLiteCallback.resultSets[0].rows.item(0).exerciseSet)
     return userExercise;
@@ -89,6 +102,12 @@ export const sqliteGetExercise = async (rowid: number): Promise<ExerciseDataItem
 
 export const sqliteUpdateExerciseSet = async (dataItem: ExerciseDataItem): Promise<boolean> => {
     if (dataItem.rowid <= 0) return false
+
+    const lastExcercise = await sqliteGetLastExercisePerType(dataItem.exerciseid, dataItem.date)
+    if (lastExcercise == null) dataItem.increaseInExerciseSet = 1
+    else if (calcWeight(lastExcercise) < calcWeight(dataItem)) dataItem.increaseInExerciseSet = 1
+    else dataItem.increaseInExerciseSet = 0
+
     let sqLiteCallback = await fetchTypeSaveSql(sqliteUpdateExerciseSetQuery(dataItem))
     console.log("sqliteSetExercisesSetQuery", sqLiteCallback)
     return !sqLiteCallback.isSuccessful
@@ -108,4 +127,10 @@ const sqliteCheckAndFill = async () => {
         sqLiteCallback = await fetchTypeSaveSql(migrations[actualMigration])
         // console.log(actualMigration, sqLiteCallback)
     }
+}
+
+const calcWeight = (exercise: ExerciseDataItem): number => {
+    return exercise.exerciseSet.reduce((accumulatedWeightPerSet, nextSet) => {
+        return accumulatedWeightPerSet + nextSet.reps * nextSet.weight
+    }, 0)
 }
