@@ -1,10 +1,11 @@
 import {db} from "./db";
 import {Query, SQLError, SQLResultSet} from "expo-sqlite";
 import migrations from "./migrations";
-import {ExerciseDataItem, SearchExerciseDataItem} from "./databaseTypes";
+import {ExerciseDataItem, RecordItem, SearchExerciseDataItem} from "./databaseTypes";
 import {
     sqliteCheckMigrationsQuery,
     sqliteCreateExerciseSetQuery,
+    sqliteGetAllExercisesPerTypeQuery,
     sqliteGetAllExercisesQuery,
     sqliteGetExerciseByTypeLatestQuery,
     sqliteGetExerciseQuery,
@@ -60,11 +61,6 @@ export const sqliteGetUserExercisesByDate = async (date: string): Promise<Exerci
         userExercise.exerciseSet = JSON.parse(sqLiteCallback.resultSets[0].rows.item(i).exerciseSet)
         returnArray.push(userExercise)
     }
-
-    await sqliteGetExercise(1).then(r => {
-        if (r) sqliteUpdateExerciseSet(r)
-    })
-
     return returnArray;
 }
 
@@ -102,7 +98,6 @@ export const sqliteGetLastExercisePerType = async (exerciseid: number, date: str
 }
 
 export const sqliteCreateExerciseSet = async (dataItem: ExerciseDataItem): Promise<boolean> => {
-    console.log("sqliteCreateExerciseSetQuery", dataItem)
     if (dataItem.rowid != 0) return false
 
     const lastExcercise = await sqliteGetLastExercisePerType(dataItem.exerciseid, dataItem.date)
@@ -126,6 +121,45 @@ export const sqliteUpdateExerciseSet = async (dataItem: ExerciseDataItem): Promi
     let sqLiteCallback = await fetchTypeSaveSql(sqliteUpdateExerciseSetQuery(dataItem))
     // console.log("sqliteSetExercisesSetQuery", sqLiteCallback)
     return sqLiteCallback.isSuccessful
+}
+
+export const sqliteGetRecordsPerExercise = async (exercise: SearchExerciseDataItem): Promise<RecordItem> => {
+    let returnItem: RecordItem = {
+        exerciseid: exercise.rowid,
+        maxReps: 0,
+        maxWeight: 0,
+        totalReps: 0,
+        totalSets: 0,
+        totalWeight: 0,
+        totalWorkouts: 0,
+        lastExerciseDate: "0000-00-00"
+    }
+    const allExcercises = await fetchTypeSaveSql(sqliteGetAllExercisesPerTypeQuery(exercise.rowid))
+    if (!allExcercises.isSuccessful) return returnItem;
+
+    if (allExcercises.resultSets[0].rows.length <= 0) return returnItem;
+    const exerciseDataItems: ExerciseDataItem[] = [];
+    for (let i = 0; i < allExcercises.resultSets[0].rows.length; i++) {
+        let userExercise: ExerciseDataItem = allExcercises.resultSets[0].rows.item(i)
+        userExercise.exerciseSet = JSON.parse(allExcercises.resultSets[0].rows.item(i).exerciseSet)
+        exerciseDataItems.push(userExercise)
+    }
+
+    returnItem.lastExerciseDate = exerciseDataItems[0].date
+    returnItem.totalWorkouts = exerciseDataItems.length
+
+    for (let exerciseDataItemsKey in exerciseDataItems) {
+        returnItem.totalWeight += exerciseDataItems[exerciseDataItemsKey].exerciseSet.reduce((accumulatedWeightPerSet, nextSet) => {
+            return accumulatedWeightPerSet + nextSet.reps * nextSet.weight
+        }, 0)
+        returnItem.totalSets += exerciseDataItems[exerciseDataItemsKey].exerciseSet.length
+        returnItem.totalReps += exerciseDataItems[exerciseDataItemsKey].exerciseSet.reduce((accumulatedRepsPerSet, nextSet) => {
+            returnItem.maxReps = (returnItem.maxReps > nextSet.reps) ? returnItem.maxReps : nextSet.reps
+            returnItem.maxWeight = (returnItem.maxWeight > nextSet.weight) ? returnItem.maxWeight : nextSet.weight
+            return accumulatedRepsPerSet + nextSet.reps
+        }, 0)
+    }
+    return returnItem
 }
 
 const sqliteCheckAndFill = async () => {

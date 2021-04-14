@@ -19,3 +19,14 @@ export type ExerciseDataItemSet = {
     weight: number
     reps: number
 }
+
+export type RecordItem = {
+    exerciseid: number
+    lastExerciseDate: string
+    totalWorkouts: number
+    totalSets: number
+    totalReps: number
+    totalWeight: number
+    maxWeight: number
+    maxReps: number
+}

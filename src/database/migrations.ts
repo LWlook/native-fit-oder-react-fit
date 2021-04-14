@@ -71,7 +71,7 @@ const migrationExercises: Query[] = [
 
 const migrationUserExercises: Query[] = [
     {
-        sql: "CREATE TABLE IF NOT EXISTS `exercises_user` (`exerciseid` VARCHAR(256) NOT NULL, `increaseInExerciseSet` NUMERIC NOT NULL, `exerciseSet` TEXT NOT NULL, `date` TEXT NOT NULL);",
+        sql: "CREATE TABLE IF NOT EXISTS `exercises_user` (`exerciseid` NUMERIC NOT NULL, `increaseInExerciseSet` NUMERIC NOT NULL, `exerciseSet` TEXT NOT NULL, `date` TEXT NOT NULL);",
         args: []
     },
     {
