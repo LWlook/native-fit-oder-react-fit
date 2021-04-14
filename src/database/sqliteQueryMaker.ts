@@ -36,7 +36,7 @@ export const sqliteUpdateExerciseSetQuery = (dataItem: ExerciseDataItem): Query[
     return [
         {
             sql: "UPDATE `exercises_user` SET `exerciseSet` = ?, `increaseInExerciseSet` = ? WHERE rowid = ?;",
-            args: [JSON.stringify(dataItem.exerciseSet), dataItem.increaseInExerciseSet, dataItem.rowid]
+            args: [JSON.stringify(dataItem.exerciseSet), dataItem.increaseInExerciseSet, dataItem.exerciseid]
         }
     ]
 }
@@ -45,7 +45,7 @@ export const sqliteCreateExerciseSetQuery = (dataItem: ExerciseDataItem): Query[
     return [
         {
             sql: "INSERT INTO `exercises_user` (`exerciseid`, `increaseInExerciseSet`, `exerciseSet`, `date`) VALUES (?,?,?,?)",
-            args: [dataItem.exerciseid, dataItem.increaseInExerciseSet, JSON.stringify(dataItem.exerciseSet), dataItem.date]
+            args: [dataItem.rowid, dataItem.increaseInExerciseSet, JSON.stringify(dataItem.exerciseSet), dataItem.date]
         }
     ]
 }

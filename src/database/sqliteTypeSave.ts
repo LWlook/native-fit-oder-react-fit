@@ -86,8 +86,8 @@ export const sqliteGetExercise = async (rowid: number): Promise<ExerciseDataItem
     return userExercise;
 }
 
-export const sqliteGetLastExercisePerType = async (exerciseid: number, date: string): Promise<ExerciseDataItem | null> => {
-    let sqLiteCallback = await fetchTypeSaveSql(sqliteGetExerciseByTypeLatestQuery(exerciseid, date))
+export const sqliteGetLastExercisePerType = async (rowid: number, date: string): Promise<ExerciseDataItem | null> => {
+    let sqLiteCallback = await fetchTypeSaveSql(sqliteGetExerciseByTypeLatestQuery(rowid, date))
     //console.log("sqliteGetExerciseQuery", sqLiteCallback)
     if (!sqLiteCallback.isSuccessful) return null;
 
@@ -98,9 +98,10 @@ export const sqliteGetLastExercisePerType = async (exerciseid: number, date: str
 }
 
 export const sqliteCreateExerciseSet = async (dataItem: ExerciseDataItem): Promise<number> => {
-    if (dataItem.exerciseid != 0 && dataItem.rowid != 0) return -1
+    console.log(dataItem)
+    if (dataItem.exerciseid <= 0 && dataItem.rowid <= 0) return -1
 
-    const lastExcercise = await sqliteGetLastExercisePerType(dataItem.exerciseid, dataItem.date)
+    const lastExcercise = await sqliteGetLastExercisePerType(dataItem.rowid, dataItem.date)
     if (lastExcercise == null) dataItem.increaseInExerciseSet = 1
     else if (calcWeight(lastExcercise) < calcWeight(dataItem)) dataItem.increaseInExerciseSet = 1
     else dataItem.increaseInExerciseSet = 0
@@ -113,7 +114,7 @@ export const sqliteCreateExerciseSet = async (dataItem: ExerciseDataItem): Promi
 export const sqliteUpdateExerciseSet = async (dataItem: ExerciseDataItem): Promise<boolean> => {
     if (dataItem.exerciseid <= 0) return false
 
-    const lastExcercise = await sqliteGetLastExercisePerType(dataItem.exerciseid, dataItem.date)
+    const lastExcercise = await sqliteGetLastExercisePerType(dataItem.rowid, dataItem.date)
     if (lastExcercise == null) dataItem.increaseInExerciseSet = 1
     else if (calcWeight(lastExcercise) < calcWeight(dataItem)) dataItem.increaseInExerciseSet = 1
     else dataItem.increaseInExerciseSet = 0
