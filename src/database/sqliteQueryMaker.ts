@@ -40,6 +40,15 @@ export const sqliteUpdateExerciseSetQuery = (dataItem: ExerciseDataItem): Query[
         }
     ]
 }
+
+export const sqliteCreateExerciseSetQuery = (dataItem: ExerciseDataItem): Query[] => {
+    return [
+        {
+            sql: "INSERT INTO `exercises_user` (`exerciseid`, `increaseInExerciseSet`, `exerciseSet`, `date`) VALUES (?,?,?,?)",
+            args: [dataItem.exerciseid, dataItem.increaseInExerciseSet, JSON.stringify(dataItem.exerciseSet), dataItem.date]
+        }
+    ]
+}
 export const sqliteGetExerciseQuery = (rowid: number): Query[] => {
     return [
         {

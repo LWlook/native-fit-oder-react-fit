@@ -4,6 +4,7 @@ import migrations from "./migrations";
 import {ExerciseDataItem, SearchExerciseDataItem} from "./databaseTypes";
 import {
     sqliteCheckMigrationsQuery,
+    sqliteCreateExerciseSetQuery,
     sqliteGetAllExercisesQuery,
     sqliteGetExerciseByTypeLatestQuery,
     sqliteGetExerciseQuery,
@@ -101,7 +102,17 @@ export const sqliteGetLastExercisePerType = async (exerciseid: number, date: str
 }
 
 export const sqliteCreateExerciseSet = async (dataItem: ExerciseDataItem): Promise<boolean> => {
-    return false
+    console.log("sqliteCreateExerciseSetQuery", dataItem)
+    if (dataItem.rowid != 0) return false
+
+    const lastExcercise = await sqliteGetLastExercisePerType(dataItem.exerciseid, dataItem.date)
+    if (lastExcercise == null) dataItem.increaseInExerciseSet = 1
+    else if (calcWeight(lastExcercise) < calcWeight(dataItem)) dataItem.increaseInExerciseSet = 1
+    else dataItem.increaseInExerciseSet = 0
+
+    let sqLiteCallback = await fetchTypeSaveSql(sqliteCreateExerciseSetQuery(dataItem))
+    console.log("sqliteCreateExerciseSetQuery", sqLiteCallback)
+    return sqLiteCallback.isSuccessful
 }
 
 export const sqliteUpdateExerciseSet = async (dataItem: ExerciseDataItem): Promise<boolean> => {
@@ -113,8 +124,8 @@ export const sqliteUpdateExerciseSet = async (dataItem: ExerciseDataItem): Promi
     else dataItem.increaseInExerciseSet = 0
 
     let sqLiteCallback = await fetchTypeSaveSql(sqliteUpdateExerciseSetQuery(dataItem))
-    console.log("sqliteSetExercisesSetQuery", sqLiteCallback)
-    return !sqLiteCallback.isSuccessful
+    // console.log("sqliteSetExercisesSetQuery", sqLiteCallback)
+    return sqLiteCallback.isSuccessful
 }
 
 const sqliteCheckAndFill = async () => {
