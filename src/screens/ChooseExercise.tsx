@@ -5,6 +5,7 @@ import {Ionicons} from "@expo/vector-icons";
 import {SearchExerciseItem} from "../components/SearchExercisteItem";
 import {Transition, Transitioning, TransitioningView} from "react-native-reanimated";
 import {SearchExerciseDataItem} from "../database/databaseTypes";
+import {colors} from "../constants/style";
 
 const transition = <Transition.Change interpolation="easeInOut"/>
 
@@ -36,8 +37,10 @@ export const ChooseExercise = () => {
     return <SafeAreaView style={styles.container}>
 
         <View style={styles.inputContainer}>
-            <TextInput style={styles.input} onChangeText={filterExercises}/>
-            <Ionicons name="md-search" color='black' size={22}/>
+            <TextInput style={styles.input} onChangeText={filterExercises} placeholder="Search exercises" placeholderTextColor={colors.grey} numberOfLines={1} autoFocus={true} />
+            <View style={styles.searchIcon}>
+            <Ionicons name="md-search" color={colors.grey} size={22}/>
+            </View>
         </View>
 
         <Transitioning.View ref={transitionRef} transition={transition}>
@@ -58,11 +61,20 @@ const styles = StyleSheet.create({
     input: {
         flexGrow: 1,
         fontSize: 16,
+        padding: 8
+    },
+    searchIcon: {
+        borderLeftColor: colors.grey,
+        borderLeftWidth: 1,
+        padding: 8
     },
     inputContainer: {
+        backgroundColor: colors.white,
         borderWidth: 1,
-        marginHorizontal: 8,
-        padding: 4,
+        borderColor: colors.grey,
+        marginHorizontal: 4,
+        borderRadius: 4,
+        // padding: 8,
         display: "flex",
         flexDirection: "row",
         marginBottom: 15

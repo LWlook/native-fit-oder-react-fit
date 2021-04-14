@@ -17,7 +17,6 @@ import {ExerciseDataItem} from "../database/databaseTypes";
 export const Exercises: React.FC = () => {
     const navigation = useNavigation()
     const [calendarModalVisible, setCalendarModalVisible] = useState<boolean>(false)
-    const [selectedId, setSelectedId] = useState<number>(0)
     const [allExerciseData, setAllExerciseData] = useState<ExerciseDataItem[]>([])
     const selectedDate = useSelectedDate(state => state.selectedDate)
 
