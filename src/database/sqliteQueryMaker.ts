@@ -26,7 +26,7 @@ export const sqliteGetAllExercisesQuery = (): Query[] => {
 export const sqliteGetUserExercisesQuery = (date: string): Query[] => {
     return [
         {
-            sql: "SELECT exercises_user.rowid as 'excerciseid', exercises.title, exercises_user.increaseInExerciseSet, exercises_user.exerciseSet, exercises_user.exerciseid as 'rowid', exercises_user.date, exercises.category FROM exercises_user JOIN exercises ON exercises_user.exerciseid = exercises.rowid WHERE exercises_user.date = ?;",
+            sql: "SELECT exercises_user.rowid as 'exerciseid', exercises.title, exercises_user.increaseInExerciseSet, exercises_user.exerciseSet, exercises_user.exerciseid as 'rowid', exercises_user.date, exercises.category FROM exercises_user JOIN exercises ON exercises_user.exerciseid = exercises.rowid WHERE exercises_user.date = ?;",
             args: [date]
         }
     ]
@@ -52,7 +52,7 @@ export const sqliteCreateExerciseSetQuery = (dataItem: ExerciseDataItem): Query[
 export const sqliteGetExerciseQuery = (rowid: number): Query[] => {
     return [
         {
-            sql: "SELECT exercises_user.rowid as 'excerciseid', exercises.title, exercises_user.increaseInExerciseSet, exercises_user.exerciseSet, exercises_user.exerciseid as 'rowid', exercises_user.date, exercises.category FROM exercises_user JOIN exercises ON exercises_user.exerciseid = exercises.rowid WHERE exercises_user.rowid = ?;",
+            sql: "SELECT exercises_user.rowid as 'exerciseid', exercises.title, exercises_user.increaseInExerciseSet, exercises_user.exerciseSet, exercises_user.exerciseid as 'rowid', exercises_user.date, exercises.category FROM exercises_user JOIN exercises ON exercises_user.exerciseid = exercises.rowid WHERE exercises_user.rowid = ?;",
             args: [rowid]
         }
     ]
@@ -61,7 +61,7 @@ export const sqliteGetExerciseQuery = (rowid: number): Query[] => {
 export const sqliteGetExerciseByTypeLatestQuery = (exerciseid: number, date: string): Query[] => {
     return [
         {
-            sql: "SELECT exercises_user.rowid as 'excerciseid', exercises.title, exercises_user.increaseInExerciseSet, exercises_user.exerciseSet, exercises_user.exerciseid as 'rowid', exercises_user.date, exercises.category FROM exercises_user JOIN exercises ON exercises_user.exerciseid = exercises.rowid WHERE exercises.rowid = ? AND exercises_user.date < ? ORDER BY `date` DESC LIMIT 1;",
+            sql: "SELECT exercises_user.rowid as 'exerciseid', exercises.title, exercises_user.increaseInExerciseSet, exercises_user.exerciseSet, exercises_user.exerciseid as 'rowid', exercises_user.date, exercises.category FROM exercises_user JOIN exercises ON exercises_user.exerciseid = exercises.rowid WHERE exercises.rowid = ? AND exercises_user.date < ? ORDER BY `date` DESC LIMIT 1;",
             args: [exerciseid, date]
         }
     ]
@@ -69,7 +69,7 @@ export const sqliteGetExerciseByTypeLatestQuery = (exerciseid: number, date: str
 export const sqliteGetAllExercisesPerTypeQuery = (exerciseid: number): Query[] => {
     return [
         {
-            sql: "SELECT exercises_user.rowid as 'excerciseid', exercises.title, exercises_user.increaseInExerciseSet, exercises_user.exerciseSet, exercises_user.exerciseid as 'rowid', exercises_user.date, exercises.category FROM exercises_user JOIN exercises ON exercises_user.exerciseid = exercises.rowid WHERE exercises.rowid = ? ORDER BY `date` DESC ;",
+            sql: "SELECT exercises_user.rowid as 'exerciseid', exercises.title, exercises_user.increaseInExerciseSet, exercises_user.exerciseSet, exercises_user.exerciseid as 'rowid', exercises_user.date, exercises.category FROM exercises_user JOIN exercises ON exercises_user.exerciseid = exercises.rowid WHERE exercises.rowid = ? ORDER BY `date` DESC ;",
             args: [exerciseid]
         }
     ]
