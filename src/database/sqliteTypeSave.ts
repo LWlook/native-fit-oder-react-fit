@@ -98,7 +98,7 @@ export const sqliteGetLastExercisePerType = async (exerciseid: number, date: str
 }
 
 export const sqliteCreateExerciseSet = async (dataItem: ExerciseDataItem): Promise<number> => {
-    if (dataItem.exerciseid != 0) return -1
+    if (dataItem.exerciseid != 0 && dataItem.rowid != 0) return -1
 
     const lastExcercise = await sqliteGetLastExercisePerType(dataItem.exerciseid, dataItem.date)
     if (lastExcercise == null) dataItem.increaseInExerciseSet = 1
