@@ -18,11 +18,6 @@ import {useUpdateExercises} from "../zustand/useUpdateExercises";
 export const Exercises: React.FC = () => {
 
     const updateExercisesVersion = useUpdateExercises(s => s.updateExercisesVersion)
-
-    useEffect(() => {
-        sqliteGetUserExercisesByDate("2021-04-14").then(data => setAllExerciseData(data));
-    }, [updateExercisesVersion])
-
     const navigation = useNavigation()
     const [calendarModalVisible, setCalendarModalVisible] = useState<boolean>(false)
     const [allExerciseData, setAllExerciseData] = useState<ExerciseDataItem[]>([])
@@ -30,6 +25,10 @@ export const Exercises: React.FC = () => {
 
     const transitionRef = useRef<TransitioningView | null>(null)
     const transition = <Transition.Change interpolation="easeInOut"/>
+
+    useEffect(() => {
+        sqliteGetUserExercisesByDate(selectedDate).then(data => setAllExerciseData(data));
+    }, [updateExercisesVersion, selectedDate])
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
