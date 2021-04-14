@@ -1,27 +1,53 @@
 import React from "react";
-import {ScrollView, StyleSheet} from "react-native";
+import {ScrollView, StyleProp, StyleSheet, ViewStyle} from "react-native";
 import {SafeAreaView} from "react-native-safe-area-context"
 import {StatItem} from "../components/StatItem";
 import {Col, Grid, Row} from "react-native-easy-grid";
-import DropDownPicker from 'react-native-dropdown-picker';
+import DropDownPicker, {ItemType} from 'react-native-dropdown-picker';
+import {colors} from "../constants/style";
+import {Ionicons} from "@expo/vector-icons";
+import {SearchExerciseDataItem} from "../database/databaseTypes";
+
+const containerStyle = {
+    height: 50,
+    margin: 4
+}
+
+const dropdownStyle = {
+    backgroundColor: '#fafafa'
+}
+
+const dropdownItemStyle: StyleProp<ViewStyle> = {
+    justifyContent: "flex-start"
+}
+
+const EXERCISES: SearchExerciseDataItem[] = [
+    { id: 1, category: "biceps", title: "Bizeps Curls <3"},
+    { id: 2, category: "abs", title: "Bauch"},
+    { id: 3, category: "shoulders", title: "Schulter"},
+]
+
+const dropdownItems: ItemType[] = EXERCISES.map((e) => {
+    return {
+        label: e.title,
+        value: e.id,
+        // icon: () => <View style={[styles.exerciseCategoryImageContainer, {backgroundColor: colors.primary}]}><Image source={exerciseCategoryImages.biceps} style={styles.exerciseCategoryImage}/></View>
+    }
+})
 
 export const Records: React.FC = () => {
-
-
     return <SafeAreaView style={styles.container}>
         <DropDownPicker
-            items={[
-                {label: 'USA', value: 'usa'},
-                {label: 'UK', value: 'uk'},
-                {label: 'France', value: 'france'},
-            ]}
-            defaultValue={'usa'}
-            containerStyle={{height: 50, margin: 4}}
-            style={{backgroundColor: '#fafafa'}}
-            itemStyle={{
-                justifyContent: 'flex-start'
-            }}
-            dropDownStyle={{backgroundColor: '#fafafa'}}
+            items={dropdownItems}
+            placeholder="Select an exercise"
+            placeholderStyle={{color: colors.grey}}
+            containerStyle={containerStyle}
+            style={dropdownStyle}
+            itemStyle={dropdownItemStyle}
+            arrowColor={colors.grey}
+            arrowSize={26}
+            customArrowDown={(size, color) => <Ionicons name="chevron-down" size={size} color={color}/>}
+            customArrowUp={(size, color) => <Ionicons name="chevron-up" size={size} color={color}/>}
         />
 
         <ScrollView>
