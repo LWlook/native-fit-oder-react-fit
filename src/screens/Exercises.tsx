@@ -10,7 +10,7 @@ import {useSelectedDate} from "../zustand/useSelectedDate";
 import {HeaderButtons, Item} from "react-navigation-header-buttons";
 import HeaderButton from "../components/HeaderButton";
 import {CalendarModal} from "../components/CalendarModal";
-import {sqliteGetUserExercises} from "../database/sqliteTypeSave";
+import {sqliteGetUserExercisesByDate} from "../database/sqliteTypeSave";
 import {Transition, Transitioning, TransitioningView} from "react-native-reanimated";
 import {ExerciseDataItem} from "../database/databaseTypes";
 import {useUpdateExercises} from "../zustand/useUpdateExercises";
@@ -20,7 +20,7 @@ export const Exercises: React.FC = () => {
     const updateExercisesVersion = useUpdateExercises(s => s.updateExercisesVersion)
 
     useEffect(() => {
-        sqliteGetUserExercises().then(data => setAllExerciseData(data));
+        sqliteGetUserExercisesByDate("2021-04-14").then(data => setAllExerciseData(data));
     }, [updateExercisesVersion])
 
     const navigation = useNavigation()

@@ -38,9 +38,9 @@ const exercises = [
 ]
 
 const exercises_user = [
-    "1", "1", "[{\"weight\": 80, \"reps\": 5},{\"weight\": 100, \"reps\": 5},{\"weight\": 120, \"reps\": 5}]",
-    "2", "0", "[{\"weight\": 80, \"reps\": 5},{\"weight\": 100, \"reps\": 5},{\"weight\": 120, \"reps\": 5}]",
-    "3", "1", "[{\"weight\": 80, \"reps\": 5},{\"weight\": 100, \"reps\": 5},{\"weight\": 120, \"reps\": 5}]",
+    "1", "1", "[{\"weight\": 80, \"reps\": 5},{\"weight\": 100, \"reps\": 5},{\"weight\": 120, \"reps\": 5}]", "2021-04-14",
+    "2", "0", "[{\"weight\": 80, \"reps\": 5},{\"weight\": 100, \"reps\": 5},{\"weight\": 120, \"reps\": 5}]", "2021-04-14",
+    "3", "1", "[{\"weight\": 80, \"reps\": 5},{\"weight\": 100, \"reps\": 5},{\"weight\": 120, \"reps\": 5}]", "2021-04-13",
 ]
 
 const generateValuesPlaceholder = (count: number, innercount: number = 1) => {
@@ -71,11 +71,11 @@ const migrationExercises: Query[] = [
 
 const migrationUserExercises: Query[] = [
     {
-        sql: "CREATE TABLE IF NOT EXISTS `exercises_user` (`exercise_id` VARCHAR(256) NOT NULL, `increaseInExerciseSet` NUMERIC NOT NULL, `exerciseSet` TEXT NOT NULL);",
+        sql: "CREATE TABLE IF NOT EXISTS `exercises_user` (`exercise_id` VARCHAR(256) NOT NULL, `increaseInExerciseSet` NUMERIC NOT NULL, `exerciseSet` TEXT NOT NULL, `date` TEXT NOT NULL);",
         args: []
     },
     {
-        sql: "INSERT INTO `exercises_user` (`exercise_id`, `increaseInExerciseSet`, `exerciseSet`) VALUES " + generateValuesPlaceholder(exercises_user.length, 3),
+        sql: "INSERT INTO `exercises_user` (`exercise_id`, `increaseInExerciseSet`, `exerciseSet`, `date`) VALUES " + generateValuesPlaceholder(exercises_user.length, 4),
         args: exercises_user
     },
     {

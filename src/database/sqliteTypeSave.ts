@@ -40,9 +40,9 @@ const fetchTypeSaveSql = async (queries: Query[]): Promise<SQLiteCallback> => {
     return sqlResults;
 }
 
-export const sqliteGetUserExercises = async (): Promise<ExerciseDataItem[]> => {
+export const sqliteGetUserExercisesByDate = async (date: string): Promise<ExerciseDataItem[]> => {
     await sqliteCheckAndFill()
-    let sqLiteCallback = await fetchTypeSaveSql(sqliteGetUserExercisesQuery())
+    let sqLiteCallback = await fetchTypeSaveSql(sqliteGetUserExercisesQuery(date))
     if (!sqLiteCallback.isSuccessful) return [];
     // console.log("sqliteGetUserExercisesQuery", sqLiteCallback.resultSets[0].rows)
 
