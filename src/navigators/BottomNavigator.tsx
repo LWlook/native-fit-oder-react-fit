@@ -10,7 +10,8 @@ const Tab = createBottomTabNavigator();
 export const BottomNavigator: React.FC = () => {
     return <Tab.Navigator tabBarOptions={{
         activeTintColor: colors.primary,
-        inactiveTintColor: colors.secondary
+        inactiveTintColor: colors.secondary,
+        keyboardHidesTabBar: true
     }}>
 
         <Tab.Screen name="Home" component={HomeNavigator} options={HomeNavigatorOptions}/>

@@ -37,7 +37,7 @@ export const ChooseExercise = () => {
     return <SafeAreaView style={styles.container}>
 
         <View style={styles.inputContainer}>
-            <TextInput style={styles.input} onChangeText={filterExercises} placeholder="Search exercises" placeholderTextColor={colors.grey} numberOfLines={1} autoFocus={true} />
+            <TextInput style={styles.input} onChangeText={filterExercises} placeholder="Search exercises" placeholderTextColor={colors.grey} numberOfLines={1} />
             <View style={styles.searchIcon}>
             <Ionicons name="md-search" color={colors.grey} size={22}/>
             </View>
