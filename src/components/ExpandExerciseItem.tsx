@@ -22,8 +22,12 @@ export const ExpandExerciseItem: React.FC<ExerciseItemProps> = ({item, onPress, 
     const setsAvailable = item.exerciseSet.length > 0
 
     const toggleExpanded = () => {
-        onToggleExpanded()
-        setExpanded(prev => !prev)
+        if (setsAvailable) {
+            onToggleExpanded()
+            setExpanded(prev => !prev)
+        } else {
+            onPress()
+        }
     }
 
     const increasedInExerciseSet = !!item.increaseInExerciseSet
