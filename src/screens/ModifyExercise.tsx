@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from "react";
 import {StyleSheet, View} from "react-native";
-import {HomeStackParamList} from "../navigators/HomeNavigator";
+import {HomeStackParamList, ProfileScreenNavigationProp} from "../navigators/HomeNavigator";
 import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
 import {ExerciseInput} from "../components/ExerciseInput";
 import {Button} from "../components/Button";
@@ -20,7 +20,7 @@ export const ModifyExercise: React.FC = () => {
     const [sets, setSets] = useState<ExerciseDataItemSetWithId[]>([])
     const [exerciseInformation, setExerciseInformation] = useState<ExerciseDataItem | null>(null)
     const route = useRoute<RouteProp<HomeStackParamList, 'ModifyExercise'>>()
-    const navigation = useNavigation()
+    const navigation = useNavigation<ProfileScreenNavigationProp>()
     const {exerciseId, mode, exerciseName} = route.params
     const [weight, setWeight] = useState<number | null>(null)
     const [reps, setReps] = useState<number | null>(null)

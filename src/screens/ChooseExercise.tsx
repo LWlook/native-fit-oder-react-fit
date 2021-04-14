@@ -7,19 +7,20 @@ import {Transition, Transitioning, TransitioningView} from "react-native-reanima
 import {SearchExerciseDataItem} from "../database/databaseTypes";
 import {colors} from "../constants/style";
 import {useExercisesList} from "../zustand/useExercisesList";
+import {ProfileScreenNavigationProp} from "../navigators/HomeNavigator";
 
 const transition = <Transition.Change interpolation="easeInOut"/>
 
 export const ChooseExercise = () => {
     const exercisesList = useExercisesList(e => e.exercisesList)
     const [exercises, setExercises] = useState<SearchExerciseDataItem[]>(exercisesList)
-    const navigation = useNavigation()
+    const navigation = useNavigation<ProfileScreenNavigationProp>()
 
     const transitionRef = useRef<TransitioningView | null>(null)
 
     const renderItem: ListRenderItem<SearchExerciseDataItem> = ({item}) => {
         return <SearchExerciseItem item={item} onPress={() => navigation.navigate('ModifyExercise', {
-            exerciseId: null,
+            exerciseId: item.rowid,
             mode: 'create',
             exerciseName: item.title
         })}/>

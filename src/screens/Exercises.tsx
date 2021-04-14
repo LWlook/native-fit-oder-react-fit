@@ -14,11 +14,12 @@ import {sqliteGetUserExercisesByDate} from "../database/sqliteTypeSave";
 import {Transition, Transitioning, TransitioningView} from "react-native-reanimated";
 import {ExerciseDataItem} from "../database/databaseTypes";
 import {useUpdateExercises} from "../zustand/useUpdateExercises";
+import {ProfileScreenNavigationProp} from "../navigators/HomeNavigator";
 
 export const Exercises: React.FC = () => {
 
     const updateExercisesVersion = useUpdateExercises(s => s.updateExercisesVersion)
-    const navigation = useNavigation()
+    const navigation = useNavigation<ProfileScreenNavigationProp>()
     const [calendarModalVisible, setCalendarModalVisible] = useState<boolean>(false)
     const [allExerciseData, setAllExerciseData] = useState<ExerciseDataItem[]>([])
     const selectedDate = useSelectedDate(state => state.selectedDate)

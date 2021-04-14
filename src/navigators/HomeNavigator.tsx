@@ -1,5 +1,5 @@
 import React from "react";
-import {CardStyleInterpolators, createStackNavigator} from "@react-navigation/stack";
+import {CardStyleInterpolators, createStackNavigator, StackNavigationProp} from "@react-navigation/stack";
 import {Exercises} from "../screens/Exercises";
 import {stackNavOptions} from "../utils/stackNavOptions";
 import {ModifyExercise} from "../screens/ModifyExercise";
@@ -16,6 +16,8 @@ export type HomeStackParamList = {
         mode: ModifyExerciseMode
     }
 }
+
+export type ProfileScreenNavigationProp = StackNavigationProp<HomeStackParamList>
 
 const Stack = createStackNavigator<HomeStackParamList>();
 
