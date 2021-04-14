@@ -19,6 +19,7 @@ export const ExpandExerciseItem: React.FC<ExerciseItemProps> = ({item, onPress, 
     const expandIconName = expanded ? "md-close" : "chevron-down"
 
     const lastExerciseSet = item.exerciseSet[item.exerciseSet.length - 1]
+    const setsAvailable = item.exerciseSet.length > 0
 
     const toggleExpanded = () => {
         onToggleExpanded()
@@ -34,16 +35,18 @@ export const ExpandExerciseItem: React.FC<ExerciseItemProps> = ({item, onPress, 
                 <Col style={styles.exerciseTextContainer}>
                     <Text style={styles.exerciseHeading}>{item.title}</Text>
                     <View style={{flexDirection: "row", alignItems: "center"}}>
-                        {increasedInExerciseSet &&
+                        {increasedInExerciseSet && setsAvailable &&
                         <Ionicons name="md-trending-up-outline" size={16} color={colors.increase}/> }
-                        {!increasedInExerciseSet &&
+                        {!increasedInExerciseSet && setsAvailable &&
                         <Ionicons name="md-trending-down-outline" size={16} color={colors.decrease}/> }
                         { lastExerciseSet && <Text style={styles.exerciseInfo}>{lastExerciseSet.reps}x {lastExerciseSet.weight} kg</Text> }
                     </View>
                 </Col>
-                <Col style={styles.closeIcon}>
+
+                {setsAvailable && <Col style={styles.closeIcon}>
                     <Ionicons name={expandIconName} size={32} color={colors.grey}/>
                 </Col>
+                }
             </Row>
 
             { expanded && item.exerciseSet.map((exerciseSet, index) => (
