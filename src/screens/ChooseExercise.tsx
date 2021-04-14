@@ -6,17 +6,13 @@ import {SearchExerciseItem} from "../components/SearchExercisteItem";
 import {Transition, Transitioning, TransitioningView} from "react-native-reanimated";
 import {SearchExerciseDataItem} from "../database/databaseTypes";
 import {colors} from "../constants/style";
+import {useExercisesList} from "../zustand/useExercisesList";
 
 const transition = <Transition.Change interpolation="easeInOut"/>
 
-const EXERCISES: SearchExerciseDataItem[] = [
-    {rowid: 1, category: "biceps", title: "Bizeps Curls <3"},
-    {rowid: 2, category: "abs", title: "Bauch"},
-    {rowid: 3, category: "shoulders", title: "Schulter"},
-]
-
 export const ChooseExercise = () => {
-    const [exercises, setExercises] = useState<SearchExerciseDataItem[]>(EXERCISES)
+    const exercisesList = useExercisesList(e => e.exercisesList)
+    const [exercises, setExercises] = useState<SearchExerciseDataItem[]>(exercisesList)
     const navigation = useNavigation()
 
     const transitionRef = useRef<TransitioningView | null>(null)
@@ -30,7 +26,7 @@ export const ChooseExercise = () => {
     }
 
     const filterExercises = (filter: string) => {
-        setExercises(EXERCISES.filter((ex) => ex.title.toLowerCase().startsWith(filter.toLowerCase())))
+        setExercises(exercisesList.filter((ex) => ex.title.toLowerCase().startsWith(filter.toLowerCase())))
         transitionRef.current?.animateNextTransition()
     }
 

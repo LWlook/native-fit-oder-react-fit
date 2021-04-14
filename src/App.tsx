@@ -1,10 +1,19 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {registerRootComponent} from "expo";
 import {NavigationContainer} from "@react-navigation/native";
 import {BottomNavigator} from "./navigators/BottomNavigator";
 import {StatusBar} from "react-native";
+import {useExercisesList} from "./zustand/useExercisesList";
+import {sqliteGetAllExercises} from "./database/sqliteTypeSave";
 
 export default function App() {
+
+    const setExercisesList = useExercisesList(e => e.setExercisesList)
+
+    useEffect(() => {
+        sqliteGetAllExercises().then(d => setExercisesList(d))
+    }, [])
+
     return (
         <NavigationContainer>
             <StatusBar barStyle="light-content"/>
