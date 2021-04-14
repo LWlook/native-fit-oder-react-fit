@@ -21,7 +21,8 @@ export const ModifyExercise: React.FC = () => {
     const [exerciseInformation, setExerciseInformation] = useState<ExerciseDataItem | null>(null)
     const route = useRoute<RouteProp<HomeStackParamList, 'ModifyExercise'>>()
     const navigation = useNavigation<ProfileScreenNavigationProp>()
-    const {exerciseId, mode, exerciseName} = route.params
+    const { exerciseName, searchExerciseId} = route.params
+    const exerciseId = useRef<number | null>(route.params.exerciseId)
     const [weight, setWeight] = useState<number | null>(null)
     const [reps, setReps] = useState<number | null>(null)
     const [modifySetId, setModifySetId] = useState<string | null>(null)
@@ -29,10 +30,12 @@ export const ModifyExercise: React.FC = () => {
     const transition = <Transition.Change interpolation="easeInOut"/>
     const selectedDate = useSelectedDate(state => state.selectedDate)
     const isSetSelected = modifySetId != null
+    const isInCreateMode = exerciseId.current === null
+    const isInEditMode = !isInCreateMode
 
     useEffect(() => {
-        if (exerciseId !== null && mode === "edit") {
-            sqliteGetExercise(exerciseId).then((data) => {
+        if (isInEditMode) {
+            sqliteGetExercise(exerciseId.current!).then((data) => {
                 if (data == null) return
                 const exerciseDataItemSetWithId: ExerciseDataItemSetWithId[] = data.exerciseSet.map((s) => {
                     return {
@@ -61,12 +64,12 @@ export const ModifyExercise: React.FC = () => {
 
     const buildExerciseDataItem = (sets: ExerciseDataItemSet[]): ExerciseDataItem => {
         return {
-            rowid: exerciseInformation?.rowid ?? 0,
+            rowid: searchExerciseId ?? 0,
             increaseInExerciseSet: 0,
             title: exerciseInformation?.title ?? "",
             category: exerciseInformation?.category ?? "shoulders",
             exerciseSet: sets,
-            exerciseid: exerciseId,
+            exerciseid: exerciseId.current ?? 0,
             date: exerciseInformation?.date ?? selectedDate
         }
     }
@@ -90,8 +93,8 @@ export const ModifyExercise: React.FC = () => {
         setSets(prev => {
             const exerciseSet = [...prev, newSet]
             const exerciseDataItem = buildExerciseDataItem(exerciseSet)
-            if (mode === "edit") sqliteUpdateExerciseSet(exerciseDataItem).then()
-            if (mode === "create") sqliteCreateExerciseSet(exerciseDataItem).then()
+            if (exerciseId.current === null) sqliteCreateExerciseSet(exerciseDataItem).then(id => exerciseId.current = id)
+            else sqliteUpdateExerciseSet(exerciseDataItem).then()
             return exerciseSet
         })
 
