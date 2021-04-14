@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {ScrollView, StyleProp, StyleSheet, View, ViewStyle} from "react-native";
 import {StatItem} from "../components/StatItem";
 import {Col, Grid, Row} from "react-native-easy-grid";
@@ -7,6 +7,8 @@ import {colors} from "../constants/style";
 import {Ionicons} from "@expo/vector-icons";
 import ExerciseIcon from "../components/ExerciseIcon";
 import {useExercisesList} from "../zustand/useExercisesList";
+import {RecordItem, SearchExerciseDataItem} from "../database/databaseTypes";
+import {sqliteGetRecordsPerExercise} from "../database/sqliteTypeSave";
 
 const containerStyle = {
     height: 50,
@@ -24,16 +26,23 @@ const dropdownItemStyle: StyleProp<ViewStyle> = {
 
 export const Records: React.FC = () => {
     const exercisesList = useExercisesList(e => e.exercisesList)
-
     const dropdownItems: ItemType[] = exercisesList.map((e) => ({
         label: e.title,
         value: e.rowid,
         icon: () => <ExerciseIcon category={e.category} size={30} imageSize={23}/>
     }))
+    const [recordItem, setRecordItem] = useState<RecordItem | null>(null)
+    const [selectedExercise, setSelectedExercise] = useState<SearchExerciseDataItem | null>(null)
+
+    useEffect(() => {
+        if (selectedExercise == null) return
+        sqliteGetRecordsPerExercise(selectedExercise).then(d => setRecordItem(d))
+    }, [selectedExercise])
 
     return <View style={styles.container}>
         <DropDownPicker
             items={dropdownItems}
+            onChangeItem={(t: ItemType) => setSelectedExercise({title: t.label, category: "chest", rowid: t.value})}
             placeholder="Select an exercise"
             placeholderStyle={{color: colors.grey}}
             containerStyle={containerStyle}
@@ -46,25 +55,27 @@ export const Records: React.FC = () => {
             customArrowUp={(size, color) => <Ionicons name="chevron-up" size={size} color={color}/>}
         />
 
+        {recordItem &&
         <ScrollView>
             <Grid>
                 <Row>
-                    <Col><StatItem title="Last workout" value="2021-04-13"/></Col>
+                    <Col><StatItem title="Last workout" value={recordItem.lastExerciseDate.toString()}/></Col>
                 </Row>
                 <Row>
-                    <Col><StatItem title="Total workouts" value="1"/></Col>
-                    <Col><StatItem title="Total sets" value="2"/></Col>
+                    <Col><StatItem title="Total workouts" value={recordItem.totalWorkouts.toString()}/></Col>
+                    <Col><StatItem title="Total sets" value={recordItem.totalSets.toString()}/></Col>
                 </Row>
                 <Row>
-                    <Col><StatItem title="Total reps" value="25"/></Col>
-                    <Col><StatItem title="Total volume" value="1250 kgs"/></Col>
+                    <Col><StatItem title="Total reps" value={recordItem.totalReps.toString()}/></Col>
+                    <Col><StatItem title="Total volume" value={recordItem.totalWeight.toString()}/></Col>
                 </Row>
                 <Row>
-                    <Col><StatItem title="Max weight" value="50 kgs"/></Col>
-                    <Col><StatItem title="Max reps" value="25"/></Col>
+                    <Col><StatItem title="Max weight" value={recordItem.maxWeight.toString()}/></Col>
+                    <Col><StatItem title="Max reps" value={recordItem.maxReps.toString()}/></Col>
                 </Row>
             </Grid>
         </ScrollView>
+        }
     </View>
 }
 
