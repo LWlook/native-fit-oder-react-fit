@@ -1,6 +1,6 @@
-import React, {useCallback, useMemo} from "react";
-import {DateObject, Calendar} from "react-native-calendars";
-import {StyleSheet, View, Modal, TouchableWithoutFeedback, Dimensions} from "react-native";
+import React, {useCallback} from "react";
+import {Calendar, DateObject} from "react-native-calendars";
+import {Dimensions, Modal, StyleSheet, TouchableWithoutFeedback, View} from "react-native";
 import {useSelectedDate} from "../zustand/useSelectedDate";
 import {colors} from "../constants/style";
 
