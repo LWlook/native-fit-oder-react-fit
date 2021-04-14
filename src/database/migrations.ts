@@ -22,7 +22,7 @@ const exercises = [
     "Chest Press", "chest",
 
     "Barbell Row", "back",
-    "Deaflift", "back",
+    "Deadlift", "back",
     "Lat Pulldown", "back",
     "Machine Shrug", "back",
 
