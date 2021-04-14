@@ -1,12 +1,12 @@
 import React from "react";
-import {ScrollView, StyleProp, StyleSheet, ViewStyle} from "react-native";
-import {SafeAreaView} from "react-native-safe-area-context"
+import {ScrollView, StyleProp, StyleSheet, ViewStyle, SafeAreaView} from "react-native";
 import {StatItem} from "../components/StatItem";
 import {Col, Grid, Row} from "react-native-easy-grid";
 import DropDownPicker, {ItemType} from 'react-native-dropdown-picker';
 import {colors} from "../constants/style";
 import {Ionicons} from "@expo/vector-icons";
 import {SearchExerciseDataItem} from "../database/databaseTypes";
+import ExerciseIcon from "../components/ExerciseIcon";
 
 const containerStyle = {
     height: 50,
@@ -19,21 +19,20 @@ const dropdownStyle = {
 
 const dropdownItemStyle: StyleProp<ViewStyle> = {
     justifyContent: "flex-start"
+
 }
 
 const EXERCISES: SearchExerciseDataItem[] = [
-    { id: 1, category: "biceps", title: "Bizeps Curls <3"},
-    { id: 2, category: "abs", title: "Bauch"},
-    { id: 3, category: "shoulders", title: "Schulter"},
+    {rowid: 1, category: "biceps", title: "Bizeps Curls <3"},
+    {rowid: 2, category: "abs", title: "Bauch"},
+    {rowid: 3, category: "shoulders", title: "Schulter"},
 ]
 
-const dropdownItems: ItemType[] = EXERCISES.map((e) => {
-    return {
-        label: e.title,
-        value: e.id,
-        // icon: () => <View style={[styles.exerciseCategoryImageContainer, {backgroundColor: colors.primary}]}><Image source={exerciseCategoryImages.biceps} style={styles.exerciseCategoryImage}/></View>
-    }
-})
+const dropdownItems: ItemType[] = EXERCISES.map((e) => ({
+    label: e.title,
+    value: e.rowid,
+    icon: () => <ExerciseIcon category={e.category} size={30} imageSize={23}/>
+}))
 
 export const Records: React.FC = () => {
     return <SafeAreaView style={styles.container}>
@@ -44,6 +43,7 @@ export const Records: React.FC = () => {
             containerStyle={containerStyle}
             style={dropdownStyle}
             itemStyle={dropdownItemStyle}
+            labelStyle={styles.dropdownLabelStyle}
             arrowColor={colors.grey}
             arrowSize={26}
             customArrowDown={(size, color) => <Ionicons name="chevron-down" size={size} color={color}/>}
@@ -73,6 +73,9 @@ export const Records: React.FC = () => {
 }
 
 const styles = StyleSheet.create({
+    dropdownLabelStyle: {
+        textAlignVertical: 'center'
+    },
     container: {
         flex: 1,
         backgroundColor: '#eee',
