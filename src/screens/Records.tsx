@@ -1,12 +1,12 @@
 import React from "react";
-import {ScrollView, StyleProp, StyleSheet, ViewStyle, SafeAreaView} from "react-native";
+import {SafeAreaView, ScrollView, StyleProp, StyleSheet, ViewStyle} from "react-native";
 import {StatItem} from "../components/StatItem";
 import {Col, Grid, Row} from "react-native-easy-grid";
 import DropDownPicker, {ItemType} from 'react-native-dropdown-picker';
 import {colors} from "../constants/style";
 import {Ionicons} from "@expo/vector-icons";
-import {SearchExerciseDataItem} from "../database/databaseTypes";
 import ExerciseIcon from "../components/ExerciseIcon";
+import {useExercisesList} from "../zustand/useExercisesList";
 
 const containerStyle = {
     height: 50,
@@ -22,19 +22,16 @@ const dropdownItemStyle: StyleProp<ViewStyle> = {
 
 }
 
-const EXERCISES: SearchExerciseDataItem[] = [
-    {rowid: 1, category: "biceps", title: "Bizeps Curls <3"},
-    {rowid: 2, category: "abs", title: "Bauch"},
-    {rowid: 3, category: "shoulders", title: "Schulter"},
-]
-
-const dropdownItems: ItemType[] = EXERCISES.map((e) => ({
-    label: e.title,
-    value: e.rowid,
-    icon: () => <ExerciseIcon category={e.category} size={30} imageSize={23}/>
-}))
-
 export const Records: React.FC = () => {
+    // TODO: Ersetzen durch alle Übungen die jemals gemacht worden sind
+    const exercisesList = useExercisesList(e => e.exercisesList)
+
+    const dropdownItems: ItemType[] = exercisesList.map((e) => ({
+        label: e.title,
+        value: e.rowid,
+        icon: () => <ExerciseIcon category={e.category} size={30} imageSize={23}/>
+    }))
+
     return <SafeAreaView style={styles.container}>
         <DropDownPicker
             items={dropdownItems}
