@@ -99,7 +99,7 @@ export const ModifyExercise: React.FC = () => {
 
     return <View style={styles.container}>
                 <View>
-                    <ExerciseInput title="Weight" value={weight} onChangeValue={setWeight} stepSize={2.5}/>
+                    <ExerciseInput title="Weight (kgs)" value={weight} onChangeValue={setWeight} stepSize={2.5}/>
                     <ExerciseInput title="Reps" value={reps} onChangeValue={setReps} stepSize={1}/>
                     <View style={styles.buttonContainer}>
                         {!isSetSelected && <Button title="SAVE" onPress={saveSet}/>}

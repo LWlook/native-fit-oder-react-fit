@@ -1,5 +1,6 @@
 import React from "react"
 import {View, Text, StyleSheet, TouchableOpacity} from "react-native";
+import {colors} from "../constants/style";
 
 export interface SetProps {
     weight: number
@@ -24,9 +25,10 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
         justifyContent: "space-around",
+        borderColor: colors.grey,
         borderWidth: 1,
-        padding: 4,
-        paddingVertical: 8,
+        padding: 6,
+        paddingVertical: 10,
         borderRadius: 4,
         marginVertical: 3
     },
