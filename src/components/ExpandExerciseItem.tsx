@@ -1,9 +1,10 @@
 import React, {useState} from "react";
-import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {Col, Grid, Row} from "react-native-easy-grid";
 import {Ionicons} from '@expo/vector-icons';
-import {colors, exerciseCategoryColors, exerciseCategoryImages} from "../constants/style";
+import {colors} from "../constants/style";
 import {ExerciseDataItem} from "../database/databaseTypes";
+import TouchableExerciseIcon from "./TouchableExerciseIcon";
 
 interface ExerciseItemProps {
     item: ExerciseDataItem
@@ -17,8 +18,6 @@ export const ExpandExerciseItem: React.FC<ExerciseItemProps> = ({item, onPress, 
     const [expanded, setExpanded] = useState<boolean>(false)
     const expandIconName = expanded ? "md-close" : "chevron-down"
 
-    const exerciseBackgroundColor = exerciseCategoryColors[item.category]
-    const exerciseCategoryImage = exerciseCategoryImages[item.category]
     const lastExerciseSet = item.exerciseSet[item.exerciseSet.length - 1]
 
     const toggleExpanded = () => {
@@ -29,11 +28,7 @@ export const ExpandExerciseItem: React.FC<ExerciseItemProps> = ({item, onPress, 
     return <TouchableOpacity onPress={toggleExpanded} style={styles.container} activeOpacity={0.6}>
         <Grid style={{overflow: "hidden"}}>
             <Row style={styles.headContainer}>
-                <Col style={[styles.exerciseCategoryImageContainer, {backgroundColor: exerciseBackgroundColor}]}>
-                    <TouchableOpacity onPress={onPress}>
-                    <Image source={exerciseCategoryImage} style={styles.exerciseCategoryImage}/>
-                    </TouchableOpacity>
-                </Col>
+                <TouchableExerciseIcon onPress={onPress} category={item.category} size={50} imageSize={35}/>
                 <Col style={styles.exerciseTextContainer}>
                     <Text style={styles.exerciseHeading}>{item.title}</Text>
                     <View style={{flexDirection: "row", alignItems: "center"}}>
@@ -66,18 +61,6 @@ const styles = StyleSheet.create({
         marginLeft: 15,
         justifyContent: "center",
         alignItems: "flex-start"
-    },
-    exerciseCategoryImage: {
-        width: 35,
-        height: 35
-    },
-    exerciseCategoryImageContainer: {
-        width: 50,
-        height: 50,
-        borderRadius: 25,
-        overflow: "hidden",
-        justifyContent: "center",
-        alignItems: "center"
     },
     closeIcon: {
         flexGrow: 1,

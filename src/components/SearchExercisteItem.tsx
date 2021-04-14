@@ -1,8 +1,8 @@
 import React from "react";
-import {Image, StyleSheet, Text, TouchableOpacity} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity} from 'react-native';
 import {Col, Grid, Row} from "react-native-easy-grid";
-import {exerciseCategoryColors, exerciseCategoryImages} from "../constants/style";
 import {SearchExerciseDataItem} from "../database/databaseTypes";
+import ExerciseIcon from "./ExerciseIcon";
 
 interface ExerciseItemProps {
     item: SearchExerciseDataItem
@@ -11,16 +11,10 @@ interface ExerciseItemProps {
 }
 
 export const SearchExerciseItem: React.FC<ExerciseItemProps> = ({item, onPress}) => {
-
-    const exerciseBackgroundColor = exerciseCategoryColors[item.category]
-    const exerciseCategoryImage = exerciseCategoryImages[item.category]
-
     return <TouchableOpacity onPress={onPress} style={styles.container} activeOpacity={0.6}>
         <Grid style={{overflow: "hidden"}}>
             <Row style={styles.headContainer}>
-                <Col style={[styles.exerciseCategoryImageContainer, {backgroundColor: exerciseBackgroundColor}]}>
-                    <Image source={exerciseCategoryImage} style={styles.exerciseCategoryImage}/>
-                </Col>
+                <ExerciseIcon category={item.category} />
                 <Col style={styles.exerciseTextContainer}>
                     <Text style={styles.exerciseHeading} numberOfLines={1}>{item.title}</Text>
                 </Col>
@@ -35,18 +29,6 @@ const styles = StyleSheet.create({
         marginLeft: 15,
         justifyContent: "center",
         alignItems: "flex-start"
-    },
-    exerciseCategoryImage: {
-        width: 25,
-        height: 25
-    },
-    exerciseCategoryImageContainer: {
-        width: 40,
-        height: 40,
-        borderRadius: 20,
-        overflow: "hidden",
-        justifyContent: "center",
-        alignItems: "center"
     },
     exerciseCols: {
         alignItems: "center"
