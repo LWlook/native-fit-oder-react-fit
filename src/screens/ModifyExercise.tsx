@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {StyleSheet, View, ToastAndroid, TouchableWithoutFeedback} from "react-native";
+import {StyleSheet, View} from "react-native";
 import {HomeStackParamList} from "../navigators/HomeNavigator";
 import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
 import {ExerciseInput} from "../components/ExerciseInput";
@@ -7,59 +7,67 @@ import {Button} from "../components/Button";
 import {Sets} from "../components/Sets";
 import {colors} from "../constants/style";
 import {useUpdateExercises} from "../zustand/useUpdateExercises";
-
-const sets = [
-    {
-        weight: 2,
-        reps: 2,
-        id: 1
-    },
-    {
-        weight: 2,
-        reps: 2,
-        id: 2
-    },
-    {
-        weight: 2,
-        reps: 2,
-        id: 3
-    },
-    {
-        weight: 2,
-        reps: 2,
-        id: 4
-    },
-    {
-        weight: 2,
-        reps: 2,
-        id: 5
-    },
-    {
-        weight: 2,
-        reps: 2,
-        id: 6
-    }
-]
-
+import {ExerciseDataItemSetWithId} from "../components/Set";
+import {uniqueId} from "../utils/idGenerator";
+import {ExerciseDataItem, ExerciseDataItemSet, SearchExerciseDataItem} from "../database/databaseTypes";
+import {sqliteGetExercise, sqliteUpdateExerciseSet} from "../database/sqliteTypeSave";
 
 export const ModifyExercise: React.FC = () => {
 
     const updateExercises = useUpdateExercises(s => s.updateExercises)
 
     useEffect(() => {
+        if (exerciseId !== null) {
+            sqliteGetExercise(exerciseId).then((data) => {
+                if (data == null) return
+                const exerciseDataItemSetWithId: ExerciseDataItemSetWithId[] = data.exerciseSet.map((s) => {
+                    return {
+                        reps: s.reps,
+                        weight: s.weight,
+                        id: uniqueId()
+                    }
+                })
+
+                setSets(exerciseDataItemSetWithId)
+
+                setExerciseInformation({
+                    category: data.category,
+                    title: data.title,
+                    rowid: data.rowid
+                })
+
+                setWeight(data.exerciseSet[data.exerciseSet.length - 1].weight)
+                setReps(data.exerciseSet[data.exerciseSet.length - 1].reps)
+            })
+        }
+
         return updateExercises
     }, [])
 
+
+    const [sets, setSets] = useState<ExerciseDataItemSetWithId[]>([])
+    const [exerciseInformation, setExerciseInformation] = useState<SearchExerciseDataItem | null>(null)
     const route = useRoute<RouteProp<HomeStackParamList, 'ModifyExercise'>>()
     const navigation = useNavigation()
     const {exerciseId, mode, exerciseName} = route.params
     const [weight, setWeight] = useState<number | null>(null)
     const [reps, setReps] = useState<number | null>(null)
-    const [modifySetId, setModifySetId] = useState<number | null>(null)
+    const [modifySetId, setModifySetId] = useState<string | null>(null)
 
     const isSetSelected = modifySetId != null
 
-    const pressedSet = (id: number) => {
+    const buildExerciseDataItem = (sets: ExerciseDataItemSet[]): ExerciseDataItem => {
+        return {
+            rowid: exerciseInformation?.rowid ?? 0,
+            increaseInExerciseSet: 0,
+            title: exerciseInformation?.title ?? "",
+            category: exerciseInformation?.category ?? "shoulders",
+            exerciseSet: sets,
+            exerciseid: exerciseId
+        }
+    }
+
+    const pressedSet = (id: string) => {
         const selectedSet = sets.find(s => s.id === id)
         if (!selectedSet) return
         setWeight(selectedSet.weight)
@@ -68,25 +76,53 @@ export const ModifyExercise: React.FC = () => {
     }
 
     const saveSet = () => {
-        console.log("Save a new set:")
-        console.log(weight)
-        console.log(reps)
-        // TODO
-    }
+        if (weight == null || reps == null) return
+            const newSet: ExerciseDataItemSetWithId = {
+                weight: weight,
+                reps: reps,
+                id: uniqueId()
+            }
+
+            setSets(prev => {
+                const exerciseSet = [...prev, newSet]
+                const exerciseDataItem = buildExerciseDataItem(exerciseSet)
+                if (mode === "edit") sqliteUpdateExerciseSet(exerciseDataItem).then()
+                if (mode === "create") console.log("NOT IMPLEMENTED")// TODO
+                return exerciseSet
+            })
+        }
+
 
     const updateSet = () => {
-        console.log("Update a set:")
-        console.log(modifySetId)
-        console.log(weight)
-        console.log(reps)
-        // TODO
+        if (modifySetId == null || weight == null || reps == null) return
+
+        setSets(prev => {
+            const updateIndex = prev.findIndex(s => s.id === modifySetId)
+            const updatedSets = [...prev]
+            const updatedSet: ExerciseDataItemSetWithId  = {
+                weight: weight,
+                reps: reps,
+                id: uniqueId()
+            }
+            if (updateIndex !== -1) updatedSets[updateIndex] = updatedSet
+
+            const exerciseDataItem = buildExerciseDataItem(updatedSets)
+            sqliteUpdateExerciseSet(exerciseDataItem).then()
+
+            return updatedSets
+        })
+
         setModifySetId(null)
     }
 
     const deleteSet = () => {
-        // TODO
-        console.log("Delete a set:")
-        console.log(modifySetId)
+        if (modifySetId == null) return
+        setSets(prev => {
+            const exerciseSet = prev.filter(e => e.id !== modifySetId)
+            const exerciseDataItem = buildExerciseDataItem(exerciseSet)
+            sqliteUpdateExerciseSet(exerciseDataItem).then()
+            return exerciseSet
+        })
         setModifySetId(null)
     }
 
@@ -101,25 +137,21 @@ export const ModifyExercise: React.FC = () => {
         });
     }, [navigation, exerciseName]);
 
-    useEffect(() => {
-        ToastAndroid.show("Screen started in mode: " + mode, ToastAndroid.SHORT);
-    }, [])
-
     return <View style={styles.container}>
-                <View>
-                    <ExerciseInput title="Weight (kgs)" value={weight} onChangeValue={setWeight} stepSize={2.5}/>
-                    <ExerciseInput title="Reps" value={reps} onChangeValue={setReps} stepSize={1}/>
-                    <View style={styles.buttonContainer}>
-                        {!isSetSelected && <Button title="SAVE" onPress={saveSet}/>}
-                        {!isSetSelected && <Button title="CLEAR" onPress={clearValues}/>}
-                        {isSetSelected && <Button title="UPDATE" onPress={updateSet} backgroundColor={colors.update}/>}
-                        {isSetSelected && <Button title="DELETE" onPress={deleteSet} backgroundColor={colors.delete}/>}
-                    </View>
-                </View>
-                <View style={styles.sets}>
-                    <Sets onPress={pressedSet} sets={sets}/>
-                </View>
+        <View>
+            <ExerciseInput title="Weight (kgs)" value={weight} onChangeValue={setWeight} stepSize={2.5}/>
+            <ExerciseInput title="Reps" value={reps} onChangeValue={setReps} stepSize={1}/>
+            <View style={styles.buttonContainer}>
+                {!isSetSelected && <Button title="SAVE" onPress={saveSet}/>}
+                {!isSetSelected && <Button title="CLEAR" onPress={clearValues}/>}
+                {isSetSelected && <Button title="UPDATE" onPress={updateSet} backgroundColor={colors.update}/>}
+                {isSetSelected && <Button title="DELETE" onPress={deleteSet} backgroundColor={colors.delete}/>}
             </View>
+        </View>
+        <View style={styles.sets}>
+            <Sets onPress={pressedSet} sets={sets}/>
+        </View>
+    </View>
 }
 
 const styles = StyleSheet.create({

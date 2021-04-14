@@ -1,14 +1,13 @@
 import React from "react"
-import {View, Text, StyleSheet, TouchableOpacity} from "react-native";
+import {StyleSheet, Text, TouchableOpacity} from "react-native";
 import {colors} from "../constants/style";
+import {ExerciseDataItemSet} from "../database/databaseTypes";
 
-export interface SetProps {
-    weight: number
-    reps: number
-    id: number
+export interface ExerciseDataItemSetWithId extends ExerciseDataItemSet {
+    id: string
 }
 
-export interface SetPropsWithCount extends SetProps{
+export interface SetPropsWithCount extends ExerciseDataItemSetWithId {
     count: number
     onPress(): void
 }

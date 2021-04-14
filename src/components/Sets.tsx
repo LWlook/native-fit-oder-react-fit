@@ -1,19 +1,19 @@
 import React from "react";
-import {Set, SetProps} from "./Set";
+import {ExerciseDataItemSetWithId, Set} from "./Set";
 import {FlatList, ListRenderItem, StyleSheet} from "react-native";
 
 interface SetsProps {
-    sets: SetProps[]
-    onPress(id: number): void
+    sets: ExerciseDataItemSetWithId[]
+    onPress(id: string): void
 }
 
 export const Sets: React.FC<SetsProps> = ({sets, onPress}) => {
 
-    const renderDisplaySet: ListRenderItem<SetProps> = ({item, index}) => (
+    const renderDisplaySet: ListRenderItem<ExerciseDataItemSetWithId> = ({item, index}) => (
         <Set count={index + 1} reps={item.reps} weight={item.weight} id={item.id} onPress={() => onPress(item.id)}/>
     )
 
-    return <FlatList<SetProps>
+    return <FlatList<ExerciseDataItemSetWithId>
         data={sets}
         renderItem={renderDisplaySet}
         contentContainerStyle={styles.flatlistContainer}
