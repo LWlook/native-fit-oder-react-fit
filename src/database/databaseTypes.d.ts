@@ -3,7 +3,7 @@ import {exerciseCategoryColors} from "../constants/style";
 export type ExerciseCategory = keyof typeof exerciseCategoryColors
 
 export type SearchExerciseDataItem = {
-    id: number
+    rowid: number
     title: string
     category: ExerciseCategory
 }

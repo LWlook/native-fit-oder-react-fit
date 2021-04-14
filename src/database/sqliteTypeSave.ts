@@ -1,6 +1,8 @@
 import {db} from "./db";
 import {Query, SQLError, SQLResultSet} from "expo-sqlite";
-import {ExerciseDataItem} from "./databaseTypes";
+import migrations from "./migrations";
+import {ExerciseDataItem, SearchExerciseDataItem} from "./databaseTypes";
+import {sqliteCheckMigrationsQuery, sqliteGetAllExcercisesQuery} from "./sqliteQueryMaker";
 
 export interface SQLiteCallback {
     errors: SQLError[],
@@ -38,11 +40,11 @@ const fetchTypeSaveSql = async (queries: Query[]): Promise<SQLiteCallback> => {
     return sqlResults;
 }
 
-export const sqliteGetAllExerciseData = async (): Promise<ExerciseDataItem[]> => {
+export const sqliteGetUserExercises = async (): Promise<ExerciseDataItem[]> => {
     await sqliteCheckAndFill()
     const DATA: ExerciseDataItem[] = [
         {
-            id: 0,
+            rowid: 0,
             title: 'Flat Barbell Bench Press',
             increaseInExerciseSet: true,
             category: "chest",
@@ -53,7 +55,7 @@ export const sqliteGetAllExerciseData = async (): Promise<ExerciseDataItem[]> =>
             ]
         },
         {
-            id: 1,
+            rowid: 1,
             category: "biceps",
             title: 'Close Grip Barbell Bench Press',
             increaseInExerciseSet: true,
@@ -64,7 +66,7 @@ export const sqliteGetAllExerciseData = async (): Promise<ExerciseDataItem[]> =>
             ]
         },
         {
-            id: 2,
+            rowid: 2,
             category: "shoulders",
             title: 'Incline Dumbbell Fly',
             increaseInExerciseSet: true,
@@ -75,20 +77,34 @@ export const sqliteGetAllExerciseData = async (): Promise<ExerciseDataItem[]> =>
             ]
         },
     ];
+
     return DATA;
 }
 
+export const sqliteGetAllExcercises = async (): Promise<SearchExerciseDataItem[]> => {
+    let sqLiteCallback = await fetchTypeSaveSql(sqliteGetAllExcercisesQuery())
+    if (!sqLiteCallback.isSuccessful) return [];
+    console.log("sqliteGetAllExcercises", sqLiteCallback.resultSets[0].rows)
+
+    const returnArray: SearchExerciseDataItem[] = [];
+    for (let i = 0; i < sqLiteCallback.resultSets[0].rows.length; i++) {
+        returnArray.push(sqLiteCallback.resultSets[0].rows.item(i))
+    }
+    return returnArray;
+}
+
 const sqliteCheckAndFill = async () => {
-    const queries: Query[] = [
-        {
-            sql: "CREATE TABLE `migrations` (`id` INT NOT NULL PRIMARY KEY, `batch` INT NOT NULL);",
-            args: []
-        },
-        {
-            sql: "SELECT * FROM migrations ORDER BY batch DESC LIMIT 1",
-            args: []
-        }
-    ]
-    const test = await fetchTypeSaveSql(queries)
-    console.log(test);
+    let sqLiteCallback = await fetchTypeSaveSql(sqliteCheckMigrationsQuery())
+    console.log("fetchTypeSaveSql", sqLiteCallback)
+
+    let actualMigration = -1;
+    if (sqLiteCallback.resultSets[1]?.rows.length > 0) {
+        actualMigration = sqLiteCallback.resultSets[1]?.rows.item(0).batch
+    }
+
+    while (actualMigration < migrations.length - 1) {
+        actualMigration++
+        sqLiteCallback = await fetchTypeSaveSql(migrations[actualMigration])
+        console.log(actualMigration, sqLiteCallback)
+    }
 }

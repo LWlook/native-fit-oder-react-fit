@@ -10,7 +10,7 @@ import {useSelectedDate} from "../zustand/useSelectedDate";
 import {HeaderButtons, Item} from "react-navigation-header-buttons";
 import HeaderButton from "../components/HeaderButton";
 import {CalendarModal} from "../components/CalendarModal";
-import {sqliteGetAllExerciseData} from "../database/sqliteTypeSave";
+import {sqliteGetUserExercises} from "../database/sqliteTypeSave";
 import {Transition, Transitioning, TransitioningView} from "react-native-reanimated";
 import {ExerciseDataItem} from "../database/databaseTypes";
 
@@ -39,14 +39,7 @@ export const Exercises: React.FC = () => {
 
 
     useEffect(() => {
-        sqliteGetAllExerciseData().then(data => setAllExerciseData(data));
-        // TODO: Lukas
-        // const fetchExercisesSync = async () => {
-        //     const exercises = await fetchTypeSaveSql<ExerciseDataItem>('select * from items where done = ?;', [0])
-        //     console.log(exercises)
-        // }
-        //
-        // fetchExercisesSync().then()
+        sqliteGetUserExercises().then(data => setAllExerciseData(data));
     }, []);
 
     const renderItem: ListRenderItem<ExerciseDataItem> = ({item}) => {
@@ -66,7 +59,7 @@ export const Exercises: React.FC = () => {
                 <FlatList<ExerciseDataItem>
                     data={allExerciseData}
                     renderItem={renderItem}
-                    keyExtractor={item => item.id + ''}
+                    keyExtractor={item => item.rowid + ''}
                     contentContainerStyle={styles.flatlistContainer}
                 />
             </Transitioning.View>
