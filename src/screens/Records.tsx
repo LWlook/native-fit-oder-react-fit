@@ -23,7 +23,6 @@ const dropdownItemStyle: StyleProp<ViewStyle> = {
 }
 
 export const Records: React.FC = () => {
-    // TODO: Ersetzen durch alle Übungen die jemals gemacht worden sind
     const exercisesList = useExercisesList(e => e.exercisesList)
 
     const dropdownItems: ItemType[] = exercisesList.map((e) => ({
