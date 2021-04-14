@@ -6,6 +6,7 @@ import {ExerciseInput} from "../components/ExerciseInput";
 import {Button} from "../components/Button";
 import {Sets} from "../components/Sets";
 import {colors} from "../constants/style";
+import {useUpdateExercises} from "../zustand/useUpdateExercises";
 
 const sets = [
     {
@@ -42,6 +43,13 @@ const sets = [
 
 
 export const ModifyExercise: React.FC = () => {
+
+    const updateExercises = useUpdateExercises(s => s.updateExercises)
+
+    useEffect(() => {
+        return updateExercises
+    }, [])
+
     const route = useRoute<RouteProp<HomeStackParamList, 'ModifyExercise'>>()
     const navigation = useNavigation()
     const {exerciseId, mode, exerciseName} = route.params

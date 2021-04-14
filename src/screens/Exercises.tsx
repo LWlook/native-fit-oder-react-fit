@@ -13,8 +13,16 @@ import {CalendarModal} from "../components/CalendarModal";
 import {sqliteGetUserExercises} from "../database/sqliteTypeSave";
 import {Transition, Transitioning, TransitioningView} from "react-native-reanimated";
 import {ExerciseDataItem} from "../database/databaseTypes";
+import {useUpdateExercises} from "../zustand/useUpdateExercises";
 
 export const Exercises: React.FC = () => {
+
+    const updateExercisesVersion = useUpdateExercises(s => s.updateExercisesVersion)
+
+    useEffect(() => {
+        sqliteGetUserExercises().then(data => setAllExerciseData(data));
+    }, [updateExercisesVersion])
+
     const navigation = useNavigation()
     const [calendarModalVisible, setCalendarModalVisible] = useState<boolean>(false)
     const [allExerciseData, setAllExerciseData] = useState<ExerciseDataItem[]>([])
@@ -36,11 +44,6 @@ export const Exercises: React.FC = () => {
             title: selectedDate
         });
     }, [navigation, selectedDate]);
-
-
-    useEffect(() => {
-        sqliteGetUserExercises().then(data => setAllExerciseData(data));
-    }, []);
 
     const renderItem: ListRenderItem<ExerciseDataItem> = ({item}) => {
         return <ExpandExerciseItem onToggleExpanded={() => transitionRef.current?.animateNextTransition()} item={item}
