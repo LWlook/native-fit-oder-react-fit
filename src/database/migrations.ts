@@ -38,9 +38,9 @@ const exercises = [
 ]
 
 const exercises_user = [
-    "1", "1", "[{\"weight\": 80, \"reps\": 5},{\"weight\": 100, \"reps\": 5},{\"weight\": 120, \"reps\": 5}]", "2021-04-14",
-    "2", "0", "[{\"weight\": 80, \"reps\": 5},{\"weight\": 100, \"reps\": 5},{\"weight\": 120, \"reps\": 5}]", "2021-04-14",
-    "3", "1", "[{\"weight\": 80, \"reps\": 5},{\"weight\": 100, \"reps\": 5},{\"weight\": 120, \"reps\": 5}]", "2021-04-13",
+    "1", "1", "[{\"weight\":80,\"reps\":5},{\"weight\":100,\"reps\":5},{\"weight\":120,\"reps\":5}]", "2021-04-14",
+    "2", "0", "[{\"weight\":80,\"reps\":5},{\"weight\":100,\"reps\":5},{\"weight\":120,\"reps\":5}]", "2021-04-14",
+    "3", "1", "[{\"weight\":80,\"reps\":5},{\"weight\":100,\"reps\":5},{\"weight\":120,\"reps\":5}]", "2021-04-13",
 ]
 
 const generateValuesPlaceholder = (count: number, innercount: number = 1) => {

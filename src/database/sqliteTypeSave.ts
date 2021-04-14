@@ -2,7 +2,13 @@ import {db} from "./db";
 import {Query, SQLError, SQLResultSet} from "expo-sqlite";
 import migrations from "./migrations";
 import {ExerciseDataItem, SearchExerciseDataItem} from "./databaseTypes";
-import {sqliteCheckMigrationsQuery, sqliteGetAllExercisesQuery, sqliteGetUserExercisesQuery} from "./sqliteQueryMaker";
+import {
+    sqliteCheckMigrationsQuery,
+    sqliteGetAllExercisesQuery,
+    sqliteGetExerciseQuery,
+    sqliteGetUserExercisesQuery,
+    sqliteUpdateExerciseSetQuery
+} from "./sqliteQueryMaker";
 
 export interface SQLiteCallback {
     errors: SQLError[],
@@ -52,6 +58,11 @@ export const sqliteGetUserExercisesByDate = async (date: string): Promise<Exerci
         userExercise.exerciseSet = JSON.parse(sqLiteCallback.resultSets[0].rows.item(i).exerciseSet)
         returnArray.push(userExercise)
     }
+
+    await sqliteGetExercise(1).then(r => {
+        if (r) sqliteUpdateExerciseSet(r)
+    })
+
     return returnArray;
 }
 
@@ -66,9 +77,26 @@ export const sqliteGetAllExercises = async (): Promise<SearchExerciseDataItem[]>
     return returnArray;
 }
 
+export const sqliteGetExercise = async (rowid: number): Promise<ExerciseDataItem | null> => {
+    let sqLiteCallback = await fetchTypeSaveSql(sqliteGetExerciseQuery(rowid))
+    // console.log("sqliteGetExerciseQuery", sqLiteCallback)
+    if (!sqLiteCallback.isSuccessful) return null;
+
+    let userExercise: ExerciseDataItem = sqLiteCallback.resultSets[0].rows.item(0)
+    userExercise.exerciseSet = JSON.parse(sqLiteCallback.resultSets[0].rows.item(0).exerciseSet)
+    return userExercise;
+}
+
+export const sqliteUpdateExerciseSet = async (dataItem: ExerciseDataItem): Promise<boolean> => {
+    if (dataItem.rowid <= 0) return false
+    let sqLiteCallback = await fetchTypeSaveSql(sqliteUpdateExerciseSetQuery(dataItem))
+    console.log("sqliteSetExercisesSetQuery", sqLiteCallback)
+    return !sqLiteCallback.isSuccessful
+}
+
 const sqliteCheckAndFill = async () => {
     let sqLiteCallback = await fetchTypeSaveSql(sqliteCheckMigrationsQuery())
-    console.log("fetchTypeSaveSql", sqLiteCallback)
+    // console.log("fetchTypeSaveSql", sqLiteCallback)
 
     let actualMigration = -1;
     if (sqLiteCallback.resultSets[1]?.rows.length > 0) {
@@ -78,6 +106,6 @@ const sqliteCheckAndFill = async () => {
     while (actualMigration < migrations.length - 1) {
         actualMigration++
         sqLiteCallback = await fetchTypeSaveSql(migrations[actualMigration])
-        console.log(actualMigration, sqLiteCallback)
+        // console.log(actualMigration, sqLiteCallback)
     }
 }
