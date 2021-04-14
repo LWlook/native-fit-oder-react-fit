@@ -54,10 +54,10 @@ export const Exercises: React.FC = () => {
     const renderItem: ListRenderItem<ExerciseDataItem> = ({item}) => {
         return <ExpandExerciseItem onToggleExpanded={() => transitionRef.current?.animateNextTransition()} item={item}
                                    onPress={() => navigation.navigate('ModifyExercise', {
-                                 exerciseId: item.rowid,
-                                 mode: 'edit',
-                                 exerciseName: item.title,
-                             })}/>;
+                                       exerciseId: item.exerciseid,
+                                       searchExerciseId: item.rowid,
+                                       exerciseName: item.title,
+                                   })}/>;
     }
 
     return <>
