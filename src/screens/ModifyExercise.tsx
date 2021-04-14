@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {StyleSheet, View} from "react-native";
 import {HomeStackParamList} from "../navigators/HomeNavigator";
 import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
@@ -11,6 +11,7 @@ import {ExerciseDataItemSetWithId} from "../components/Set";
 import {uniqueId} from "../utils/idGenerator";
 import {ExerciseDataItem, ExerciseDataItemSet, SearchExerciseDataItem} from "../database/databaseTypes";
 import {sqliteGetExercise, sqliteUpdateExerciseSet} from "../database/sqliteTypeSave";
+import {Transition, Transitioning, TransitioningView} from "react-native-reanimated";
 
 export const ModifyExercise: React.FC = () => {
 
@@ -53,8 +54,14 @@ export const ModifyExercise: React.FC = () => {
     const [weight, setWeight] = useState<number | null>(null)
     const [reps, setReps] = useState<number | null>(null)
     const [modifySetId, setModifySetId] = useState<string | null>(null)
+    const transitionRef = useRef<TransitioningView | null>(null)
+    const transition = <Transition.Change interpolation="easeInOut"/>
 
     const isSetSelected = modifySetId != null
+
+    const animateSetList = () => {
+        transitionRef.current?.animateNextTransition()
+    }
 
     const buildExerciseDataItem = (sets: ExerciseDataItemSet[]): ExerciseDataItem => {
         return {
@@ -77,20 +84,22 @@ export const ModifyExercise: React.FC = () => {
 
     const saveSet = () => {
         if (weight == null || reps == null) return
-            const newSet: ExerciseDataItemSetWithId = {
-                weight: weight,
-                reps: reps,
-                id: uniqueId()
-            }
-
-            setSets(prev => {
-                const exerciseSet = [...prev, newSet]
-                const exerciseDataItem = buildExerciseDataItem(exerciseSet)
-                if (mode === "edit") sqliteUpdateExerciseSet(exerciseDataItem).then()
-                if (mode === "create") console.log("NOT IMPLEMENTED")// TODO
-                return exerciseSet
-            })
+        const newSet: ExerciseDataItemSetWithId = {
+            weight: weight,
+            reps: reps,
+            id: uniqueId()
         }
+
+        setSets(prev => {
+            const exerciseSet = [...prev, newSet]
+            const exerciseDataItem = buildExerciseDataItem(exerciseSet)
+            if (mode === "edit") sqliteUpdateExerciseSet(exerciseDataItem).then()
+            if (mode === "create") console.log("NOT IMPLEMENTED")// TODO
+            return exerciseSet
+        })
+
+        animateSetList()
+    }
 
 
     const updateSet = () => {
@@ -99,7 +108,7 @@ export const ModifyExercise: React.FC = () => {
         setSets(prev => {
             const updateIndex = prev.findIndex(s => s.id === modifySetId)
             const updatedSets = [...prev]
-            const updatedSet: ExerciseDataItemSetWithId  = {
+            const updatedSet: ExerciseDataItemSetWithId = {
                 weight: weight,
                 reps: reps,
                 id: uniqueId()
@@ -112,6 +121,7 @@ export const ModifyExercise: React.FC = () => {
             return updatedSets
         })
 
+        animateSetList()
         setModifySetId(null)
     }
 
@@ -123,6 +133,7 @@ export const ModifyExercise: React.FC = () => {
             sqliteUpdateExerciseSet(exerciseDataItem).then()
             return exerciseSet
         })
+        animateSetList()
         setModifySetId(null)
     }
 
@@ -148,9 +159,9 @@ export const ModifyExercise: React.FC = () => {
                 {isSetSelected && <Button title="DELETE" onPress={deleteSet} backgroundColor={colors.delete}/>}
             </View>
         </View>
-        <View style={styles.sets}>
+        <Transitioning.View ref={transitionRef} transition={transition} style={styles.sets}>
             <Sets onPress={pressedSet} sets={sets}/>
-        </View>
+        </Transitioning.View>
     </View>
 }
 
