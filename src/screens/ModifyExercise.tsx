@@ -18,7 +18,7 @@ export const ModifyExercise: React.FC = () => {
     const updateExercises = useUpdateExercises(s => s.updateExercises)
 
     useEffect(() => {
-        if (exerciseId !== null) {
+        if (exerciseId !== null && mode === "edit") {
             sqliteGetExercise(exerciseId).then((data) => {
                 if (data == null) return
                 const exerciseDataItemSetWithId: ExerciseDataItemSetWithId[] = data.exerciseSet.map((s) => {

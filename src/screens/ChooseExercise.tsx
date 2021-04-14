@@ -19,7 +19,7 @@ export const ChooseExercise = () => {
 
     const renderItem: ListRenderItem<SearchExerciseDataItem> = ({item}) => {
         return <SearchExerciseItem item={item} onPress={() => navigation.navigate('ModifyExercise', {
-            exerciseId: 25,
+            exerciseId: null,
             mode: 'create',
             exerciseName: item.title
         })}/>
