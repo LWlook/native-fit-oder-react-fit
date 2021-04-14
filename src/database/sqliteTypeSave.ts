@@ -2,7 +2,7 @@ import {db} from "./db";
 import {Query, SQLError, SQLResultSet} from "expo-sqlite";
 import migrations from "./migrations";
 import {ExerciseDataItem, SearchExerciseDataItem} from "./databaseTypes";
-import {sqliteCheckMigrationsQuery, sqliteGetAllExcercisesQuery} from "./sqliteQueryMaker";
+import {sqliteCheckMigrationsQuery, sqliteGetAllExercisesQuery, sqliteGetUserExercisesQuery} from "./sqliteQueryMaker";
 
 export interface SQLiteCallback {
     errors: SQLError[],
@@ -42,49 +42,22 @@ const fetchTypeSaveSql = async (queries: Query[]): Promise<SQLiteCallback> => {
 
 export const sqliteGetUserExercises = async (): Promise<ExerciseDataItem[]> => {
     await sqliteCheckAndFill()
-    const DATA: ExerciseDataItem[] = [
-        {
-            rowid: 0,
-            title: 'Flat Barbell Bench Press',
-            increaseInExerciseSet: true,
-            category: "chest",
-            exerciseSet: [
-                {weight: 80, reps: 5},
-                {weight: 100, reps: 5},
-                {weight: 120, reps: 5}
-            ]
-        },
-        {
-            rowid: 1,
-            category: "biceps",
-            title: 'Close Grip Barbell Bench Press',
-            increaseInExerciseSet: true,
-            exerciseSet: [
-                {weight: 80, reps: 5},
-                {weight: 100, reps: 5},
-                {weight: 120, reps: 5}
-            ]
-        },
-        {
-            rowid: 2,
-            category: "shoulders",
-            title: 'Incline Dumbbell Fly',
-            increaseInExerciseSet: true,
-            exerciseSet: [
-                {weight: 80, reps: 5},
-                {weight: 100, reps: 5},
-                {weight: 120, reps: 5}
-            ]
-        },
-    ];
+    let sqLiteCallback = await fetchTypeSaveSql(sqliteGetUserExercisesQuery())
+    if (!sqLiteCallback.isSuccessful) return [];
+    // console.log("sqliteGetUserExercisesQuery", sqLiteCallback.resultSets[0].rows)
 
-    return DATA;
+    const returnArray: ExerciseDataItem[] = [];
+    for (let i = 0; i < sqLiteCallback.resultSets[0].rows.length; i++) {
+        let userExercise: ExerciseDataItem = sqLiteCallback.resultSets[0].rows.item(i)
+        userExercise.exerciseSet = JSON.parse(sqLiteCallback.resultSets[0].rows.item(i).exerciseSet)
+        returnArray.push(userExercise)
+    }
+    return returnArray;
 }
 
-export const sqliteGetAllExcercises = async (): Promise<SearchExerciseDataItem[]> => {
-    let sqLiteCallback = await fetchTypeSaveSql(sqliteGetAllExcercisesQuery())
+export const sqliteGetAllExercises = async (): Promise<SearchExerciseDataItem[]> => {
+    let sqLiteCallback = await fetchTypeSaveSql(sqliteGetAllExercisesQuery())
     if (!sqLiteCallback.isSuccessful) return [];
-    console.log("sqliteGetAllExcercises", sqLiteCallback.resultSets[0].rows)
 
     const returnArray: SearchExerciseDataItem[] = [];
     for (let i = 0; i < sqLiteCallback.resultSets[0].rows.length; i++) {

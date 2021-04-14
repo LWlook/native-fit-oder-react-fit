@@ -13,10 +13,19 @@ export const sqliteCheckMigrationsQuery = (): Query[] => {
     ]
 }
 
-export const sqliteGetAllExcercisesQuery = (): Query[] => {
+export const sqliteGetAllExercisesQuery = (): Query[] => {
     return [
         {
-            sql: "SELECT ROWID, * FROM `excercises`;",
+            sql: "SELECT ROWID, * FROM `exercises`;",
+            args: []
+        }
+    ]
+}
+
+export const sqliteGetUserExercisesQuery = (): Query[] => {
+    return [
+        {
+            sql: "SELECT exercises_user.rowid, exercises.title, exercises_user.increaseInExerciseSet, exercises_user.exerciseSet, exercises.category FROM exercises_user JOIN exercises ON exercises_user.exercise_id = exercises.rowid;",
             args: []
         }
     ]

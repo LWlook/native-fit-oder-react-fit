@@ -10,9 +10,9 @@ import {colors} from "../constants/style";
 const transition = <Transition.Change interpolation="easeInOut"/>
 
 const EXERCISES: SearchExerciseDataItem[] = [
-    { id: 1, category: "biceps", title: "Bizeps Curls <3"},
-    { id: 2, category: "abs", title: "Bauch"},
-    { id: 3, category: "shoulders", title: "Schulter"},
+    {rowid: 1, category: "biceps", title: "Bizeps Curls <3"},
+    {rowid: 2, category: "abs", title: "Bauch"},
+    {rowid: 3, category: "shoulders", title: "Schulter"},
 ]
 
 export const ChooseExercise = () => {
@@ -47,7 +47,7 @@ export const ChooseExercise = () => {
             <FlatList<SearchExerciseDataItem>
                 data={exercises}
                 renderItem={renderItem}
-                keyExtractor={item => item.id + ''}
+                keyExtractor={item => item.rowid + ''}
                 contentContainerStyle={styles.flatlistContainer}
             />
         </Transitioning.View>
