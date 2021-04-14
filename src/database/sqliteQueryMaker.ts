@@ -26,7 +26,7 @@ export const sqliteGetAllExercisesQuery = (): Query[] => {
 export const sqliteGetUserExercisesQuery = (date: string): Query[] => {
     return [
         {
-            sql: "SELECT exercises_user.rowid, exercises.title, exercises_user.increaseInExerciseSet, exercises_user.exerciseSet, exercises_user.exerciseid, exercises.category FROM exercises_user JOIN exercises ON exercises_user.exerciseid = exercises.rowid WHERE exercises_user.date = ?;",
+            sql: "SELECT exercises_user.rowid as 'excerciseid', exercises.title, exercises_user.increaseInExerciseSet, exercises_user.exerciseSet, exercises_user.exerciseid as 'rowid', exercises_user.date, exercises.category FROM exercises_user JOIN exercises ON exercises_user.exerciseid = exercises.rowid WHERE exercises_user.date = ?;",
             args: [date]
         }
     ]

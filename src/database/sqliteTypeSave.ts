@@ -50,9 +50,8 @@ const fetchTypeSaveSql = async (queries: Query[]): Promise<SQLiteCallback> => {
 }
 
 export const sqliteGetUserExercisesByDate = async (date: string): Promise<ExerciseDataItem[]> => {
-    await sqliteCheckAndFill()
     let sqLiteCallback = await fetchTypeSaveSql(sqliteGetUserExercisesQuery(date))
-    // console.log("sqliteGetUserExercisesQuery", sqLiteCallback)
+    console.log("sqliteGetUserExercisesQuery", sqLiteCallback)
     if (!sqLiteCallback.isSuccessful) return [];
 
     const returnArray: ExerciseDataItem[] = [];
@@ -61,6 +60,7 @@ export const sqliteGetUserExercisesByDate = async (date: string): Promise<Exerci
         userExercise.exerciseSet = JSON.parse(sqLiteCallback.resultSets[0].rows.item(i).exerciseSet)
         returnArray.push(userExercise)
     }
+    console.log(returnArray)
     return returnArray;
 }
 
@@ -75,8 +75,8 @@ export const sqliteGetAllExercises = async (): Promise<SearchExerciseDataItem[]>
     return returnArray;
 }
 
-export const sqliteGetExercise = async (rowid: number): Promise<ExerciseDataItem | null> => {
-    let sqLiteCallback = await fetchTypeSaveSql(sqliteGetExerciseQuery(rowid))
+export const sqliteGetExercise = async (exerciseid: number): Promise<ExerciseDataItem | null> => {
+    let sqLiteCallback = await fetchTypeSaveSql(sqliteGetExerciseQuery(exerciseid))
     // console.log("sqliteGetExerciseQuery", sqLiteCallback)
     if (!sqLiteCallback.isSuccessful) return null;
 
@@ -98,7 +98,6 @@ export const sqliteGetLastExercisePerType = async (rowid: number, date: string):
 }
 
 export const sqliteCreateExerciseSet = async (dataItem: ExerciseDataItem): Promise<number> => {
-    console.log(dataItem)
     if (dataItem.exerciseid <= 0 && dataItem.rowid <= 0) return -1
 
     const lastExcercise = await sqliteGetLastExercisePerType(dataItem.rowid, dataItem.date)
@@ -163,7 +162,7 @@ export const sqliteGetRecordsPerExercise = async (exercise: SearchExerciseDataIt
     return returnItem
 }
 
-const sqliteCheckAndFill = async () => {
+export const sqliteCheckAndFill = async () => {
     let sqLiteCallback = await fetchTypeSaveSql(sqliteCheckMigrationsQuery())
     // console.log("fetchTypeSaveSql", sqLiteCallback)
 
