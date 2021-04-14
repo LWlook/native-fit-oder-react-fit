@@ -9,13 +9,26 @@ import {colors} from "../constants/style";
 import {useUpdateExercises} from "../zustand/useUpdateExercises";
 import {ExerciseDataItemSetWithId} from "../components/Set";
 import {uniqueId} from "../utils/idGenerator";
-import {ExerciseDataItem, ExerciseDataItemSet, SearchExerciseDataItem} from "../database/databaseTypes";
-import {sqliteGetExercise, sqliteUpdateExerciseSet} from "../database/sqliteTypeSave";
+import {ExerciseDataItem, ExerciseDataItemSet} from "../database/databaseTypes";
+import {sqliteCreateExerciseSet, sqliteGetExercise, sqliteUpdateExerciseSet} from "../database/sqliteTypeSave";
 import {Transition, Transitioning, TransitioningView} from "react-native-reanimated";
+import {useSelectedDate} from "../zustand/useSelectedDate";
 
 export const ModifyExercise: React.FC = () => {
 
     const updateExercises = useUpdateExercises(s => s.updateExercises)
+    const [sets, setSets] = useState<ExerciseDataItemSetWithId[]>([])
+    const [exerciseInformation, setExerciseInformation] = useState<ExerciseDataItem | null>(null)
+    const route = useRoute<RouteProp<HomeStackParamList, 'ModifyExercise'>>()
+    const navigation = useNavigation()
+    const {exerciseId, mode, exerciseName} = route.params
+    const [weight, setWeight] = useState<number | null>(null)
+    const [reps, setReps] = useState<number | null>(null)
+    const [modifySetId, setModifySetId] = useState<string | null>(null)
+    const transitionRef = useRef<TransitioningView | null>(null)
+    const transition = <Transition.Change interpolation="easeInOut"/>
+    const selectedDate = useSelectedDate(state => state.selectedDate)
+    const isSetSelected = modifySetId != null
 
     useEffect(() => {
         if (exerciseId !== null && mode === "edit") {
@@ -30,34 +43,17 @@ export const ModifyExercise: React.FC = () => {
                 })
 
                 setSets(exerciseDataItemSetWithId)
+                setExerciseInformation(data)
 
-                setExerciseInformation({
-                    category: data.category,
-                    title: data.title,
-                    rowid: data.rowid
-                })
-
-                setWeight(data.exerciseSet[data.exerciseSet.length - 1].weight)
-                setReps(data.exerciseSet[data.exerciseSet.length - 1].reps)
+                if (data.exerciseSet.length >= 1) {
+                    setWeight(data.exerciseSet[data.exerciseSet.length - 1].weight)
+                    setReps(data.exerciseSet[data.exerciseSet.length - 1].reps)
+                }
             })
         }
 
         return updateExercises
     }, [])
-
-
-    const [sets, setSets] = useState<ExerciseDataItemSetWithId[]>([])
-    const [exerciseInformation, setExerciseInformation] = useState<SearchExerciseDataItem | null>(null)
-    const route = useRoute<RouteProp<HomeStackParamList, 'ModifyExercise'>>()
-    const navigation = useNavigation()
-    const {exerciseId, mode, exerciseName} = route.params
-    const [weight, setWeight] = useState<number | null>(null)
-    const [reps, setReps] = useState<number | null>(null)
-    const [modifySetId, setModifySetId] = useState<string | null>(null)
-    const transitionRef = useRef<TransitioningView | null>(null)
-    const transition = <Transition.Change interpolation="easeInOut"/>
-
-    const isSetSelected = modifySetId != null
 
     const animateSetList = () => {
         transitionRef.current?.animateNextTransition()
@@ -70,7 +66,8 @@ export const ModifyExercise: React.FC = () => {
             title: exerciseInformation?.title ?? "",
             category: exerciseInformation?.category ?? "shoulders",
             exerciseSet: sets,
-            exerciseid: exerciseId
+            exerciseid: exerciseId,
+            date: exerciseInformation?.date ?? selectedDate
         }
     }
 
@@ -94,7 +91,7 @@ export const ModifyExercise: React.FC = () => {
             const exerciseSet = [...prev, newSet]
             const exerciseDataItem = buildExerciseDataItem(exerciseSet)
             if (mode === "edit") sqliteUpdateExerciseSet(exerciseDataItem).then()
-            if (mode === "create") console.log("NOT IMPLEMENTED")// TODO
+            if (mode === "create") sqliteCreateExerciseSet(exerciseDataItem).then()
             return exerciseSet
         })
 

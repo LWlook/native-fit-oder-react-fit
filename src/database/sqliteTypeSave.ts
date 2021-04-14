@@ -100,6 +100,10 @@ export const sqliteGetLastExercisePerType = async (exerciseid: number, date: str
     return userExercise;
 }
 
+export const sqliteCreateExerciseSet = async (dataItem: ExerciseDataItem): Promise<boolean> => {
+    return false
+}
+
 export const sqliteUpdateExerciseSet = async (dataItem: ExerciseDataItem): Promise<boolean> => {
     if (dataItem.rowid <= 0) return false
 
