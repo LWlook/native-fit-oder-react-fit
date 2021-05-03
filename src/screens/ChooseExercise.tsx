@@ -1,9 +1,8 @@
 import React, {useRef, useState} from "react";
-import {FlatList, ListRenderItem, StyleSheet, TextInput, View} from "react-native";
+import {ListRenderItem, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {useNavigation} from "@react-navigation/native";
-import {Ionicons} from "@expo/vector-icons";
 import {SearchExerciseItem} from "../components/SearchExercisteItem";
-import {Transition, Transitioning, TransitioningView} from "react-native-reanimated";
+import {Transition, TransitioningView} from "react-native-reanimated";
 import {SearchExerciseDataItem} from "../database/databaseTypes";
 import {colors} from "../constants/style";
 import {useExercisesList} from "../zustand/useExercisesList";
@@ -32,19 +31,33 @@ export const ChooseExercise = () => {
     }
 
     return <View style={styles.container}>
-        <View style={styles.inputContainer}>
-            <TextInput style={styles.input} onChangeText={filterExercises} placeholder="Search exercises" placeholderTextColor={colors.grey} numberOfLines={1} />
-            <View style={styles.searchIcon}>
-            <Ionicons name="md-search" color={colors.grey} size={22}/>
-            </View>
-        </View>
-        <Transitioning.View ref={transitionRef} transition={transition} style={{flex: 1}}>
-            <FlatList<SearchExerciseDataItem>
-                data={exercises}
-                renderItem={renderItem}
-                keyExtractor={item => item.rowid + ''}
-            />
-        </Transitioning.View>
+        <Text>
+           Different exercises will be displayed here.
+        </Text>
+
+        <TouchableOpacity activeOpacity={0.6} onPress={() => navigation.navigate('ModifyExercise', {
+            exerciseId: null,
+            searchExerciseId: 0,
+            exerciseName: "Name of the exercise"
+        })}>
+            <Text style={{textDecorationLine: "underline"}}>
+                Click here to get to the next screen
+            </Text>
+        </TouchableOpacity>
+
+        {/*<View style={styles.inputContainer}>*/}
+        {/*    <TextInput style={styles.input} onChangeText={filterExercises} placeholder="Search exercises" placeholderTextColor={colors.grey} numberOfLines={1} />*/}
+        {/*    <View style={styles.searchIcon}>*/}
+        {/*    <Ionicons name="md-search" color={colors.grey} size={22}/>*/}
+        {/*    </View>*/}
+        {/*</View>*/}
+        {/*<Transitioning.View ref={transitionRef} transition={transition} style={{flex: 1}}>*/}
+        {/*    <FlatList<SearchExerciseDataItem>*/}
+        {/*        data={exercises}*/}
+        {/*        renderItem={renderItem}*/}
+        {/*        keyExtractor={item => item.rowid + ''}*/}
+        {/*    />*/}
+        {/*</Transitioning.View>*/}
     </View>
 }
 

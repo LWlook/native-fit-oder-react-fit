@@ -1,6 +1,6 @@
 import React, {useCallback} from "react";
-import {Calendar, DateObject} from "react-native-calendars";
-import {Dimensions, Modal, StyleSheet, TouchableWithoutFeedback, View} from "react-native";
+import {DateObject} from "react-native-calendars";
+import {Dimensions, Modal, StyleSheet, Text, TouchableWithoutFeedback, View} from "react-native";
 import {useSelectedDate} from "../zustand/useSelectedDate";
 import {colors} from "../constants/style";
 
@@ -38,16 +38,19 @@ export const CalendarModal: React.FC<CalendarModalProps> = ({modalVisible, setMo
 
             <View style={styles.centeredView}>
                 <View style={styles.modalView}>
-                    <Calendar
-                        markedDates={{[selectedDate]: {selected: true}}}
-                        theme={calendarTheme}
-                        onDayPress={handleDayPress}
-                        style={{
-                            width: 0.8 * windowWidth,
-                            height: 0.5 * windowHeight
-                        }}
-                        firstDay={1}
-                    />
+                    <Text>
+                        Calendar will be displayed here.
+                    </Text>
+                    {/*<Calendar*/}
+                    {/*    markedDates={{[selectedDate]: {selected: true}}}*/}
+                    {/*    theme={calendarTheme}*/}
+                    {/*    onDayPress={handleDayPress}*/}
+                    {/*    style={{*/}
+                    {/*        width: 0.8 * windowWidth,*/}
+                    {/*        height: 0.5 * windowHeight*/}
+                    {/*    }}*/}
+                    {/*    firstDay={1}*/}
+                    {/*/>*/}
                 </View>
             </View>
         </Modal>

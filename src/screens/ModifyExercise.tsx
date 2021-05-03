@@ -1,17 +1,13 @@
 import React, {useEffect, useRef, useState} from "react";
-import {StyleSheet, View} from "react-native";
+import {StyleSheet, Text, View} from "react-native";
 import {HomeStackParamList, ProfileScreenNavigationProp} from "../navigators/HomeNavigator";
 import {RouteProp, useNavigation, useRoute} from "@react-navigation/native";
-import {ExerciseInput} from "../components/ExerciseInput";
-import {Button} from "../components/Button";
-import {Sets} from "../components/Sets";
-import {colors} from "../constants/style";
 import {useUpdateExercises} from "../zustand/useUpdateExercises";
 import {ExerciseDataItemSetWithId} from "../components/Set";
 import {uniqueId} from "../utils/idGenerator";
 import {ExerciseDataItem, ExerciseDataItemSet} from "../database/databaseTypes";
 import {sqliteCreateExerciseSet, sqliteGetExercise, sqliteUpdateExerciseSet} from "../database/sqliteTypeSave";
-import {Transition, Transitioning, TransitioningView} from "react-native-reanimated";
+import {Transition, TransitioningView} from "react-native-reanimated";
 import {useSelectedDate} from "../zustand/useSelectedDate";
 
 export const ModifyExercise: React.FC = () => {
@@ -149,19 +145,22 @@ export const ModifyExercise: React.FC = () => {
     }, [navigation, exerciseName]);
 
     return <View style={styles.container}>
-        <View>
-            <ExerciseInput title="Weight (kgs)" value={weight} onChangeValue={setWeight} stepSize={2.5}/>
-            <ExerciseInput title="Reps" value={reps} onChangeValue={setReps} stepSize={1}/>
-            <View style={styles.buttonContainer}>
-                {!isSetSelected && <Button title="SAVE" onPress={saveSet}/>}
-                {!isSetSelected && <Button title="CLEAR" onPress={clearValues}/>}
-                {isSetSelected && <Button title="UPDATE" onPress={updateSet} backgroundColor={colors.update}/>}
-                {isSetSelected && <Button title="DELETE" onPress={deleteSet} backgroundColor={colors.delete}/>}
-            </View>
-        </View>
-        <Transitioning.View ref={transitionRef} transition={transition} style={styles.sets}>
-            <Sets onPress={pressedSet} sets={sets}/>
-        </Transitioning.View>
+        <Text>
+            The inputs for your added/modified exercise will be displayed here.
+        </Text>
+        {/*<View>*/}
+        {/*    <ExerciseInput title="Weight (kgs)" value={weight} onChangeValue={setWeight} stepSize={2.5}/>*/}
+        {/*    <ExerciseInput title="Reps" value={reps} onChangeValue={setReps} stepSize={1}/>*/}
+        {/*    <View style={styles.buttonContainer}>*/}
+        {/*        {!isSetSelected && <Button title="SAVE" onPress={saveSet}/>}*/}
+        {/*        {!isSetSelected && <Button title="CLEAR" onPress={clearValues}/>}*/}
+        {/*        {isSetSelected && <Button title="UPDATE" onPress={updateSet} backgroundColor={colors.update}/>}*/}
+        {/*        {isSetSelected && <Button title="DELETE" onPress={deleteSet} backgroundColor={colors.delete}/>}*/}
+        {/*    </View>*/}
+        {/*</View>*/}
+        {/*<Transitioning.View ref={transitionRef} transition={transition} style={styles.sets}>*/}
+        {/*    <Sets onPress={pressedSet} sets={sets}/>*/}
+        {/*</Transitioning.View>*/}
     </View>
 }
 
