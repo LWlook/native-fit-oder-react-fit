@@ -9,6 +9,7 @@ import ExerciseIcon from "../components/ExerciseIcon";
 import {useExercisesList} from "../zustand/useExercisesList";
 import {RecordItem, SearchExerciseDataItem} from "../database/databaseTypes";
 import {sqliteGetRecordsPerExercise} from "../database/sqliteTypeSave";
+import dayjs from "dayjs";
 
 const containerStyle = {
     height: 50,
@@ -59,7 +60,7 @@ export const Records: React.FC = () => {
         <ScrollView>
             <Grid>
                 <Row>
-                    <Col><StatItem title="Last workout" value={recordItem.lastExerciseDate.toString()}/></Col>
+                    <Col><StatItem title="Last workout" value={dayjs(recordItem.lastExerciseDate.toString()).format('DD.MM.YYYY')}/></Col>
                 </Row>
                 <Row>
                     <Col><StatItem title="Total workouts" value={recordItem.totalWorkouts.toString()}/></Col>

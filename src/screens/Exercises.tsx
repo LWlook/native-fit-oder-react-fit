@@ -15,6 +15,7 @@ import {Transition, Transitioning, TransitioningView} from "react-native-reanima
 import {ExerciseDataItem} from "../database/databaseTypes";
 import {useUpdateExercises} from "../zustand/useUpdateExercises";
 import {ProfileScreenNavigationProp} from "../navigators/HomeNavigator";
+import dayjs from "dayjs";
 
 export const Exercises: React.FC = () => {
 
@@ -47,7 +48,7 @@ export const Exercises: React.FC = () => {
                     />
                 </HeaderButtons>
             ),
-            title: selectedDate
+            title: dayjs(selectedDate).format('DD.MM.YYYY')
         });
     }, [navigation, selectedDate]);
 
