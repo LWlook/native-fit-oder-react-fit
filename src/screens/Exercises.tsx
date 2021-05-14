@@ -53,6 +53,7 @@ export const Exercises: React.FC = () => {
     }, [navigation, selectedDate]);
 
     const renderItem: ListRenderItem<ExerciseDataItem> = ({item}) => {
+        if (item.exerciseSet.length === 0) return null;
         return <ExpandExerciseItem onToggleExpanded={() => transitionRef.current?.animateNextTransition()} item={item}
                                    onPress={() => navigation.navigate('ModifyExercise', {
                                        exerciseId: item.exerciseid,
@@ -69,7 +70,7 @@ export const Exercises: React.FC = () => {
                 <FlatList<ExerciseDataItem>
                     data={allExerciseData}
                     renderItem={renderItem}
-                    keyExtractor={item => item.rowid + ''}
+                    keyExtractor={item => item.exerciseid + ''}
                     contentContainerStyle={styles.flatlistContainer}
                 />
             </Transitioning.View>
