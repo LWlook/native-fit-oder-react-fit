@@ -7,7 +7,6 @@ interface LiftedWeightCardProps {
 }
 
 export const LiftedWeightCard: React.FC<LiftedWeightCardProps> = ({value}) => {
-    if (value == 0) return null
     return (
         <View style={styles.card}>
             <Image style={styles.bicepsLeft} source={require('./../assets/images/biceps.png')}/>
