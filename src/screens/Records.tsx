@@ -46,6 +46,10 @@ export const Records: React.FC = () => {
             onChangeItem={(t: ItemType) => setSelectedExercise({title: t.label, category: "chest", rowid: t.value})}
             placeholder="Select an exercise"
             placeholderStyle={{color: colors.grey}}
+            scrollViewProps={{
+                persistentScrollbar: true
+            }}
+            dropDownMaxHeight={400}
             containerStyle={containerStyle}
             style={dropdownStyle}
             itemStyle={dropdownItemStyle}
