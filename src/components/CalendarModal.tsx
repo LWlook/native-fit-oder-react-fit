@@ -1,8 +1,9 @@
 import React, {useCallback} from "react";
-import {Calendar, DateObject} from "react-native-calendars";
+import {Calendar, DateObject, DotMarking} from "react-native-calendars";
 import {Dimensions, Modal, StyleSheet, TouchableWithoutFeedback, View} from "react-native";
 import {useSelectedDate} from "../zustand/useSelectedDate";
 import {colors} from "../constants/style";
+import dayjs from "dayjs";
 
 interface CalendarModalProps {
     modalVisible: boolean
@@ -17,6 +18,11 @@ const calendarTheme = {
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
+const today =  dayjs().format('YYYY-MM-DD')
+
+interface MarkedDates {
+    [date: string]: DotMarking
+}
 
 export const CalendarModal: React.FC<CalendarModalProps> = ({modalVisible, setModalVisible}) => {
     const {selectedDate, setSelectedDate} = useSelectedDate()
@@ -25,6 +31,16 @@ export const CalendarModal: React.FC<CalendarModalProps> = ({modalVisible, setMo
         setSelectedDate(dateObject.dateString)
         setModalVisible(false)
     }, [setSelectedDate, setModalVisible])
+
+    // TODO LUKAS
+    const selectedDates: string[] = [
+        '2021-05-15', '2021-05-14', '2021-05-13'
+    ]
+
+    const createMarkedDatesArray: MarkedDates = selectedDates.reduce((acc, curr) => {
+        acc[curr] = {marked: true, selectedColor: colors.primary}
+        return acc
+    }, {[selectedDate]: {selected: true}} as MarkedDates)
 
     return (
         <Modal animationType="fade"
@@ -39,8 +55,9 @@ export const CalendarModal: React.FC<CalendarModalProps> = ({modalVisible, setMo
             <View style={styles.centeredView}>
                 <View style={styles.modalView}>
                     <Calendar
-                        markedDates={{[selectedDate]: {selected: true}}}
+                        markedDates={createMarkedDatesArray}
                         theme={calendarTheme}
+                        maxDate={today}
                         onDayPress={handleDayPress}
                         style={{
                             width: 0.8 * windowWidth,
