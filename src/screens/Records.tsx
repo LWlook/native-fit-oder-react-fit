@@ -56,7 +56,18 @@ export const Records: React.FC = () => {
             customArrowUp={(size, color) => <Ionicons name="chevron-up" size={size} color={color}/>}
         />
 
-        {recordItem &&
+        {
+            recordItem && recordItem.lastExerciseDate === "0000-00-00" &&
+            <ScrollView>
+                <Grid>
+                    <Row>
+                        <Col><StatItem title="Last workout" value={"No last workout!"}/></Col>
+                    </Row>
+                </Grid>
+            </ScrollView>
+        }
+
+        {recordItem && recordItem.lastExerciseDate !== "0000-00-00" &&
         <ScrollView>
             <Grid>
                 <Row>
