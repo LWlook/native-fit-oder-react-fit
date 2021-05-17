@@ -5,6 +5,7 @@ import {ExerciseDataItem, RecordItem, SearchExerciseDataItem} from "./databaseTy
 import {
     sqliteCheckMigrationsQuery,
     sqliteCreateExerciseSetQuery,
+    sqliteDeleteExerciseSetQuery,
     sqliteGetAllExerciseSetDatesQuery,
     sqliteGetAllExercisesPerTypeQuery,
     sqliteGetAllExercisesQuery,
@@ -120,9 +121,14 @@ export const sqliteUpdateExerciseSet = async (dataItem: ExerciseDataItem): Promi
     else if (calcWeight(lastExcercise) < calcWeight(dataItem)) dataItem.increaseInExerciseSet = 1
     else dataItem.increaseInExerciseSet = 0
 
-    let sqLiteCallback = await fetchTypeSaveSql(sqliteUpdateExerciseSetQuery(dataItem))
     // console.log("sqliteSetExercisesSetQuery", sqLiteCallback)
-    return sqLiteCallback.isSuccessful
+    if (dataItem.exerciseSet.length === 0) {
+        let sqLiteCallback = await fetchTypeSaveSql(sqliteDeleteExerciseSetQuery(dataItem))
+        return sqLiteCallback.isSuccessful
+    } else {
+        let sqLiteCallback = await fetchTypeSaveSql(sqliteUpdateExerciseSetQuery(dataItem))
+        return sqLiteCallback.isSuccessful
+    }
 }
 
 export const sqliteGetAllExerciseSetDates = async (): Promise<string[]> => {

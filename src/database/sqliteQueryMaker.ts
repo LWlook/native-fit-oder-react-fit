@@ -50,6 +50,15 @@ export const sqliteUpdateExerciseSetQuery = (dataItem: ExerciseDataItem): Query[
     ]
 }
 
+export const sqliteDeleteExerciseSetQuery = (dataItem: ExerciseDataItem): Query[] => {
+    return [
+        {
+            sql: "DELETE FROM `exercises_user` WHERE rowid = ?;",
+            args: [dataItem.exerciseid]
+        }
+    ]
+}
+
 export const sqliteCreateExerciseSetQuery = (dataItem: ExerciseDataItem): Query[] => {
     return [
         {

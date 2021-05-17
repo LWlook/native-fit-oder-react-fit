@@ -133,6 +133,8 @@ export const ModifyExercise: React.FC = () => {
             sqliteUpdateExerciseSet(exerciseDataItem).then()
             return exerciseSet
         })
+        if (sets.length === 0)
+            exerciseId.current = null;
         animateSetList()
         setModifySetId(null)
     }
