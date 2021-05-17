@@ -23,6 +23,15 @@ export const sqliteGetAllExercisesQuery = (): Query[] => {
     ]
 }
 
+export const sqliteGetAllExercisesWithRecordsQuery = (): Query[] => {
+    return [
+        {
+            sql: "SELECT ROWID, `exercises`.* FROM `exercises` WHERE ROWID IN (SELECT `exerciseid` FROM `exercises_user` GROUP BY `exerciseid`);",
+            args: []
+        }
+    ]
+}
+
 export const sqliteGetUserExercisesQuery = (date: string): Query[] => {
     return [
         {

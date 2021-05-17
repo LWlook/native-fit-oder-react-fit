@@ -8,6 +8,7 @@ import {
     sqliteGetAllExerciseSetDatesQuery,
     sqliteGetAllExercisesPerTypeQuery,
     sqliteGetAllExercisesQuery,
+    sqliteGetAllExercisesWithRecordsQuery,
     sqliteGetExerciseByTypeLatestQuery,
     sqliteGetExerciseQuery,
     sqliteGetUserExercisesQuery,
@@ -133,6 +134,17 @@ export const sqliteGetAllExerciseSetDates = async (): Promise<string[]> => {
     const returnArray: string[] = [];
     for (let i = 0; i < sqLiteCallback.resultSets[0].rows.length; i++) {
         returnArray.push(sqLiteCallback.resultSets[0].rows.item(i).date)
+    }
+    return returnArray;
+}
+
+export const sqliteGetAllExercisesWithRecords = async (): Promise<SearchExerciseDataItem[]> => {
+    let sqLiteCallback = await fetchTypeSaveSql(sqliteGetAllExercisesWithRecordsQuery())
+    if (!sqLiteCallback.isSuccessful) return [];
+
+    const returnArray: SearchExerciseDataItem[] = [];
+    for (let i = 0; i < sqLiteCallback.resultSets[0].rows.length; i++) {
+        returnArray.push(sqLiteCallback.resultSets[0].rows.item(i))
     }
     return returnArray;
 }

@@ -6,9 +6,8 @@ import DropDownPicker, {ItemType} from 'react-native-dropdown-picker';
 import {colors} from "../constants/style";
 import {Ionicons} from "@expo/vector-icons";
 import ExerciseIcon from "../components/ExerciseIcon";
-import {useExercisesList} from "../zustand/useExercisesList";
 import {RecordItem, SearchExerciseDataItem} from "../database/databaseTypes";
-import {sqliteGetRecordsPerExercise} from "../database/sqliteTypeSave";
+import {sqliteGetAllExercisesWithRecords, sqliteGetRecordsPerExercise} from "../database/sqliteTypeSave";
 import dayjs from "dayjs";
 
 const containerStyle = {
@@ -26,14 +25,17 @@ const dropdownItemStyle: StyleProp<ViewStyle> = {
 }
 
 export const Records: React.FC = () => {
-    const exercisesList = useExercisesList(e => e.exercisesList)
+    const [recordItem, setRecordItem] = useState<RecordItem | null>(null)
+    const [selectedExercise, setSelectedExercise] = useState<SearchExerciseDataItem | null>(null)
+    const [exercisesList, setExercisesList] = useState<SearchExerciseDataItem[]>([])
+
     const dropdownItems: ItemType[] = exercisesList.map((e) => ({
         label: e.title,
         value: e.rowid,
         icon: () => <ExerciseIcon category={e.category} size={30} imageSize={23}/>
     }))
-    const [recordItem, setRecordItem] = useState<RecordItem | null>(null)
-    const [selectedExercise, setSelectedExercise] = useState<SearchExerciseDataItem | null>(null)
+
+    sqliteGetAllExercisesWithRecords().then(d => setExercisesList(d))
 
     useEffect(() => {
         if (selectedExercise == null) return
