@@ -69,8 +69,19 @@ export const sqliteGetExerciseByTypeLatestQuery = (exerciseid: number, date: str
 export const sqliteGetAllExercisesPerTypeQuery = (exerciseid: number): Query[] => {
     return [
         {
-            sql: "SELECT exercises_user.rowid as 'exerciseid', exercises.title, exercises_user.increaseInExerciseSet, exercises_user.exerciseSet, exercises_user.exerciseid as 'rowid', exercises_user.date, exercises.category FROM exercises_user JOIN exercises ON exercises_user.exerciseid = exercises.rowid WHERE exercises.rowid = ? ORDER BY `date` DESC ;",
+            sql: "SELECT exercises_user.rowid as 'exerciseid', exercises.title, exercises_user.increaseInExerciseSet, exercises_user.exerciseSet, exercises_user.exerciseid as 'rowid', exercises_user.date, exercises.category FROM exercises_user JOIN exercises ON exercises_user.exerciseid = exercises.rowid WHERE exercises.rowid = ? ORDER BY `date` DESC;",
             args: [exerciseid]
         }
     ]
 }
+
+export const sqliteGetAllExerciseSetDatesQuery = (): Query[] => {
+    return [
+        {
+            sql: "SELECT `date` FROM `exercises_user` GROUP BY `date`;",
+            args: []
+        }
+    ]
+}
+
+

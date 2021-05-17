@@ -1,9 +1,10 @@
-import React, {useCallback} from "react";
+import React, {useCallback, useState} from "react";
 import {Calendar, DateObject, DotMarking} from "react-native-calendars";
 import {Dimensions, Modal, StyleSheet, TouchableWithoutFeedback, View} from "react-native";
 import {useSelectedDate} from "../zustand/useSelectedDate";
 import {colors} from "../constants/style";
 import dayjs from "dayjs";
+import {sqliteGetAllExerciseSetDates} from "../database/sqliteTypeSave";
 
 interface CalendarModalProps {
     modalVisible: boolean
@@ -26,16 +27,16 @@ interface MarkedDates {
 
 export const CalendarModal: React.FC<CalendarModalProps> = ({modalVisible, setModalVisible}) => {
     const {selectedDate, setSelectedDate} = useSelectedDate()
+    const [selectedDates, setSelectedDates] = useState<string[]>([])
 
     const handleDayPress = useCallback((dateObject: DateObject) => {
         setSelectedDate(dateObject.dateString)
         setModalVisible(false)
     }, [setSelectedDate, setModalVisible])
 
-    // TODO LUKAS
-    const selectedDates: string[] = [
-        '2021-05-15', '2021-05-14', '2021-05-13'
-    ]
+    sqliteGetAllExerciseSetDates().then(r => {
+        setSelectedDates(r)
+    });
 
     const createMarkedDatesArray: MarkedDates = selectedDates.reduce((acc, curr) => {
         acc[curr] = {marked: true, selectedColor: colors.primary}
