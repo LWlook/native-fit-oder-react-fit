@@ -39,7 +39,7 @@ export const CalendarModal: React.FC<CalendarModalProps> = ({modalVisible, setMo
     });
 
     const createMarkedDatesArray: MarkedDates = selectedDates.reduce((acc, curr) => {
-        acc[curr] = {marked: true, selectedColor: colors.primary}
+        acc[curr] = {marked: true, dotColor: colors.primary}
         return acc
     }, {[selectedDate]: {selected: true}} as MarkedDates)
 
